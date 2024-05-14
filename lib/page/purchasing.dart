@@ -31,7 +31,10 @@ class Purchasing extends StatelessWidget {
               child: card("assets/return.png", "Goods Return"),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(
+                    context, '/home/purchasing/credit_memo/test_qrcode');
+              },
               child: card("assets/credit-memo.png", "A/P Credit Memo"),
             ),
           ],
