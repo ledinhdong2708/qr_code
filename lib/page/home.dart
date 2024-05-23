@@ -30,15 +30,21 @@ class Home extends StatelessWidget {
                       child: card("assets/purchasing.png", "Purchasing"),
                     ),
                     InkWell(
-                      onTap: () => print("123"),
+                      onTap: () {
+                        Navigator.pushNamed(context, "/home/sales");
+                      },
                       child: card("assets/sales.png", "Sales-A/R"),
                     ),
                     InkWell(
-                      onTap: () => print("123"),
+                      onTap: () {
+                        Navigator.pushNamed(context, "/home/inventory");
+                      },
                       child: card("assets/inventory.png", "Inventor"),
                     ),
                     InkWell(
-                      onTap: () => print("123"),
+                      onTap: () {
+                        Navigator.pushNamed(context, "/home/production");
+                      },
                       child: card("assets/production.png", "Production"),
                     ),
                   ],
