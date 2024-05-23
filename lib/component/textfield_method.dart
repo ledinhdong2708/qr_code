@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:qr_code/constants/colors.dart';
 
 Row buildTextFieldRow({
   String labelText = 'Default Text',
   bool isEnable = false,
   String hintText = 'Default Hint Text',
+  final IconData? icon,
 }) {
-  Color? fillColor =
-      isEnable ? const Color(0xFFF0F8FF) : const Color(0xFFE6E6E6);
+  Color? fillColor = isEnable ? fieldInput : readInput;
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Container(
         width: 90,
         margin: const EdgeInsets.all(10),
-        child: Text(labelText),
+        child: Text(
+          labelText,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       Expanded(
         child: Container(
@@ -25,11 +29,11 @@ Row buildTextFieldRow({
                 border: InputBorder.none,
                 hintText: hintText,
                 hintStyle: isEnable
-                    ? const TextStyle(color: Color(0xFF333333))
-                    : const TextStyle(color: Color(0xFF999999)),
+                    ? const TextStyle(color: fieldInputText)
+                    : const TextStyle(color: readInputText),
                 fillColor: fillColor,
                 filled: true,
-                suffixIcon: isEnable ? const Icon(Icons.edit) : null,
+                suffixIcon: isEnable ? Icon(icon) : null,
               )),
         ),
       ),

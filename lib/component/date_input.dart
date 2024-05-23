@@ -1,7 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Import intl package
+import 'package:intl/intl.dart';
+import 'package:qr_code/constants/colors.dart'; // Import intl package
 
 class DateInput extends StatefulWidget {
   const DateInput({super.key});
@@ -35,7 +36,8 @@ class _DateInputState extends State<DateInput> {
           Container(
               width: 90,
               margin: const EdgeInsets.all(10),
-              child: const Text("Post.Day")),
+              child: const Text("Post.Date",
+                  style: TextStyle(fontWeight: FontWeight.bold))),
           Expanded(
             child: Container(
               height: 45,
@@ -46,7 +48,7 @@ class _DateInputState extends State<DateInput> {
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "yyyy-MM-dd",
-                      fillColor: Colors.lightBlueAccent,
+                      fillColor: fieldInput,
                       filled: true,
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.calendar_today),

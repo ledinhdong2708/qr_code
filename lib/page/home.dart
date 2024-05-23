@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/custom_app_bar.dart';
 import 'package:qr_code/component/user_detail_button.dart';
+import 'package:qr_code/constants/colors.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -10,6 +11,9 @@ class Home extends StatelessWidget {
     return Scaffold(
         appBar: const CustomAppBar(),
         body: Container(
+          color: bgColor,
+          width: double.infinity,
+          height: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
           child: Column(
             children: [

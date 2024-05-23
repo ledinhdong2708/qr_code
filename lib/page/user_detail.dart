@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:qr_code/component/button.dart';
+import 'package:qr_code/component/dropdownbutton.dart';
 import 'package:qr_code/component/textfield_method.dart';
+import 'package:qr_code/constants/colors.dart';
+import 'package:qr_code/constants/styles.dart';
 
 class UserDetail extends StatelessWidget {
   const UserDetail({super.key});
@@ -9,38 +13,84 @@ class UserDetail extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         // title: const Text("User Detail"),
+        backgroundColor: bgColor,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            InkWell(
-              onTap: () {},
-              child: const CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(
-                    'https://example.com/image.jpg'), // Replace with your image
+      body: Container(
+        color: bgColor,
+        width: double.infinity,
+        height: double.infinity,
+        padding: AppStyles.paddingContainer,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              InkWell(
+                onTap: () {},
+                child: const CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(
+                      'https://example.com/image.jpg'), // Replace with your image
+                ),
               ),
-            ),
-            buildTextFieldRow(labelText: 'User ID', hintText: 'user_id'),
-            buildTextFieldRow(
-                labelText: 'First Name',
+              buildTextFieldRow(labelText: 'User ID', hintText: 'user_id'),
+              buildTextFieldRow(
+                  labelText: 'Họ',
+                  isEnable: true,
+                  hintText: 'Họ',
+                  icon: Icons.edit),
+              buildTextFieldRow(
+                labelText: 'Tên',
                 isEnable: true,
-                hintText: 'First name'),
-            buildTextFieldRow(
-                labelText: 'Last Name', isEnable: true, hintText: 'Last name'),
-            buildTextFieldRow(
-                labelText: 'Phone', isEnable: true, hintText: 'Phone'),
-            buildTextFieldRow(
-                labelText: 'Position', isEnable: true, hintText: 'Position'),
-            buildTextFieldRow(
-                labelText: 'Address', isEnable: true, hintText: 'Address'),
-            buildTextFieldRow(
-                labelText: 'Email', isEnable: true, hintText: 'Email'),
-            buildTextFieldRow(
-                labelText: 'Department',
+                hintText: 'Tên',
+                icon: Icons.edit,
+              ),
+              buildTextFieldRow(
+                labelText: 'Điện Thoại',
                 isEnable: true,
-                hintText: 'Department'),
-          ],
+                hintText: 'Điện Thoại',
+                icon: Icons.edit,
+              ),
+              buildTextFieldRow(
+                labelText: 'Chức Vụ',
+                isEnable: true,
+                hintText: 'Chức Vụ',
+                icon: Icons.edit,
+              ),
+              buildTextFieldRow(
+                labelText: 'Địa Chỉ',
+                isEnable: true,
+                hintText: 'Địa Chỉ',
+                icon: Icons.edit,
+              ),
+              buildTextFieldRow(
+                labelText: 'Gmail',
+                isEnable: true,
+                hintText: 'Gmail',
+                icon: Icons.edit,
+              ),
+              Dropdownbutton(
+                items: ['Kho', 'Sản Xuất', 'Nhập Hàng', 'Xuất Hàng'],
+                hintText: 'Phòng Ban',
+                labelText: 'Phòng Ban',
+              ),
+              Container(
+                margin: AppStyles.marginButton,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CustomButton(
+                      text: 'Update',
+                      onPressed: () {},
+                    ),
+                    CustomButton(
+                      text: 'logout',
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
