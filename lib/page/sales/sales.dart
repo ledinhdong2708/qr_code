@@ -45,10 +45,9 @@ class Sales extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(
-                    context, '/home/sales/credit_memo/ap_credit_memo');
+                Navigator.pushNamed(context, '/home/sales/ar_credit_memo');
               },
-              child: card("assets/credit-memo.png", "A/P Credit Memo"),
+              child: card("assets/credit-memo.png", "A/R Credit Memo"),
             ),
           ],
         ),

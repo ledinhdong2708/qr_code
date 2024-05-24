@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
-import 'package:qr_code/component/qr_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 
-class ApCreditmemoDetail extends StatelessWidget {
-  const ApCreditmemoDetail({super.key});
+class ARCreditMemo extends StatelessWidget {
+  const ARCreditMemo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = TextEditingController();
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("A/P Credit Memo - Detail"),
+          title: const Text("A/R Credit Memo"),
           backgroundColor: bgColor,
         ),
         body: Container(
@@ -26,19 +24,10 @@ class ApCreditmemoDetail extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                buildTextFieldRow(
-                    labelText: 'Item Code', hintText: 'Item Code'),
-                buildTextFieldRow(
-                    labelText: 'Item Name', hintText: 'Item Name'),
-                buildTextFieldRow(labelText: 'Whse', hintText: 'Whse'),
-                buildTextFieldRow(
-                    labelText: 'SL Yêu Cầu', hintText: 'SL Yêu Cầu'),
-                QRCodeInput(
-                  labelText: 'SL Trả lại',
-                  controller: _controller,
-                ),
-                buildTextFieldRow(labelText: 'Batch', hintText: 'Batch'),
-                buildTextFieldRow(labelText: 'UoM Code', hintText: 'UoM Code'),
+                buildTextFieldRow(labelText: 'Doc No.', hintText: 'Doc No.'),
+                const DateInput(),
+                buildTextFieldRow(labelText: 'Cus.Code', hintText: 'Cus.Code'),
+                buildTextFieldRow(labelText: 'Cus.Name', hintText: 'Cus.Name'),
                 buildTextFieldRow(
                   labelText: 'Remake',
                   isEnable: true,
@@ -46,13 +35,21 @@ class ApCreditmemoDetail extends StatelessWidget {
                   icon: Icons.edit,
                 ),
                 // list item ở đây
+                // **** nút vào xem good-return details trong list item bấm vào dấu ... dọc ****
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context,
+                        '/home/sales/ar_credit_memo/ar_credit_memo_detail');
+                  },
+                  child: const Text('Xem Chi Tiết '),
+                ),
                 Container(
                   width: double.infinity,
                   margin: AppStyles.marginButton,
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: CustomButton(
-                      text: 'ADD',
+                      text: 'POST',
                       onPressed: () {},
                     ),
                   ),

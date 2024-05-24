@@ -11,6 +11,14 @@ import 'package:qr_code/page/purchasin/purchasing.dart';
 import 'package:qr_code/page/home.dart';
 import 'package:qr_code/page/login.dart';
 import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo.dart';
+import 'package:qr_code/page/sales/creditmemo/ar_creditmemo.dart';
+import 'package:qr_code/page/sales/creditmemo/ar_creditmemo_detail.dart';
+import 'package:qr_code/page/sales/creditmemo/ar_creditmemo_label.dart';
+import 'package:qr_code/page/sales/delivery/delivery.dart';
+import 'package:qr_code/page/sales/delivery/delivery_detail.dart';
+import 'package:qr_code/page/sales/returns/return.dart';
+import 'package:qr_code/page/sales/returns/returndetail.dart';
+import 'package:qr_code/page/sales/returns/returnlabel.dart';
 import 'package:qr_code/page/sales/sales.dart';
 import 'package:qr_code/page/user_detail.dart';
 
@@ -50,6 +58,18 @@ class MyApp extends StatelessWidget {
             (context) => const ApCreditmemoDetail(),
         // sales
         '/home/sales': (context) => const Sales(),
+        '/home/sales/delivery': (context) => const Delivery(),
+        '/home/sales/delivery/delivery_detail': (context) =>
+            const DeliveryDetail(),
+        '/home/sales/return': (context) => const Return(),
+        '/home/sales/return/return_detail': (context) => const ReturnDetail(),
+        '/home/sales/return/return_detail/return_labels': (context) =>
+            const ReturnLabels(),
+        '/home/sales/ar_credit_memo': (context) => const ARCreditMemo(),
+        '/home/sales/ar_credit_memo/ar_credit_memo_detail': (context) =>
+            const ARCreditmemoDetail(),
+        '/home/sales/ar_credit_memo/ar_credit_memo_labels': (context) =>
+            const ArCreditmemoLabel(),
         // inventory
         '/home/inventory': (context) => const Inventory(),
         // production

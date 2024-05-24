@@ -6,8 +6,8 @@ import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 
-class ApCreditmemoDetail extends StatelessWidget {
-  const ApCreditmemoDetail({super.key});
+class DeliveryDetail extends StatelessWidget {
+  const DeliveryDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class ApCreditmemoDetail extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("A/P Credit Memo - Detail"),
+          title: const Text("Delivery - Detail"),
           backgroundColor: bgColor,
         ),
         body: Container(
@@ -34,18 +34,12 @@ class ApCreditmemoDetail extends StatelessWidget {
                 buildTextFieldRow(
                     labelText: 'SL Yêu Cầu', hintText: 'SL Yêu Cầu'),
                 QRCodeInput(
-                  labelText: 'SL Trả lại',
+                  labelText: 'SL Thực tế',
                   controller: _controller,
                 ),
                 buildTextFieldRow(labelText: 'Batch', hintText: 'Batch'),
                 buildTextFieldRow(labelText: 'UoM Code', hintText: 'UoM Code'),
-                buildTextFieldRow(
-                  labelText: 'Remake',
-                  isEnable: true,
-                  hintText: 'Remake here',
-                  icon: Icons.edit,
-                ),
-                // list item ở đây
+                // để list item vào đây
                 Container(
                   width: double.infinity,
                   margin: AppStyles.marginButton,

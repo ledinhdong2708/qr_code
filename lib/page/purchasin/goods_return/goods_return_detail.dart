@@ -34,6 +34,7 @@ class GoodsReturnDetail extends StatelessWidget {
                 buildTextFieldRow(
                     labelText: 'SL Yêu Cầu', hintText: 'SL Yêu Cầu'),
                 QRCodeInput(
+                  labelText: 'SL Trả lại',
                   controller: _controller,
                 ),
                 buildTextFieldRow(labelText: 'Batch', hintText: 'Batch'),

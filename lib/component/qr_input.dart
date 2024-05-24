@@ -4,8 +4,9 @@ import 'package:qr_code/page/qr_view_example.dart';
 
 class QRCodeInput extends StatelessWidget {
   final TextEditingController controller;
+  final String labelText;
 
-  QRCodeInput({required this.controller});
+  QRCodeInput({required this.controller, required this.labelText});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +15,8 @@ class QRCodeInput extends StatelessWidget {
         Container(
           width: 90,
           margin: const EdgeInsets.all(10),
-          child: const Text('SL Trả Lại',
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          child: Text(labelText,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
         ),
         Expanded(
           child: Container(
@@ -23,10 +24,10 @@ class QRCodeInput extends StatelessWidget {
             margin: const EdgeInsets.all(10),
             child: TextField(
               controller: controller,
-              decoration: const InputDecoration(
-                hintText: 'SL Trả Lại',
+              decoration: InputDecoration(
+                hintText: labelText,
                 border: InputBorder.none,
-                hintStyle: TextStyle(color: fieldInputText),
+                hintStyle: const TextStyle(color: fieldInputText),
                 fillColor: fieldInput,
                 filled: true,
               ),
