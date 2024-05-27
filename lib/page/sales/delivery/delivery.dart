@@ -4,6 +4,7 @@ import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class Delivery extends StatelessWidget {
   const Delivery({super.key});
@@ -37,8 +38,7 @@ class Delivery extends StatelessWidget {
                 // **** nút vào xem good-return details trong list item bấm vào dấu ... dọc ****
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(
-                        context, '/home/sales/delivery/delivery_detail');
+                    Navigator.pushNamed(context, Routes.deliveryDetail);
                   },
                   child: const Text('Xem Chi Tiết '),
                 ),

@@ -5,6 +5,7 @@ import 'package:qr_code/component/qr_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class GrpoDetail extends StatelessWidget {
   const GrpoDetail({super.key});
@@ -54,8 +55,7 @@ class GrpoDetail extends StatelessWidget {
                 // list item ở đây
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context,
-                        '/home/purchasing/goodsreceiptpo/grpo/grpo_detail/grpo_labels');
+                    Navigator.pushNamed(context, Routes.grpoLabels);
                   },
                   child: const Text('Tạo Nhãn'),
                 ),

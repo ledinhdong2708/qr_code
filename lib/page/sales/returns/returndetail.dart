@@ -5,6 +5,7 @@ import 'package:qr_code/component/qr_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class ReturnDetail extends StatelessWidget {
   const ReturnDetail({super.key});
@@ -42,8 +43,7 @@ class ReturnDetail extends StatelessWidget {
                 // để list item vào đây
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context,
-                        '/home/sales/return/return_detail/return_labels');
+                    Navigator.pushNamed(context, Routes.returnLabels);
                   },
                   child: const Text('Tạo Nhãn'),
                 ),

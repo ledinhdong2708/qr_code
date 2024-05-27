@@ -4,6 +4,7 @@ import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class Grpo extends StatelessWidget {
   const Grpo({super.key});
@@ -40,8 +41,7 @@ class Grpo extends StatelessWidget {
                 // **** nút vào xem good-return details trong list item bấm vào dấu ... dọc ****
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context,
-                        '/home/purchasing/goodsreceiptpo/grpo/grpo_detail');
+                    Navigator.pushNamed(context, Routes.grpoDetail);
                   },
                   child: const Text('Xem Chi Tiết '),
                 ),

@@ -5,6 +5,7 @@ import 'package:qr_code/component/qr_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class ARCreditmemoDetail extends StatelessWidget {
   const ARCreditmemoDetail({super.key});
@@ -42,8 +43,7 @@ class ARCreditmemoDetail extends StatelessWidget {
                 // list item ở đây
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context,
-                        '/home/sales/ar_credit_memo/ar_credit_memo_labels');
+                    Navigator.pushNamed(context, Routes.arCreditMemoLabels);
                   },
                   child: const Text('Tạo Nhãn'),
                 ),

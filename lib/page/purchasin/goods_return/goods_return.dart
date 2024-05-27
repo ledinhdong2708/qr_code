@@ -4,6 +4,7 @@ import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class GoodsReturn extends StatelessWidget {
   const GoodsReturn({super.key});
@@ -39,8 +40,7 @@ class GoodsReturn extends StatelessWidget {
                 // **** nút vào xem good-return details trong list item bấm vào dấu ... dọc ****
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context,
-                        '/home/purchasing/return/goods_return/goods_return_detail');
+                    Navigator.pushNamed(context, Routes.goodsReturnDetail);
                   },
                   child: const Text('Xem Chi Tiết '),
                 ),

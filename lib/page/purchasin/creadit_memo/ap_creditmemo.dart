@@ -4,6 +4,7 @@ import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class ApCreditMemo extends StatelessWidget {
   const ApCreditMemo({super.key});
@@ -40,8 +41,7 @@ class ApCreditMemo extends StatelessWidget {
                 // **** nút vào xem good-return details trong list item bấm vào dấu ... dọc ****
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context,
-                        '/home/purchasing/credit_memo/ap_credit_memo/ap_credit_memo_detail');
+                    Navigator.pushNamed(context, Routes.apCreditMemoDetail);
                   },
                   child: const Text('Xem Chi Tiết '),
                 ),

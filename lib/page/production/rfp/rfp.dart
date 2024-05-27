@@ -5,6 +5,7 @@ import 'package:qr_code/component/dropdownbutton.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class Rfp extends StatelessWidget {
   const Rfp({super.key});
@@ -76,8 +77,7 @@ class Rfp extends StatelessWidget {
                 //list item ở đây
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(
-                        context, '/home/production/rfp/rfp_labels');
+                    Navigator.pushNamed(context, Routes.rfpLabels);
                   },
                   child: const Text('Tạo Nhãn'),
                 ),
