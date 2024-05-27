@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_code/page/inventory/goodsissue/goods_issue.dart';
 import 'package:qr_code/page/inventory/goodsreceipt/goods_receipt.dart';
 import 'package:qr_code/page/inventory/goodsreceipt/goods_receipt_labels.dart';
 import 'package:qr_code/page/inventory/inventory.dart';
@@ -73,6 +74,7 @@ class MyApp extends StatelessWidget {
         Routes.goodsReceiptInven: (context) => const GoodsReceiptIven(),
         Routes.goodsReceiptLabelsInven: (context) =>
             const GoodsReceiptLabelsIven(),
+        Routes.goodsIssueInven: (context) => const GoodsIssueInven(),
         Routes.inventoryCounting: (context) => const InventoryCounting(),
         Routes.inventoryTransfer: (context) => const InventoryTrans(),
         Routes.inventoryTransferLabels: (context) =>
