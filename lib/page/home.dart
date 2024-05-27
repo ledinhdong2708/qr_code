@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code/component/custom_app_bar.dart';
 import 'package:qr_code/component/user_detail_button.dart';
 import 'package:qr_code/constants/colors.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -25,25 +26,25 @@ class Home extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, "/home/purchasing");
+                        Navigator.pushNamed(context, Routes.purchasing);
                       },
                       child: card("assets/purchasing.png", "Purchasing"),
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, "/home/sales");
+                        Navigator.pushNamed(context, Routes.sales);
                       },
                       child: card("assets/sales.png", "Sales-A/R"),
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, "/home/inventory");
+                        Navigator.pushNamed(context, Routes.inventory);
                       },
-                      child: card("assets/inventory.png", "Inventor"),
+                      child: card("assets/inventory.png", "Inventory"),
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, "/home/production");
+                        Navigator.pushNamed(context, Routes.production);
                       },
                       child: card("assets/production.png", "Production"),
                     ),

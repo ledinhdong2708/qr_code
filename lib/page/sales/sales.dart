@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/page/qr_view_example.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class Sales extends StatelessWidget {
   const Sales({super.key});
@@ -26,7 +27,7 @@ class Sales extends StatelessWidget {
                 //   MaterialPageRoute(
                 //       builder: (context) => const QRViewExample()),
                 // );
-                Navigator.pushNamed(context, '/home/sales/delivery');
+                Navigator.pushNamed(context, Routes.delivery);
               },
               child: card("assets/delivery.png", "Delivery"),
             ),
@@ -39,13 +40,13 @@ class Sales extends StatelessWidget {
                 //       builder: (context) => const QRViewExample()),
                 // );
                 // **** quét qr xong rồi vào đây ****
-                Navigator.pushNamed(context, '/home/sales/return');
+                Navigator.pushNamed(context, Routes.returns);
               },
               child: card("assets/return.png", "Return"),
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, '/home/sales/ar_credit_memo');
+                Navigator.pushNamed(context, Routes.arCreditMemo);
               },
               child: card("assets/credit-memo.png", "A/R Credit Memo"),
             ),

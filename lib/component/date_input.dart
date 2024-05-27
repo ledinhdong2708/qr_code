@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:qr_code/constants/colors.dart'; // Import intl package
 
 class DateInput extends StatefulWidget {
-  const DateInput({super.key});
+  final String labelText;
+  const DateInput({super.key, this.labelText = 'Post.Date'});
 
   @override
   _DateInputState createState() => _DateInputState();
@@ -36,8 +37,8 @@ class _DateInputState extends State<DateInput> {
           Container(
               width: 90,
               margin: const EdgeInsets.all(10),
-              child: const Text("Post.Date",
-                  style: TextStyle(fontWeight: FontWeight.bold))),
+              child: Text(widget.labelText,
+                  style: const TextStyle(fontWeight: FontWeight.bold))),
           Expanded(
             child: Container(
               height: 45,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/page/qr_view_example.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class Production extends StatelessWidget {
   const Production({super.key});
@@ -26,11 +27,10 @@ class Production extends StatelessWidget {
                 //   MaterialPageRoute(
                 //       builder: (context) => const QRViewExample()),
                 // );
-                Navigator.pushNamed(
-                    context, '/home/production/issue_for_production');
+                Navigator.pushNamed(context, Routes.ifp);
               },
               // thay đổi lại hình ảnh
-              child: card("assets/delivery.png", "Issue for Production"),
+              child: card("assets/ifp.png", "Issue for Production"),
             ),
             InkWell(
               onTap: () {
@@ -41,25 +41,24 @@ class Production extends StatelessWidget {
                 //       builder: (context) => const QRViewExample()),
                 // );
                 // **** quét qr xong rồi vào đây ****
-                Navigator.pushNamed(
-                    context, '/home/production/receipt_from_production');
+                Navigator.pushNamed(context, Routes.rfp);
               },
               // thay đổi lại hình ảnh
-              child: card("assets/return.png", "Receipt from Production"),
+              child: card("assets/rfp.png", "Receipt from Production"),
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, '/home/production/goods_receipt');
+                Navigator.pushNamed(context, Routes.goodsReceipt);
               },
               // thay đổi lại hình ảnh
-              child: card("assets/credit-memo.png", "Goods Receipt"),
+              child: card("assets/goods-receipt.png", "Goods Receipt"),
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, '/home/production/goods_issue');
+                Navigator.pushNamed(context, Routes.goodsIssue);
               },
               // thay đổi lại hình ảnh
-              child: card("assets/credit-memo.png", "Goods Issue"),
+              child: card("assets/goods-issue.png", "Goods Issue"),
             ),
           ],
         ),

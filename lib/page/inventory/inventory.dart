@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/page/qr_view_example.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class Inventory extends StatelessWidget {
   const Inventory({super.key});
@@ -26,10 +27,10 @@ class Inventory extends StatelessWidget {
                 //   MaterialPageRoute(
                 //       builder: (context) => const QRViewExample()),
                 // );
-                Navigator.pushNamed(context, '/home/inventory/goods_receipt');
+                Navigator.pushNamed(context, Routes.goodsReceiptInven);
               },
               // thay đổi lại hình ảnh
-              child: card("assets/receipt.png", "Goods Receipt"),
+              child: card("assets/goods-receipt.png", "Goods Receipt"),
             ),
             InkWell(
               onTap: () {
@@ -40,26 +41,26 @@ class Inventory extends StatelessWidget {
                 //       builder: (context) => const QRViewExample()),
                 // );
                 // **** quét qr xong rồi vào đây ****
-                Navigator.pushNamed(context, '/home/inventory/goods_issue');
+                Navigator.pushNamed(context, Routes.goodsIssueInven);
               },
               // thay đổi lại hình ảnh
-              child: card("assets/return.png", "Goods Issue"),
+              child: card("assets/goods-issue.png", "Goods Issue"),
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(
-                    context, '/home/inventory/inventory_counting');
+                Navigator.pushNamed(context, Routes.inventoryCounting);
               },
               // thay đổi lại hình ảnh
-              child: card("assets/credit-memo.png", "Inventory Counting"),
+              child:
+                  card("assets/inventory-counting.png", "Inventory Counting"),
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(
-                    context, '/home/inventory/inventory_transfer');
+                Navigator.pushNamed(context, Routes.inventoryTransfer);
               },
               // thay đổi lại hình ảnh
-              child: card("assets/credit-memo.png", "Inventory Transfer"),
+              child:
+                  card("assets/inventory-transfer.png", "Inventory Transfer"),
             ),
           ],
         ),
