@@ -1,14 +1,33 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:qr_code/component/button.dart';
-import 'package:qr_code/component/custom_app_bar.dart';
 import 'package:qr_code/component/dropdownbutton.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 
-class UserDetail extends StatelessWidget {
+class UserDetail extends StatefulWidget {
   const UserDetail({super.key});
+
+  @override
+  _UserDetailState createState() => _UserDetailState();
+}
+
+class _UserDetailState extends State<UserDetail> {
+  File? _image;
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,12 +41,37 @@ class UserDetail extends StatelessWidget {
           child: Column(
             children: [
               InkWell(
-                onTap: () {},
-                child: const CircleAvatar(
-                  radius: 50,
-                  backgroundImage: NetworkImage(
-                      'https://example.com/image.jpg'), // Replace with your image
-                ),
+                onTap: _pickImage,
+                child: Stack(children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.transparent,
+                    child: ClipOval(
+                      child: SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: _image != null
+                            ? Image.file(_image!, fit: BoxFit.cover)
+                            : Image.asset(
+                                'assets/avatar-user.png',
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -10,
+                    right: -10,
+                    child: IconButton(
+                      onPressed: _pickImage,
+                      icon: const Icon(
+                        Icons.add_a_photo,
+                        color: Colors.grey,
+                        size: 30,
+                      ),
+                    ),
+                  )
+                ]),
               ),
               buildTextFieldRow(labelText: 'User ID', hintText: 'user_id'),
               buildTextFieldRow(

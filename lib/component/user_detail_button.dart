@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_code/routes/routes.dart';
 
 class UserDetailButton extends StatelessWidget {
   const UserDetailButton({super.key});
@@ -7,9 +8,12 @@ class UserDetailButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: IconButton(
-        icon: const Icon(Icons.person),
+        icon: const Icon(
+          Icons.person,
+          size: 40,
+        ),
         onPressed: () {
-          Navigator.pushNamed(context, "/home/user_detail");
+          Navigator.pushNamed(context, Routes.userDetail);
         },
       ),
     );
