@@ -20,10 +20,10 @@ class Grpo extends StatelessWidget {
     String vendorCode = '';
     String vendorName = '';
     String remake = '';
-    docNo = qrDataMap['Tên Sản phẩm'] ?? '';
-    vendorCode = qrDataMap['Mã Quản lý'] ?? '';
-    vendorName = qrDataMap['Mô tả ngắn'] ?? '';
-    remake = qrDataMap['Thông tin chi tiết'] ?? '';
+    docNo = qrDataMap['Mã QL'] ?? '';
+    vendorCode = qrDataMap['Liên hệ'] ?? '';
+    vendorName = qrDataMap['Mã vạch'] ?? '';
+    remake = qrDataMap['Thông tin thêm Sản phẩm'] ?? '';
     return Scaffold(
         appBar: const HeaderApp(title: "GRPO"),
         body: Container(
