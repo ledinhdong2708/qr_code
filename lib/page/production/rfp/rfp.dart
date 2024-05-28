@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/dropdownbutton.dart';
+import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
@@ -13,11 +14,7 @@ class Rfp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text("Receipt from Production"),
-          backgroundColor: bgColor,
-        ),
+        appBar: const HeaderApp(title: "Receipt from Production"),
         body: Container(
           color: bgColor,
           width: double.infinity,

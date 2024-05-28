@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/dropdownbutton.dart';
+import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
@@ -12,11 +13,7 @@ class GoodsReceipt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text("Goods Receipt - Pro"),
-          backgroundColor: bgColor,
-        ),
+        appBar: const HeaderApp(title: "Goods Receipt - Pro"),
         body: Container(
           color: bgColor,
           width: double.infinity,

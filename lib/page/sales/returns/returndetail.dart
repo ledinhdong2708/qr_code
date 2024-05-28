@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
+import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/qr_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
@@ -14,11 +15,7 @@ class ReturnDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController _controller = TextEditingController();
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text("Return - Detail"),
-          backgroundColor: bgColor,
-        ),
+        appBar: const HeaderApp(title: "Return - Detail"),
         body: Container(
           color: bgColor,
           width: double.infinity,

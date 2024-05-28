@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/page/qr_view_example.dart';
 import 'package:qr_code/routes/routes.dart';
@@ -8,11 +9,7 @@ class Sales extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Sales A/P"),
-        backgroundColor: bgColor,
-      ),
+      appBar: const HeaderApp(title: "Sales A/P"),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
         color: bgColor,
