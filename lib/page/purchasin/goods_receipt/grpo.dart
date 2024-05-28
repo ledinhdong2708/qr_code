@@ -24,6 +24,7 @@ class Grpo extends StatelessWidget {
     vendorCode = qrDataMap['Liên hệ'] ?? '';
     vendorName = qrDataMap['Mã vạch'] ?? '';
     remake = qrDataMap['Thông tin thêm Sản phẩm'] ?? '';
+    print("$qrDataMap , $docNo,  $vendorCode,  $vendorName,  $remake");
     return Scaffold(
         appBar: const HeaderApp(title: "GRPO"),
         body: Container(
