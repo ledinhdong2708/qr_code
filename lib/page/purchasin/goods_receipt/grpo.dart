@@ -16,6 +16,14 @@ class Grpo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> qrDataMap = parseQrData(qrData);
+    String docNo = '';
+    String vendorCode = '';
+    String vendorName = '';
+    String remake = '';
+    docNo = qrDataMap['Tên Sản phẩm'] ?? '';
+    vendorCode = qrDataMap['Mã Quản lý'] ?? '';
+    vendorName = qrDataMap['Mô tả ngắn'] ?? '';
+    remake = qrDataMap['Thông tin chi tiết'] ?? '';
     return Scaffold(
         appBar: const HeaderApp(title: "GRPO"),
         body: Container(
@@ -26,17 +34,28 @@ class Grpo extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                buildTextFieldRow(labelText: 'Doc No.', hintText: 'Doc No.'),
+                buildTextFieldRow(
+                  labelText: 'Doc No.',
+                  hintText: 'Doc No.',
+                  valueQR: docNo,
+                ),
                 const DateInput(),
                 buildTextFieldRow(
-                    labelText: 'Vendor Code', hintText: 'Vendor Code'),
+                  labelText: 'Vendor Code',
+                  hintText: 'Vendor Code',
+                  valueQR: vendorCode,
+                ),
                 buildTextFieldRow(
-                    labelText: 'Vendor Name', hintText: 'Vendor Name'),
+                  labelText: 'Vendor Name',
+                  hintText: 'Vendor Name',
+                  valueQR: vendorName,
+                ),
                 buildTextFieldRow(
                   labelText: 'Remake',
                   isEnable: true,
                   hintText: 'Remake here',
                   icon: Icons.edit,
+                  valueQR: remake,
                 ),
                 // list item ở đây
                 // **** nút vào xem good-return details trong list item bấm vào dấu ... dọc ****

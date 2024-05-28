@@ -5,6 +5,7 @@ Row buildTextFieldRow({
   String labelText = 'Default Text',
   bool isEnable = false,
   String hintText = 'Default Hint Text',
+  String? valueQR,
   final IconData? icon,
 }) {
   Color? fillColor = isEnable ? fieldInput : readInput;
@@ -24,17 +25,19 @@ Row buildTextFieldRow({
           height: 45,
           margin: const EdgeInsets.all(10),
           child: TextField(
-              enabled: isEnable,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: hintText,
-                hintStyle: isEnable
-                    ? const TextStyle(color: fieldInputText)
-                    : const TextStyle(color: readInputText),
-                fillColor: fillColor,
-                filled: true,
-                suffixIcon: isEnable ? Icon(icon) : null,
-              )),
+            enabled: isEnable,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: hintText,
+              hintStyle: isEnable
+                  ? const TextStyle(color: fieldInputText)
+                  : const TextStyle(color: readInputText),
+              fillColor: fillColor,
+              filled: true,
+              suffixIcon: isEnable ? Icon(icon) : null,
+            ),
+            controller: TextEditingController(text: valueQR),
+          ),
         ),
       ),
     ],

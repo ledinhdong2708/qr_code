@@ -112,7 +112,6 @@ class _QRViewExampleState extends State<QRViewExample> {
         MaterialPageRoute(builder: (context) => InventoryTrans(qrData: qrData)),
       );
     }
-    // Thêm các điều kiện cho các trang khác nếu cần
   }
 
   @override
