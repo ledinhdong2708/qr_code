@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
-import 'package:qr_code/page/result_screen.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-class QRViewExample extends StatefulWidget {
-  // tạo mã định danh cho trang
-  final String pageIdentifier;
-  const QRViewExample({super.key, required this.pageIdentifier});
-
+class QRCodeForInput extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _QRViewExampleState();
+  State<StatefulWidget> createState() => _QRCodeInputState();
 }
 
-class _QRViewExampleState extends State<QRViewExample> {
+class _QRCodeInputState extends State<QRCodeForInput> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -45,19 +39,10 @@ class _QRViewExampleState extends State<QRViewExample> {
           result = scanData;
         });
 
-        navigateToPage(widget.pageIdentifier, scanData.code!);
+        // Điều này sẽ gửi kết quả của mã QR đến nơi cần xử lý, chẳng hạn như lớp cha.
+        Navigator.pop(context, scanData.code);
       }
     });
-  }
-
-  void navigateToPage(String pageIdentifier, String qrData) {
-    if (pageIdentifier == 'GRPO') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Grpo(qrData: qrData)),
-      );
-    }
-    // Thêm các điều kiện cho các trang khác nếu cần
   }
 
   @override

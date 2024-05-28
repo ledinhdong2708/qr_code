@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/constants/colors.dart';
+import 'package:qr_code/page/qr_code_input.dart';
 import 'package:qr_code/page/qr_view_example.dart';
 
 class QRCodeInput extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
 
-  QRCodeInput({required this.controller, required this.labelText});
+  QRCodeInput({
+    required this.controller,
+    required this.labelText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +43,14 @@ class QRCodeInput extends StatelessWidget {
             Icons.qr_code,
             size: 30,
           ),
-          onPressed: () {
-            Navigator.push(
+          onPressed: () async {
+            final qrData = await Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const QRViewExample()),
+              MaterialPageRoute(builder: (context) => QRCodeForInput()),
             );
+            if (qrData != null) {
+              controller.text = qrData;
+            }
           },
         ),
       ],

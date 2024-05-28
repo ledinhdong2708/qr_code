@@ -19,12 +19,14 @@ class Purchasing extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const QRViewExample()),
-                // );
-                Navigator.pushNamed(context, Routes.grpo);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QRViewExample(
+                            pageIdentifier: 'GRPO',
+                          )),
+                );
+                // Navigator.pushNamed(context, Routes.grpo);
               },
               child: card("assets/receipt.png", "Goods Receipt PO"),
             ),

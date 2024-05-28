@@ -46,13 +46,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
+      onGenerateRoute: Routes.generateRoute,
       routes: {
         Routes.login: (context) => const Login(),
         Routes.home: (context) => const Home(),
         Routes.userDetail: (context) => const UserDetail(),
         // purchasing
         Routes.purchasing: (context) => const Purchasing(),
-        Routes.grpo: (context) => const Grpo(),
         Routes.grpoDetail: (context) => const GrpoDetail(),
         Routes.grpoLabels: (context) => const GrpoLabels(),
         Routes.goodsReturn: (context) => const GoodsReturn(),

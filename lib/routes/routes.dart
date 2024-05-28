@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
+
 class Routes {
   static const String login = '/';
   static const String home = '/home';
@@ -46,4 +49,23 @@ class Routes {
   static const String rfpLabels = '/home/production/rfp/rfp_labels';
   static const String goodsReceipt = '/home/production/goods_receipt';
   static const String goodsIssue = '/home/production/goods_issue';
+
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case grpo:
+        final qrData = settings.arguments as String; // Lấy qrData từ arguments
+        return MaterialPageRoute(
+          builder: (context) => Grpo(qrData: qrData),
+        );
+      // Định nghĩa các route khác tại đây
+      default:
+        return MaterialPageRoute(
+          builder: (context) => Scaffold(
+            body: Center(
+              child: Text('No route defined for ${settings.name}'),
+            ),
+          ),
+        );
+    }
+  }
 }
