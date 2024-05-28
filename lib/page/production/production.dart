@@ -19,26 +19,26 @@ class Production extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const QRViewExample()),
-                // );
-                Navigator.pushNamed(context, Routes.ifp);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QRViewExample(
+                            pageIdentifier: 'ifp',
+                          )),
+                );
               },
               // thay đổi lại hình ảnh
               child: card("assets/ifp.png", "Issue for Production"),
             ),
             InkWell(
               onTap: () {
-                // **** mở ra khi test xong UI của good return khi quét qr code ****
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const QRViewExample()),
-                // );
-                // **** quét qr xong rồi vào đây ****
-                Navigator.pushNamed(context, Routes.rfp);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QRViewExample(
+                            pageIdentifier: 'rfp',
+                          )),
+                );
               },
               // thay đổi lại hình ảnh
               child: card("assets/rfp.png", "Receipt from Production"),

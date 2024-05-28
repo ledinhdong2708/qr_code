@@ -55,18 +55,13 @@ class MyApp extends StatelessWidget {
         Routes.purchasing: (context) => const Purchasing(),
         Routes.grpoDetail: (context) => const GrpoDetail(),
         Routes.grpoLabels: (context) => const GrpoLabels(),
-        Routes.goodsReturn: (context) => const GoodsReturn(),
         Routes.goodsReturnDetail: (context) => const GoodsReturnDetail(),
-        Routes.apCreditMemo: (context) => const ApCreditMemo(),
         Routes.apCreditMemoDetail: (context) => const ApCreditmemoDetail(),
         //sales
         Routes.sales: (context) => const Sales(),
-        Routes.delivery: (context) => const Delivery(),
         Routes.deliveryDetail: (context) => const DeliveryDetail(),
-        Routes.returns: (context) => const Return(),
         Routes.returnDetail: (context) => const ReturnDetail(),
         Routes.returnLabels: (context) => const ReturnLabels(),
-        Routes.arCreditMemo: (context) => const ARCreditMemo(),
         Routes.arCreditMemoDetail: (context) => const ARCreditmemoDetail(),
         Routes.arCreditMemoLabels: (context) => const ArCreditmemoLabel(),
         //inventory
@@ -75,14 +70,10 @@ class MyApp extends StatelessWidget {
         Routes.goodsReceiptLabelsInven: (context) =>
             const GoodsReceiptLabelsIven(),
         Routes.goodsIssueInven: (context) => const GoodsIssueInven(),
-        Routes.inventoryCounting: (context) => const InventoryCounting(),
-        Routes.inventoryTransfer: (context) => const InventoryTrans(),
         Routes.inventoryTransferLabels: (context) =>
             const InventoryTransferLabels(),
         //production
         Routes.production: (context) => const Production(),
-        Routes.ifp: (context) => const Ifp(),
-        Routes.rfp: (context) => const Rfp(),
         Routes.rfpLabels: (context) => const RfpLabel(),
         Routes.goodsIssue: (context) => const GoodsIssue(),
         Routes.goodsReceipt: (context) => const GoodsReceipt(),

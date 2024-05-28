@@ -19,31 +19,37 @@ class Sales extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const QRViewExample()),
-                // );
-                Navigator.pushNamed(context, Routes.delivery);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QRViewExample(
+                            pageIdentifier: 'Delivery',
+                          )),
+                );
               },
               child: card("assets/delivery.png", "Delivery"),
             ),
             InkWell(
               onTap: () {
-                // **** mở ra khi test xong UI của good return khi quét qr code ****
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const QRViewExample()),
-                // );
-                // **** quét qr xong rồi vào đây ****
-                Navigator.pushNamed(context, Routes.returns);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QRViewExample(
+                            pageIdentifier: 'Return',
+                          )),
+                );
               },
               child: card("assets/return.png", "Return"),
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, Routes.arCreditMemo);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QRViewExample(
+                            pageIdentifier: 'ARCreditMemo',
+                          )),
+                );
               },
               child: card("assets/credit-memo.png", "A/R Credit Memo"),
             ),

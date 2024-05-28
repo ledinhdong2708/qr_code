@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:qr_code/page/inventory/goodsreceipt/goods_receipt.dart';
+import 'package:qr_code/page/inventory/inventorycounting/inventory_counting.dart';
+import 'package:qr_code/page/inventory/inventorytransfer/inventory_transfer.dart';
+import 'package:qr_code/page/production/ifp/ifp.dart';
+import 'package:qr_code/page/production/rfp/rfp.dart';
+import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
+import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
+import 'package:qr_code/page/sales/creditmemo/ar_creditmemo.dart';
+import 'package:qr_code/page/sales/delivery/delivery.dart';
+import 'package:qr_code/page/sales/returns/return.dart';
 
 class Routes {
   static const String login = '/';
@@ -52,10 +62,59 @@ class Routes {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      //purchasing
       case grpo:
         final qrData = settings.arguments as String; // Lấy qrData từ arguments
         return MaterialPageRoute(
           builder: (context) => Grpo(qrData: qrData),
+        );
+      case goodsReturn:
+        final qrData = settings.arguments as String; // Lấy qrData từ arguments
+        return MaterialPageRoute(
+          builder: (context) => GoodsReturn(qrData: qrData),
+        );
+      case apCreditMemo:
+        final qrData = settings.arguments as String; // Lấy qrData từ arguments
+        return MaterialPageRoute(
+          builder: (context) => ApCreditMemo(qrData: qrData),
+        );
+      // sales
+      case delivery:
+        final qrData = settings.arguments as String; // Lấy qrData từ arguments
+        return MaterialPageRoute(
+          builder: (context) => Delivery(qrData: qrData),
+        );
+      case returns:
+        final qrData = settings.arguments as String; // Lấy qrData từ arguments
+        return MaterialPageRoute(
+          builder: (context) => Return(qrData: qrData),
+        );
+      case arCreditMemo:
+        final qrData = settings.arguments as String; // Lấy qrData từ arguments
+        return MaterialPageRoute(
+          builder: (context) => ARCreditMemo(qrData: qrData),
+        );
+      //production
+      case ifp:
+        final qrData = settings.arguments as String; // Lấy qrData từ arguments
+        return MaterialPageRoute(
+          builder: (context) => Ifp(qrData: qrData),
+        );
+      case rfp:
+        final qrData = settings.arguments as String; // Lấy qrData từ arguments
+        return MaterialPageRoute(
+          builder: (context) => Rfp(qrData: qrData),
+        );
+      //inventory
+      case inventoryCounting:
+        final qrData = settings.arguments as String; // Lấy qrData từ arguments
+        return MaterialPageRoute(
+          builder: (context) => InventoryCounting(qrData: qrData),
+        );
+      case inventoryTransfer:
+        final qrData = settings.arguments as String; // Lấy qrData từ arguments
+        return MaterialPageRoute(
+          builder: (context) => InventoryTrans(qrData: qrData),
         );
       // Định nghĩa các route khác tại đây
       default:

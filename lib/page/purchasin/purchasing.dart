@@ -26,26 +26,30 @@ class Purchasing extends StatelessWidget {
                             pageIdentifier: 'GRPO',
                           )),
                 );
-                // Navigator.pushNamed(context, Routes.grpo);
               },
               child: card("assets/receipt.png", "Goods Receipt PO"),
             ),
             InkWell(
               onTap: () {
-                // **** mở ra khi test xong UI của good return khi quét qr code ****
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const QRViewExample()),
-                // );
-                // **** quét qr xong rồi vào đây ****
-                Navigator.pushNamed(context, Routes.goodsReturn);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QRViewExample(
+                            pageIdentifier: 'GoodsReturn',
+                          )),
+                );
               },
               child: card("assets/return.png", "Goods Return"),
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, Routes.apCreditMemo);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QRViewExample(
+                            pageIdentifier: 'APCreditMemo',
+                          )),
+                );
               },
               child: card("assets/credit-memo.png", "A/P Credit Memo"),
             ),

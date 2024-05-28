@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
@@ -8,10 +10,12 @@ import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/routes/routes.dart';
 
 class ApCreditMemo extends StatelessWidget {
-  const ApCreditMemo({super.key});
+  final String qrData;
+  const ApCreditMemo({super.key, required this.qrData});
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> qrDataMap = parseQrData(qrData);
     return Scaffold(
         appBar: const HeaderApp(title: "A/P Credit Memo"),
         body: Container(
@@ -57,5 +61,15 @@ class ApCreditMemo extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  Map<String, dynamic> parseQrData(String qrData) {
+    try {
+      return jsonDecode(qrData);
+    } catch (e) {
+      // Xử lý lỗi nếu qrData không phải là chuỗi JSON hợp lệ
+      print('Lỗi khi phân tích cú pháp qrData: $e');
+      return {};
+    }
   }
 }

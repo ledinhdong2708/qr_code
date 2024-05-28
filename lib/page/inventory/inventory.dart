@@ -19,11 +19,6 @@ class Inventory extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const QRViewExample()),
-                // );
                 Navigator.pushNamed(context, Routes.goodsReceiptInven);
               },
               // thay đổi lại hình ảnh
@@ -31,13 +26,6 @@ class Inventory extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                // **** mở ra khi test xong UI của good return khi quét qr code ****
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const QRViewExample()),
-                // );
-                // **** quét qr xong rồi vào đây ****
                 Navigator.pushNamed(context, Routes.goodsIssueInven);
               },
               // thay đổi lại hình ảnh
@@ -45,7 +33,13 @@ class Inventory extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, Routes.inventoryCounting);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QRViewExample(
+                            pageIdentifier: 'IventoryCounting',
+                          )),
+                );
               },
               // thay đổi lại hình ảnh
               child:
@@ -53,7 +47,13 @@ class Inventory extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, Routes.inventoryTransfer);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QRViewExample(
+                            pageIdentifier: 'IventoryTrans',
+                          )),
+                );
               },
               // thay đổi lại hình ảnh
               child:
