@@ -11,19 +11,15 @@ import 'package:qr_code/routes/routes.dart';
 
 class Grpo extends StatelessWidget {
   final String qrData;
-  const Grpo({super.key, required this.qrData});
+  final Map<String, dynamic> qrDataMap;
+  Grpo({super.key, required this.qrData}) : qrDataMap = parseQrData(qrData);
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> qrDataMap = parseQrData(qrData);
-    String docNo = '';
-    String vendorCode = '';
-    String vendorName = '';
-    String remake = '';
-    docNo = qrDataMap['Mã QL'] ?? '';
-    vendorCode = qrDataMap['Liên hệ'] ?? '';
-    vendorName = qrDataMap['Mã vạch'] ?? '';
-    remake = qrDataMap['Thông tin thêm Sản phẩm'] ?? '';
+    String docNo = qrDataMap['Mã QL'] ?? '';
+    String vendorCode = qrDataMap['Liên hệ'] ?? '';
+    String vendorName = qrDataMap['Mã vạch'] ?? '';
+    String remake = qrDataMap['Thông tin thêm Sản phẩm'] ?? '';
     print("$qrDataMap , $docNo,  $vendorCode,  $vendorName,  $remake");
     return Scaffold(
         appBar: const HeaderApp(title: "GRPO"),
@@ -90,7 +86,7 @@ class Grpo extends StatelessWidget {
         ));
   }
 
-  Map<String, dynamic> parseQrData(String qrData) {
+  static Map<String, dynamic> parseQrData(String qrData) {
     try {
       return jsonDecode(qrData);
     } catch (e) {
