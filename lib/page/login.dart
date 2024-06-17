@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_code/component/button.dart';
@@ -61,23 +62,18 @@ class _LoginState extends State<Login> {
           Routes.home,
         );
       } else {
-        CustomNotificationDialog(
-          message: "Sai mật khẩu hoặc tài khoản",
-          type: "error",
-        );
+        CustomDialog.showDialog(
+            context, 'Sai mật khẩu hoặc tài khoản', 'error');
       }
     } catch (e) {
-      CustomNotificationDialog(
-        message: "Đã xảy ra lỗi. Vui lòng thử lại.",
-        type: "warning",
-      );
+      CustomDialog.showDialog(
+          context, 'Đã xảy ra lỗi. Vui lòng thử lại', 'warning');
     } finally {
       setState(() {
         _isLoading = false;
       });
     }
   }
-
   // void _showErrorDialog(String message) {
   //   showDialog(
   //     context: context,

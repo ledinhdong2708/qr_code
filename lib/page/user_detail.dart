@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code/component/button.dart';
@@ -118,22 +119,10 @@ class _UserDetailState extends State<UserDetail> {
     );
 
     if (response.statusCode == 200) {
-      showCustomDialog(context, 'Cập nhật thành công', 'success');
+      CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
     } else {
-      showCustomDialog(context, 'Cập nhật thất bại', 'error');
+      CustomDialog.showDialog(context, 'Cập nhật thất bại!', "error");
     }
-  }
-
-  void showCustomDialog(BuildContext context, String message, String type) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CustomNotificationDialog(
-          message: message,
-          type: type,
-        );
-      },
-    );
   }
 
   @override

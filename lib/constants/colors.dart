@@ -9,3 +9,4 @@ const Color readInputText = Color(0xFF999999);
 const Color successColor = Color(0xff04FC04);
 const Color errorColor = Color(0xffDE181D);
 const Color warningColor = Color(0xffEC8011);
+const Color inforColor = Color(0xff21B7EC);
