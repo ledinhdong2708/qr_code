@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/custom_app_bar.dart';
+import 'package:qr_code/component/dialog.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/constants/urlAPI.dart';
 import 'package:qr_code/page/home.dart';
+import 'package:qr_code/routes/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
@@ -54,15 +56,21 @@ class _LoginState extends State<Login> {
         //token
         final token = data['token'];
         await prefs.setString('token', token);
-        Navigator.pushReplacement(
+        Navigator.popAndPushNamed(
           context,
-          MaterialPageRoute(builder: (context) => const Home()),
+          Routes.home,
         );
       } else {
-        _showErrorDialog("Sai mật khẩu hoặc tài khoản");
+        CustomNotificationDialog(
+          message: "Sai mật khẩu hoặc tài khoản",
+          type: "error",
+        );
       }
     } catch (e) {
-      _showErrorDialog("Đã xảy ra lỗi. Vui lòng thử lại.");
+      CustomNotificationDialog(
+        message: "Đã xảy ra lỗi. Vui lòng thử lại.",
+        type: "warning",
+      );
     } finally {
       setState(() {
         _isLoading = false;
@@ -70,25 +78,25 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Đăng nhập thất bại!"),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              child: const Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showErrorDialog(String message) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text("Đăng nhập thất bại!"),
+  //         content: Text(message),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             child: const Text("OK"),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

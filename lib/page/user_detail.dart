@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code/component/button.dart';
+import 'package:qr_code/component/dialog.dart';
 import 'package:qr_code/component/dropdownbutton.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
@@ -51,7 +52,7 @@ class _UserDetailState extends State<UserDetail> {
       final response = await http.get(Uri.parse('$apiUser/$userId'));
 
       if (response != null) {
-        final data = jsonDecode(response.body)['data'];
+        final data = jsonDecode(utf8.decode(response.bodyBytes))['data'];
         setState(() {
           _userData = data;
           _usernameController.text = _userData!['username'];
@@ -91,6 +92,48 @@ class _UserDetailState extends State<UserDetail> {
     await prefs.remove('token');
     await prefs.remove('userId');
     Navigator.popAndPushNamed(context, Routes.login);
+  }
+
+  Future<void> updateUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getInt('userId');
+    final String apiUrl = '$apiUser/$userId';
+
+    final user = UpdateUserData(
+      firstname: _firstNameController.text,
+      lastname: _lastNameController.text,
+      phone: _phoneController.text,
+      position: _positionController.text,
+      address: _addressController.text,
+      email: _emailController.text,
+      // department: dropdownValue,
+    );
+
+    final response = await http.put(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(user.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      showCustomDialog(context, 'Cập nhật thành công', 'success');
+    } else {
+      showCustomDialog(context, 'Cập nhật thất bại', 'error');
+    }
+  }
+
+  void showCustomDialog(BuildContext context, String message, String type) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomNotificationDialog(
+          message: message,
+          type: type,
+        );
+      },
+    );
   }
 
   @override
@@ -207,7 +250,9 @@ class _UserDetailState extends State<UserDetail> {
                         children: [
                           CustomButton(
                             text: 'Update',
-                            onPressed: () {},
+                            onPressed: () {
+                              updateUser();
+                            },
                           ),
                           CustomButton(
                             text: 'logout',
@@ -223,5 +268,40 @@ class _UserDetailState extends State<UserDetail> {
               ),
             ),
     );
+  }
+}
+
+class UpdateUserData {
+  final String? avatar;
+  final String firstname;
+  final String lastname;
+  final String phone;
+  final String position;
+  final String address;
+  final String email;
+  // final String department;
+
+  UpdateUserData({
+    this.avatar,
+    required this.firstname,
+    required this.lastname,
+    required this.phone,
+    required this.position,
+    required this.address,
+    required this.email,
+    // required this.department,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'avatar': avatar,
+      'firstname': firstname,
+      'lastname': lastname,
+      'phone': phone,
+      'position': position,
+      'address': address,
+      'email': email,
+      // 'department': department,
+    };
   }
 }
