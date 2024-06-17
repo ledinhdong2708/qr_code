@@ -5,6 +5,7 @@ import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/custom_app_bar.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/constants/urlAPI.dart';
 import 'package:qr_code/page/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,9 +32,7 @@ class _LoginState extends State<Login> {
           'password': password,
         })}');
     try {
-      const url = 'http://10.0.2.2:1600/api/v1/login';
-
-      final uri = Uri.parse(url);
+      final uri = Uri.parse(apilogin);
       final body = jsonEncode(<String, String>{
         'username': username,
         'password': password,
@@ -46,24 +45,24 @@ class _LoginState extends State<Login> {
         body: body,
       );
       if (response.statusCode == 200) {
-        print('dung');
         final data = jsonDecode(response.body);
-        // final token = data['token'];
-        // print('Token: $token');
-        // // Save token securely
-        // final prefs = await SharedPreferences.getInstance();
-        // await prefs.setString('token', token);
-        // print('Token saved');
         // Navigate to the Home page
+        final userId = data['userId']; // Lấy ID người dùng từ response
+        // Lưu token và ID người dùng vào shared preferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('userId', userId);
+        //token
+        final token = data['token'];
+        await prefs.setString('token', token);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Home()),
         );
       } else {
-        _showErrorDialog("Invalid username or password");
+        _showErrorDialog("Sai mật khẩu hoặc tài khoản");
       }
     } catch (e) {
-      _showErrorDialog("An error occurred. Please try again.");
+      _showErrorDialog("Đã xảy ra lỗi. Vui lòng thử lại.");
     } finally {
       setState(() {
         _isLoading = false;
@@ -76,7 +75,7 @@ class _LoginState extends State<Login> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Login Failed"),
+          title: const Text("Đăng nhập thất bại!"),
           content: Text(message),
           actions: <Widget>[
             TextButton(

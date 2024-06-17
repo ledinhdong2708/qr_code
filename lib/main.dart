@@ -35,6 +35,7 @@ import 'package:qr_code/page/sales/returns/returnlabel.dart';
 import 'package:qr_code/page/sales/sales.dart';
 import 'package:qr_code/page/user_detail.dart';
 import 'package:qr_code/routes/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(
@@ -45,49 +46,78 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late Future<String?> _tokenFuture;
+  @override
+  void initState() {
+    super.initState();
+    _tokenFuture = _getToken();
+  }
+
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // ignore: deprecated_member_use
-      useInheritedMediaQuery: true,
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      onGenerateRoute: Routes.generateRoute,
-      routes: {
-        Routes.login: (context) => const Login(),
-        Routes.home: (context) => const Home(),
-        Routes.userDetail: (context) => const UserDetail(),
-        // purchasing
-        Routes.purchasing: (context) => const Purchasing(),
-        Routes.grpoDetail: (context) => const GrpoDetail(),
-        Routes.grpoLabels: (context) => const GrpoLabels(),
-        Routes.goodsReturnDetail: (context) => const GoodsReturnDetail(),
-        Routes.apCreditMemoDetail: (context) => const ApCreditmemoDetail(),
-        //sales
-        Routes.sales: (context) => const Sales(),
-        Routes.deliveryDetail: (context) => const DeliveryDetail(),
-        Routes.returnDetail: (context) => const ReturnDetail(),
-        Routes.returnLabels: (context) => const ReturnLabels(),
-        Routes.arCreditMemoDetail: (context) => const ARCreditmemoDetail(),
-        Routes.arCreditMemoLabels: (context) => const ArCreditmemoLabel(),
-        //inventory
-        Routes.inventory: (context) => const Inventory(),
-        Routes.goodsReceiptInven: (context) => const GoodsReceiptIven(),
-        Routes.goodsReceiptLabelsInven: (context) =>
-            const GoodsReceiptLabelsIven(),
-        Routes.goodsIssueInven: (context) => const GoodsIssueInven(),
-        Routes.inventoryTransferLabels: (context) =>
-            const InventoryTransferLabels(),
-        //production
-        Routes.production: (context) => const Production(),
-        Routes.rfpLabels: (context) => const RfpLabel(),
-        Routes.goodsIssue: (context) => const GoodsIssue(),
-        Routes.goodsReceipt: (context) => const GoodsReceipt(),
+    return FutureBuilder<String?>(
+      future: _tokenFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else {
+          final token = snapshot.data;
+          return MaterialApp(
+            // ignore: deprecated_member_use
+            useInheritedMediaQuery: true,
+            locale: DevicePreview.locale(context),
+            builder: DevicePreview.appBuilder,
+            debugShowCheckedModeBanner: false,
+            initialRoute: token != null ? Routes.home : Routes.login,
+            onGenerateRoute: Routes.generateRoute,
+            routes: {
+              Routes.login: (context) => const Login(),
+              Routes.home: (context) => const Home(),
+              Routes.userDetail: (context) => const UserDetail(),
+              // purchasing
+              Routes.purchasing: (context) => const Purchasing(),
+              Routes.grpoDetail: (context) => const GrpoDetail(),
+              Routes.grpoLabels: (context) => const GrpoLabels(),
+              Routes.goodsReturnDetail: (context) => const GoodsReturnDetail(),
+              Routes.apCreditMemoDetail: (context) =>
+                  const ApCreditmemoDetail(),
+              //sales
+              Routes.sales: (context) => const Sales(),
+              Routes.deliveryDetail: (context) => const DeliveryDetail(),
+              Routes.returnDetail: (context) => const ReturnDetail(),
+              Routes.returnLabels: (context) => const ReturnLabels(),
+              Routes.arCreditMemoDetail: (context) =>
+                  const ARCreditmemoDetail(),
+              Routes.arCreditMemoLabels: (context) => const ArCreditmemoLabel(),
+              //inventory
+              Routes.inventory: (context) => const Inventory(),
+              Routes.goodsReceiptInven: (context) => const GoodsReceiptIven(),
+              Routes.goodsReceiptLabelsInven: (context) =>
+                  const GoodsReceiptLabelsIven(),
+              Routes.goodsIssueInven: (context) => const GoodsIssueInven(),
+              Routes.inventoryTransferLabels: (context) =>
+                  const InventoryTransferLabels(),
+              //production
+              Routes.production: (context) => const Production(),
+              Routes.rfpLabels: (context) => const RfpLabel(),
+              Routes.goodsIssue: (context) => const GoodsIssue(),
+              Routes.goodsReceipt: (context) => const GoodsReceipt(),
+            },
+          );
+        }
       },
     );
   }

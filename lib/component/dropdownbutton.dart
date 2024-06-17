@@ -5,11 +5,13 @@ class Dropdownbutton extends StatefulWidget {
   final List<String> items;
   final String? hintText;
   final String? labelText;
+  final String? databaseText;
   Dropdownbutton(
       {super.key,
       required this.items,
       required this.hintText,
-      required this.labelText});
+      required this.labelText,
+      this.databaseText});
 
   @override
   State<Dropdownbutton> createState() => _DropdownbuttonState();
@@ -62,9 +64,15 @@ class _DropdownbuttonState extends State<Dropdownbutton> {
                 });
               },
               items: widget.items.map((String value) {
+                String displayValue = value;
+                // Check if there's any special condition to modify the item display
+                if (widget.databaseText != null &&
+                    widget.databaseText == value) {
+                  displayValue = widget.databaseText!;
+                }
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Text(displayValue),
                 );
               }).toList(),
             ),
