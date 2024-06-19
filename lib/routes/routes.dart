@@ -62,11 +62,12 @@ class Routes {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      //purchasing
       case grpo:
         final qrData = settings.arguments as String; // Lấy qrData từ arguments
         return MaterialPageRoute(
-          builder: (context) => Grpo(qrData: qrData),
+          builder: (context) => Grpo(
+            qrData: qrData,
+          ),
         );
       case goodsReturn:
         final qrData = settings.arguments as String; // Lấy qrData từ arguments
