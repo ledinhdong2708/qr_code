@@ -7,6 +7,7 @@ Row buildTextFieldRow({
   String hintText = 'Default Hint Text',
   String? valueQR,
   final IconData? icon,
+  TextEditingController? controller,
 }) {
   Color? fillColor = isEnable ? fieldInput : readInput;
   return Row(
@@ -36,7 +37,7 @@ Row buildTextFieldRow({
               filled: true,
               suffixIcon: isEnable ? Icon(icon) : null,
             ),
-            controller: TextEditingController(text: valueQR),
+            controller: controller ?? TextEditingController(text: valueQR),
           ),
         ),
       ),
