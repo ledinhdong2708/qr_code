@@ -8,6 +8,7 @@ import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/dialog.dart';
 import 'package:qr_code/component/dropdownbutton.dart';
 import 'package:qr_code/component/header_app.dart';
+import 'package:qr_code/component/loading.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
@@ -125,7 +126,11 @@ class _UserDetailState extends State<UserDetail> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
     await prefs.remove('userId');
-    Navigator.popAndPushNamed(context, Routes.login);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const Login()),
+      (route) => false,
+    );
   }
 
   Future<void> _pickImage() async {
@@ -181,9 +186,9 @@ class _UserDetailState extends State<UserDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderApp(title: 'User Detail'),
+      appBar: _isLoading ? null : const HeaderApp(title: 'User Detail'),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? CustomLoading()
           : Container(
               color: bgColor,
               width: double.infinity,

@@ -1,6 +1,8 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:qr_code/component/loading.dart';
 import 'package:qr_code/page/inventory/goodsissue/goods_issue.dart';
 import 'package:qr_code/page/inventory/goodsreceipt/goods_receipt.dart';
 import 'package:qr_code/page/inventory/goodsreceipt/goods_receipt_labels.dart';
@@ -72,7 +74,7 @@ class _MyAppState extends State<MyApp> {
       future: _tokenFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return CustomLoading();
         } else {
           final token = snapshot.data;
           return MaterialApp(

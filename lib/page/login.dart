@@ -30,10 +30,10 @@ class _LoginState extends State<Login> {
     setState(() {
       _isLoading = true;
     });
-    print('Request body: ${jsonEncode(<String, String>{
-          'username': username,
-          'password': password,
-        })}');
+    // print('Request body: ${jsonEncode(<String, String>{
+    //       'username': username,
+    //       'password': password,
+    //     })}');
     try {
       final uri = Uri.parse(apilogin);
       final body = jsonEncode(<String, String>{
@@ -57,6 +57,7 @@ class _LoginState extends State<Login> {
         //token
         final token = data['token'];
         await prefs.setString('token', token);
+        await prefs.setString('login', 'success');
         Navigator.popAndPushNamed(
           context,
           Routes.home,
@@ -74,25 +75,6 @@ class _LoginState extends State<Login> {
       });
     }
   }
-  // void _showErrorDialog(String message) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: const Text("Đăng nhập thất bại!"),
-  //         content: Text(message),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: const Text("OK"),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
