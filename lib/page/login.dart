@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/custom_app_bar.dart';
 import 'package:qr_code/component/dialog.dart';
+import 'package:qr_code/component/loading.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/constants/urlAPI.dart';
@@ -20,10 +21,17 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  @override
+  void initState() {
+    super.initState();
+    _resetLogoutStatus();
+  }
+
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+
   Future<void> _login() async {
     final String username = _usernameController.text;
     final String password = _passwordController.text;
@@ -65,10 +73,11 @@ class _LoginState extends State<Login> {
       } else {
         CustomDialog.showDialog(
             context, 'Sai mật khẩu hoặc tài khoản', 'error');
+        _isLoading = true;
       }
     } catch (e) {
       CustomDialog.showDialog(
-          context, 'Đã xảy ra lỗi. Vui lòng thử lại', 'warning');
+          context, 'Đã xảy ra lỗi. \n Vui lòng thử lại', 'warning');
     } finally {
       setState(() {
         _isLoading = false;
@@ -76,48 +85,62 @@ class _LoginState extends State<Login> {
     }
   }
 
+  Future<void> _resetLogoutStatus() async {
+    // Reset login status
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final checkLogin = prefs.getString('logout');
+    if (checkLogin == 'success') {
+      CustomDialog.showDialog(context, 'Đăng xuất thành công', 'success');
+    }
+    // Wait for 1 second
+    await Future.delayed(const Duration(seconds: 1));
+    await prefs.setString('logout', '');
+  }
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: const CustomAppBar(),
-      body: Container(
-        color: bgColor,
-        padding: AppStyles.paddingContainer,
-        child: Center(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    'assets/loginbackground.jpg',
-                    width: double.infinity,
-                    height: height / 2,
+      appBar: _isLoading ? null : const CustomAppBar(),
+      body: _isLoading
+          ? CustomLoading()
+          : Container(
+              color: bgColor,
+              padding: AppStyles.paddingContainer,
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Image.asset(
+                          'assets/loginbackground.jpg',
+                          width: double.infinity,
+                          height: height / 2,
+                        ),
+                        textFormFieldMethod("User ID", const Icon(Icons.person),
+                            _usernameController),
+                        textFormFieldMethod("Password", const Icon(Icons.lock),
+                            _passwordController,
+                            isPassword: true),
+                        const SizedBox(height: 20),
+                        CustomButton(
+                          text: 'Login',
+                          onPressed: () {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              _login();
+                            }
+                          },
+                          horizontal: 100,
+                          vertical: 12,
+                        ),
+                      ],
+                    ),
                   ),
-                  textFormFieldMethod(
-                      "User ID", const Icon(Icons.person), _usernameController),
-                  textFormFieldMethod(
-                      "Password", const Icon(Icons.lock), _passwordController,
-                      isPassword: true),
-                  const SizedBox(height: 20),
-                  CustomButton(
-                    text: 'Login',
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        _login();
-                      }
-                    },
-                    horizontal: 100,
-                    vertical: 12,
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
