@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/dialog.dart';
@@ -11,10 +12,13 @@ import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/constants/urlAPI.dart';
+import 'package:qr_code/page/home.dart';
 import 'package:qr_code/page/login.dart';
 import 'package:qr_code/routes/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 class UserDetail extends StatefulWidget {
   const UserDetail({super.key});
@@ -34,7 +38,9 @@ class _UserDetailState extends State<UserDetail> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   File? _image;
-
+  final _formKey = GlobalKey<FormState>();
+  String? _selectedDepartment;
+  String? _avatarUrl;
   Future<void> _fetchUserData() async {
     setState(() {
       _isLoading = true;
@@ -54,6 +60,7 @@ class _UserDetailState extends State<UserDetail> {
 
       if (response != null) {
         final data = jsonDecode(utf8.decode(response.bodyBytes))['data'];
+        final imageUrl = data['avatar'];
         setState(() {
           _userData = data;
           _usernameController.text = _userData!['username'];
@@ -63,6 +70,9 @@ class _UserDetailState extends State<UserDetail> {
           _positionController.text = _userData!['position'];
           _addressController.text = _userData!['address'];
           _emailController.text = _userData!['email'];
+          _selectedDepartment = _userData!['department'];
+          _avatarUrl = imageUrl;
+          print(_avatarUrl);
         });
       } else {
         print('Failed to load user data');
@@ -76,16 +86,39 @@ class _UserDetailState extends State<UserDetail> {
     }
   }
 
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+  // Future<void> _pickImage() async {
+  //   final pickedFile =
+  //       await ImagePicker().pickImage(source: ImageSource.gallery);
 
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
-  }
+  //   if (pickedFile != null) {
+  //     String fullPath = pickedFile.path;
+  //     String fileName = fullPath
+  //         .split('/')
+  //         .last; // Using split to get the last segment after the slash
+  //     print("Extracted filename: $fileName");
+  //     setState(() {
+  //       _image = File(fullPath);
+  //       _imagePath = fileName;
+  //     });
+  //     await _saveImageToAssets(_image!);
+  //   }
+  // }
+
+  // Future<void> _saveImageToAssets(File imageFile) async {
+  //   final appDir = await getApplicationDocumentsDirectory();
+  //   final fileName = DateTime.now().millisecondsSinceEpoch.toString();
+  //   final savedImage = await imageFile.copy('${appDir.path}/$fileName.jpg');
+  //   // Move the image to the assets folder
+  //   final directory = Directory('${appDir.path}/assets');
+  //   print('directory: $directory || dir: ${appDir.path} || $fileName');
+  //   if (!await directory.exists()) {
+  //     await directory.create(recursive: true);
+  //   }
+  //   await savedImage.copy('${directory.path}/$fileName');
+  //   setState(() {
+  //     _image = File('${directory.path}/$fileName');
+  //   });
+  // }
 
   Future<void> logout() async {
     // Retrieve the token from shared preferences
@@ -95,33 +128,47 @@ class _UserDetailState extends State<UserDetail> {
     Navigator.popAndPushNamed(context, Routes.login);
   }
 
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
   Future<void> updateUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getInt('userId');
-    final String apiUrl = '$apiUser/$userId';
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      String selectedDepartment =
+          _selectedDepartment ?? _userData?['department'];
+      final prefs = await SharedPreferences.getInstance();
+      final userId = prefs.getInt('userId');
+      final String apiUrl = '$apiUser/$userId';
 
-    final user = UpdateUserData(
-      firstname: _firstNameController.text,
-      lastname: _lastNameController.text,
-      phone: _phoneController.text,
-      position: _positionController.text,
-      address: _addressController.text,
-      email: _emailController.text,
-      // department: dropdownValue,
-    );
-
-    final response = await http.put(
-      Uri.parse(apiUrl),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(user.toJson()),
-    );
-
-    if (response.statusCode == 200) {
-      CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+      var request = http.MultipartRequest('PUT', Uri.parse(apiUrl));
+      request.headers['Content-Type'] = 'multipart/form-data';
+      if (_image != null) {
+        request.files
+            .add(await http.MultipartFile.fromPath('avatar', _image!.path));
+      }
+      request.fields['firstname'] = _firstNameController.text;
+      request.fields['lastname'] = _lastNameController.text;
+      request.fields['phone'] = _phoneController.text;
+      request.fields['position'] = _positionController.text;
+      request.fields['address'] = _addressController.text;
+      request.fields['email'] = _emailController.text;
+      request.fields['department'] = selectedDepartment;
+      final response = await request.send();
+      if (response.statusCode == 200) {
+        CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+      } else {
+        CustomDialog.showDialog(context, 'Cập nhật thất bại!', "error");
+      }
     } else {
-      CustomDialog.showDialog(context, 'Cập nhật thất bại!', "error");
+      CustomDialog.showDialog(
+          context, 'Đã xảy ra lỗi. \n Xin vui lòng thử lại.', "error");
     }
   }
 
@@ -143,116 +190,132 @@ class _UserDetailState extends State<UserDetail> {
               height: double.infinity,
               padding: AppStyles.paddingContainer,
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: _pickImage,
-                      child: Stack(children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.transparent,
-                          child: ClipOval(
-                            child: SizedBox(
-                              width: 100,
-                              height: 100,
-                              child: _image != null
-                                  ? Image.file(_image!, fit: BoxFit.cover)
-                                  : Image.asset(
-                                      'assets/avatar-user.png',
-                                      fit: BoxFit.cover,
-                                    ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          _pickImage();
+                        },
+                        child: Stack(children: [
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Colors.transparent,
+                            child: ClipOval(
+                              child: SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: _image != null
+                                    ? Image.file(_image!, fit: BoxFit.cover)
+                                    : (_userData?['avatar'] != null &&
+                                            _avatarUrl != null)
+                                        ? Image.network(
+                                            '$api/$_avatarUrl',
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.asset(
+                                            'assets/avatar-user.png',
+                                            fit: BoxFit.cover,
+                                          ),
+                              ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          bottom: -10,
-                          right: -10,
-                          child: IconButton(
-                            onPressed: _pickImage,
-                            icon: const Icon(
-                              Icons.add_a_photo,
-                              color: Colors.grey,
-                              size: 30,
+                          Positioned(
+                            bottom: -10,
+                            right: -10,
+                            child: IconButton(
+                              onPressed: () {
+                                _pickImage();
+                              },
+                              icon: const Icon(
+                                Icons.add_a_photo,
+                                color: Colors.grey,
+                                size: 30,
+                              ),
                             ),
-                          ),
-                        )
-                      ]),
-                    ),
-                    buildTextFieldRow(
-                      labelText: 'User ID',
-                      hintText: 'user_id',
-                      controller: _usernameController,
-                    ),
-                    buildTextFieldRow(
-                      labelText: 'Họ',
-                      isEnable: true,
-                      hintText: 'Họ',
-                      icon: Icons.edit,
-                      controller: _lastNameController,
-                    ),
-                    buildTextFieldRow(
-                      labelText: 'Tên',
-                      isEnable: true,
-                      hintText: 'Tên',
-                      icon: Icons.edit,
-                      controller: _firstNameController,
-                    ),
-                    buildTextFieldRow(
-                      labelText: 'Điện Thoại',
-                      isEnable: true,
-                      hintText: 'Điện Thoại',
-                      icon: Icons.edit,
-                      controller: _phoneController,
-                    ),
-                    buildTextFieldRow(
-                      labelText: 'Chức Vụ',
-                      isEnable: true,
-                      hintText: 'Chức Vụ',
-                      icon: Icons.edit,
-                      controller: _positionController,
-                    ),
-                    buildTextFieldRow(
-                      labelText: 'Địa Chỉ',
-                      isEnable: true,
-                      hintText: 'Địa Chỉ',
-                      icon: Icons.edit,
-                      controller: _addressController,
-                    ),
-                    buildTextFieldRow(
-                      labelText: 'Gmail',
-                      isEnable: true,
-                      hintText: 'Gmail',
-                      icon: Icons.edit,
-                      controller: _emailController,
-                    ),
-                    Dropdownbutton(
-                      items: ['Kho', 'Sản Xuất', 'Nhập Hàng', 'Xuất Hàng'],
-                      hintText: _userData?['department'] ?? '',
-                      labelText: 'Phòng Ban',
-                      databaseText: _userData?['department'] ?? '',
-                    ),
-                    Container(
-                      margin: AppStyles.marginButton,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CustomButton(
-                            text: 'Update',
-                            onPressed: () {
-                              updateUser();
-                            },
-                          ),
-                          CustomButton(
-                            text: 'logout',
-                            onPressed: () {
-                              logout();
-                            },
-                          ),
-                        ],
+                          )
+                        ]),
                       ),
-                    ),
-                  ],
+                      buildTextFieldRow(
+                        labelText: 'User ID',
+                        hintText: 'user_id',
+                        controller: _usernameController,
+                      ),
+                      buildTextFieldRow(
+                        labelText: 'Họ',
+                        isEnable: true,
+                        hintText: 'Họ',
+                        icon: Icons.edit,
+                        controller: _lastNameController,
+                      ),
+                      buildTextFieldRow(
+                        labelText: 'Tên',
+                        isEnable: true,
+                        hintText: 'Tên',
+                        icon: Icons.edit,
+                        controller: _firstNameController,
+                      ),
+                      buildTextFieldRow(
+                        labelText: 'Điện Thoại',
+                        isEnable: true,
+                        hintText: 'Điện Thoại',
+                        icon: Icons.edit,
+                        controller: _phoneController,
+                      ),
+                      buildTextFieldRow(
+                        labelText: 'Chức Vụ',
+                        isEnable: true,
+                        hintText: 'Chức Vụ',
+                        icon: Icons.edit,
+                        controller: _positionController,
+                      ),
+                      buildTextFieldRow(
+                        labelText: 'Địa Chỉ',
+                        isEnable: true,
+                        hintText: 'Địa Chỉ',
+                        icon: Icons.edit,
+                        controller: _addressController,
+                      ),
+                      buildTextFieldRow(
+                        labelText: 'Gmail',
+                        isEnable: true,
+                        hintText: 'Gmail',
+                        icon: Icons.edit,
+                        controller: _emailController,
+                      ),
+                      Dropdownbutton(
+                        items: ['Kho', 'Sản Xuất', 'Nhập Hàng', 'Xuất Hàng'],
+                        hintText: _userData?['department'] ?? '',
+                        labelText: 'Phòng Ban',
+                        databaseText: _userData?['department'] ?? '',
+                        onSaved: (newValue) {
+                          _selectedDepartment = newValue;
+                        },
+                      ),
+                      Container(
+                        margin: AppStyles.marginButton,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CustomButton(
+                              text: 'Update',
+                              onPressed: () {
+                                updateUser();
+                              },
+                            ),
+                            CustomButton(
+                              text: 'logout',
+                              onPressed: () {
+                                logout();
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -268,7 +331,7 @@ class UpdateUserData {
   final String position;
   final String address;
   final String email;
-  // final String department;
+  final String department;
 
   UpdateUserData({
     this.avatar,
@@ -278,7 +341,7 @@ class UpdateUserData {
     required this.position,
     required this.address,
     required this.email,
-    // required this.department,
+    required this.department,
   });
 
   Map<String, dynamic> toJson() {
@@ -290,7 +353,7 @@ class UpdateUserData {
       'position': position,
       'address': address,
       'email': email,
-      // 'department': department,
+      'department': department,
     };
   }
 }

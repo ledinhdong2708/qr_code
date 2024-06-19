@@ -6,12 +6,14 @@ class Dropdownbutton extends StatefulWidget {
   final String? hintText;
   final String? labelText;
   final String? databaseText;
+  final FormFieldSetter<String>? onSaved;
   Dropdownbutton(
       {super.key,
       required this.items,
       required this.hintText,
       required this.labelText,
-      this.databaseText});
+      this.databaseText,
+      this.onSaved});
 
   @override
   State<Dropdownbutton> createState() => _DropdownbuttonState();
@@ -63,6 +65,7 @@ class _DropdownbuttonState extends State<Dropdownbutton> {
                   valueChoose = newValue;
                 });
               },
+              onSaved: widget.onSaved,
               items: widget.items.map((String value) {
                 String displayValue = value;
                 // Check if there's any special condition to modify the item display
