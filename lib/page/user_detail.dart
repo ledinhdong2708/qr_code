@@ -126,6 +126,7 @@ class _UserDetailState extends State<UserDetail> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
     await prefs.remove('userId');
+    await prefs.setString('logout', 'success');
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const Login()),
