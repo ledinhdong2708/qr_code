@@ -3,7 +3,6 @@ import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
 import 'package:qr_code/page/qr_view_example.dart';
-import 'package:qr_code/routes/routes.dart';
 
 class Purchasing extends StatelessWidget {
   const Purchasing({super.key});
@@ -32,7 +31,7 @@ class Purchasing extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => Grpo(
-                            qrData: '2',
+                            qrData: '1',
                           )),
                 );
               },

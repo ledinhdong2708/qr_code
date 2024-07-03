@@ -1,12 +1,14 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
+import 'package:qr_code/component/dialog.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
-import 'package:qr_code/constants/UrlApi.dart';
+import 'package:qr_code/constants/urlApi.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/routes/routes.dart';
@@ -21,6 +23,7 @@ class Grpo extends StatefulWidget {
 }
 
 class _GrpoState extends State<Grpo> {
+  final TextEditingController _remakeController = TextEditingController();
   Barcode? result;
   List<dynamic> grpo = [];
   @override
@@ -29,66 +32,85 @@ class _GrpoState extends State<Grpo> {
     fetchGrpoData();
   }
 
-  // void fetchGrpoData() async {
-  //   final resultCode = widget.qrData;
-  //   print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-  //   print(resultCode);
-  //   const url = 'https://localhost:7245/api/Opor/1';
-  //   final uri = Uri.parse(url);
-  //   print(url);
-  //   try {
-  //     final response = await http.get(uri);
-  //     if (response.statusCode == 200) {
-  //       final body = response.body;
-  //       final json = jsonDecode(body);
-  //       print("thành công");
-  //       setState(() {
-  //         grpo.add(json);
-  //       });
-  //       print(grpo);
-  //     } else {
-  //       print("Failed to load data with status code: ${response.statusCode}");
-  //     }
-  //   } catch (e) {
-  //     print("Exception caught: $e");
-  //   }
-  // }
+  void dispose() {
+    _remakeController.dispose();
+    super.dispose();
+  }
 
   void fetchGrpoData() async {
     final resultCode = widget.qrData;
     print(resultCode);
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    final url = '$serverIp/api/Opor/$resultCode';
+    final url = '$serverIp/api/v1/grpo/$resultCode';
     final uri = Uri.parse(url);
     print(url);
     print(uri);
-      try {
-        final response = await http.get(uri);
-        print(response);
-        if (response.statusCode == 200) {
-          final body = response.body;
-          final json = jsonDecode(body);
-          print("thành công");
-          setState(() {
-            grpo.add(json);
-          });
-        } else {
-          // Xử lý nếu trả api lỗi hoặc không thành công
-          print("Failed to load data with status code: ${response.statusCode}");
-        }
-      } catch (e) {
-        // Xử lý ngoại lệ
-        print("lỗi: $e");
+    try {
+      final response = await http.get(uri);
+      print(response);
+      if (response.statusCode == 200) {
+        final body = response.body;
+        final json = jsonDecode(body);
+        print("thành công");
+        print(json);
+        setState(() {
+          grpo.add(json);
+          _remakeController.text = json['data']['remake'];
+        });
+      } else {
+        // Xử lý nếu trả api lỗi hoặc không thành công
+        print("Failed to load data with status code: ${response.statusCode}");
       }
+    } catch (e) {
+      // Xử lý ngoại lệ
+      print("lỗi: $e");
+    }
+  }
+
+  Future<void> updateDatabase(String remake) async {
+    final resultCode = widget.qrData;
+    if (grpo.isEmpty) {
+      print('No data to update');
+      return;
+    }
+    var data = grpo[0]['data'];
+    var updatedData = {
+      'docno': data['docno'].toString(),
+      'postday': data['postday'].toString(),
+      'vendorcode': data['vendorcode'],
+      'vendorname': data['vendorname'],
+      'remake': remake,
+    };
+    var url = Uri.parse('$serverIp/api/v1/grpo/$resultCode');
+    var response = await http.put(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(updatedData),
+    );
+    if (response.statusCode == 200) {
+      print('Update successful');
+      print(updatedData);
+      CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+      // setState(() {
+      //   data['remake'] = remake;
+      //   // _remakeController.text = remake;
+      // });
+    } else {
+      print('Failed to update');
+      CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var docNum = grpo.isNotEmpty ? grpo[0]['docNum'].toString() : '';
-    var docDate = grpo.isNotEmpty ? grpo[0]['docDate'].toString() : '';
-    var cardCode = grpo.isNotEmpty ? grpo[0]['cardCode'] : '';
-    var cardName = grpo.isNotEmpty ? grpo[0]['cardName'] : '';
-    var remark = grpo.isNotEmpty ? grpo[0]['remark'] : '';
+    var data = grpo.isNotEmpty ? grpo[0]['data'] : null;
+
+    var docNum = data != null ? data['docno'].toString() : '';
+    var docDate = data != null ? data['postday'].toString() : '';
+    var cardCode = data != null ? data['vendorcode'] : '';
+    var cardName = data != null ? data['vendorname'] : '';
+    var remark = data != null ? data['remake'] : '';
     return Scaffold(
         appBar: const HeaderApp(title: "GRPO"),
         body: Container(
@@ -118,12 +140,12 @@ class _GrpoState extends State<Grpo> {
                   valueQR: cardName,
                 ),
                 buildTextFieldRow(
-                  labelText: 'Remake',
-                  isEnable: true,
-                  hintText: 'Remake here',
-                  icon: Icons.edit,
-                  valueQR: remark,
-                ),
+                    labelText: 'Remake',
+                    isEnable: true,
+                    hintText: 'Remake here',
+                    icon: Icons.edit,
+                    valueQR: remark,
+                    controller: _remakeController),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, Routes.grpoDetail);
@@ -143,7 +165,9 @@ class _GrpoState extends State<Grpo> {
                       ),
                       CustomButton(
                         text: 'POST',
-                        onPressed: () {},
+                        onPressed: () async {
+                          await updateDatabase(_remakeController.text);
+                        },
                       ),
                     ],
                   ),

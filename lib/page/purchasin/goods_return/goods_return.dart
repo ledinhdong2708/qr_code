@@ -38,7 +38,7 @@ class GoodsReturn extends StatelessWidget {
                   hintText: 'Remake here',
                   icon: Icons.edit,
                 ),
-                // **** nút vào xem good-return details trong list item bấm vào dấu ... dọc ****
+                // **** nút vào xem good-return details trong list item b ấm vào dấu ... dọc ****
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, Routes.goodsReturnDetail);

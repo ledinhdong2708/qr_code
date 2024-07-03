@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_code/component/button.dart';
@@ -9,7 +8,6 @@ import 'package:qr_code/component/loading.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/constants/urlAPI.dart';
-import 'package:qr_code/page/home.dart';
 import 'package:qr_code/routes/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
