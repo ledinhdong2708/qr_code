@@ -29,7 +29,7 @@ class _GrpoState extends State<Grpo> {
   @override
   void initState() {
     super.initState();
-    fetchGrpoData();
+    // fetchGrpoData();
   }
 
   void dispose() {
@@ -37,34 +37,32 @@ class _GrpoState extends State<Grpo> {
     super.dispose();
   }
 
-  void fetchGrpoData() async {
-    final resultCode = widget.qrData;
-    print(resultCode);
-    final url = '$serverIp/api/v1/grpo/$resultCode';
-    final uri = Uri.parse(url);
-    print(url);
-    print(uri);
-    try {
-      final response = await http.get(uri);
-      print(response);
-      if (response.statusCode == 200) {
-        final body = response.body;
-        final json = jsonDecode(body);
-        print("thành công");
-        print(json);
-        setState(() {
-          grpo.add(json);
-          _remakeController.text = json['data']['remake'];
-        });
-      } else {
-        // Xử lý nếu trả api lỗi hoặc không thành công
-        print("Failed to load data with status code: ${response.statusCode}");
-      }
-    } catch (e) {
-      // Xử lý ngoại lệ
-      print("lỗi: $e");
-    }
-  }
+  // void fetchGrpoData() async {
+  //   final resultCode = widget.qrData;
+  //   print("result code: $resultCode");
+  //   final url = '$serverIp/api/v1/grpo/$resultCode';
+  //   final uri = Uri.parse(url);
+  //   try {
+  //     final response = await http.get(uri);
+  //     print(response);
+  //     if (response.statusCode == 200) {
+  //       final body = response.body;
+  //       final json = jsonDecode(body);
+  //       print("thành công");
+  //       print(json);
+  //       setState(() {
+  //         grpo.add(json);
+  //         _remakeController.text = json['data']['remake'];
+  //       });
+  //     } else {
+  //       // Xử lý nếu trả api lỗi hoặc không thành công
+  //       print("Failed to load data with status code: ${response.statusCode}");
+  //     }
+  //   } catch (e) {
+  //     // Xử lý ngoại lệ
+  //     print("lỗi: $e");
+  //   }
+  // }
 
   Future<void> updateDatabase(String remake) async {
     final resultCode = widget.qrData;
@@ -104,13 +102,22 @@ class _GrpoState extends State<Grpo> {
 
   @override
   Widget build(BuildContext context) {
-    var data = grpo.isNotEmpty ? grpo[0]['data'] : null;
+    // var data = grpo.isNotEmpty ? grpo[0]['data'] : null;
 
-    var docNum = data != null ? data['docno'].toString() : '';
-    var docDate = data != null ? data['postday'].toString() : '';
-    var cardCode = data != null ? data['vendorcode'] : '';
-    var cardName = data != null ? data['vendorname'] : '';
-    var remark = data != null ? data['remake'] : '';
+    // var docNum = data != null ? data['docno'].toString() : '';
+    // var docDate = data != null ? data['postday'].toString() : '';
+    // var cardCode = data != null ? data['vendorcode'] : '';
+    // var cardName = data != null ? data['vendorname'] : '';
+    // var remark = data != null ? data['remake'] : '';
+
+    var resultCode = widget.qrData;
+    List<dynamic> result = jsonDecode(resultCode);
+    var docNum = result[0]['DocNum'].toString();
+    var docDate = result[0]['DocDate'];
+    var cardCode = result[0]['CardCode'];
+    var cardName = result[0]['CardName'];
+    // var items = result[0]['Items'];
+    print(resultCode);
     return Scaffold(
         appBar: const HeaderApp(title: "GRPO"),
         body: Container(
@@ -139,13 +146,13 @@ class _GrpoState extends State<Grpo> {
                   hintText: 'Vendor Name',
                   valueQR: cardName,
                 ),
-                buildTextFieldRow(
-                    labelText: 'Remake',
-                    isEnable: true,
-                    hintText: 'Remake here',
-                    icon: Icons.edit,
-                    valueQR: remark,
-                    controller: _remakeController),
+                // buildTextFieldRow(
+                //     labelText: 'Remake',
+                //     isEnable: true,
+                //     hintText: 'Remake here',
+                //     icon: Icons.edit,
+                //     valueQR: remark,
+                //     controller: _remakeController),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, Routes.grpoDetail);
