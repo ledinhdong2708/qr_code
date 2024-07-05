@@ -19,22 +19,18 @@ class Purchasing extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const QRViewExample(
-                            pageIdentifier: 'GRPO',
-                          )),
-                );
-                //To testing api
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(
-                //       builder: (context) => Grpo(
-                //             qrData:
-                //                 '[{"DocNum":37,"DocDate":"2023-04-11T00:00:00","CardCode":"V00002","CardName":"Công ty TNHH MTV","Items":[{"ItemCode":"100003","Dscription":"Màn hình điều khiển","Quantity":1.000000,"GTotal":2200000.000000}]}]',
+                //       builder: (context) => const QRViewExample(
+                //             pageIdentifier: 'GRPO',
                 //           )),
                 // );
+                //To testing api
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Grpo(qrData: "3")),
+                );
               },
               child: card("assets/receipt.png", "Goods Receipt PO"),
             ),
