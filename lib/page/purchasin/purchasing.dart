@@ -29,7 +29,7 @@ class Purchasing extends StatelessWidget {
                 //To testing api
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Grpo(qrData: "3")),
+                  MaterialPageRoute(builder: (context) => Grpo(qrData: "36")),
                 );
               },
               child: card("assets/receipt.png", "Goods Receipt PO"),

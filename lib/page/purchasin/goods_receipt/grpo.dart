@@ -11,7 +11,8 @@ import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/urlApi.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
-import 'package:qr_code/routes/routes.dart';
+import 'package:qr_code/page/purchasin/goods_receipt/grpo_detail.dart';
+import 'package:qr_code/service/grpo_service.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class Grpo extends StatefulWidget {
@@ -26,42 +27,26 @@ class _GrpoState extends State<Grpo> {
   final TextEditingController _remakeController = TextEditingController();
   Barcode? result;
   List<dynamic> grpo = [];
+  Map<String, dynamic>? opor;
+  List<dynamic> por1 = [];
   @override
   void initState() {
     super.initState();
-    fetchGrpoData();
-  }
-
-  void dispose() {
-    _remakeController.dispose();
-    super.dispose();
-  }
-
-  void fetchGrpoData() async {
-    final resultCode = widget.qrData;
-    print("result code: $resultCode");
-    final url = '$serverIp/api/v1/opor/$resultCode';
-    final uri = Uri.parse(url);
-    try {
-      final response = await http.get(uri);
-      print(response);
-      if (response.statusCode == 200) {
-        final body = response.body;
-        final json = jsonDecode(body);
-        print("thành công");
-        print(json);
+    fetchOporData(widget.qrData).then((data) {
+      if (data != null) {
         setState(() {
-          grpo.add(json);
-          _remakeController.text = json['data']['remake'];
+          opor = data;
+          _remakeController.text = opor?['data']['remake'] ?? '';
         });
-      } else {
-        // Xử lý nếu trả api lỗi hoặc không thành công
-        print("Failed to load data with status code: ${response.statusCode}");
       }
-    } catch (e) {
-      // Xử lý ngoại lệ
-      print("lỗi: $e");
-    }
+    });
+    fetchPor1Data(widget.qrData).then((data) {
+      if (data != null && data['data'] is List) {
+        setState(() {
+          por1 = data['data'];
+        });
+      }
+    });
   }
 
   Future<void> updateDatabase(String remake) async {
@@ -102,23 +87,13 @@ class _GrpoState extends State<Grpo> {
 
   @override
   Widget build(BuildContext context) {
-    var data = grpo.isNotEmpty ? grpo[0]['data'] : null;
-
+    var data = opor?['data'];
     var docNum = data != null ? data['DocNum'].toString() : '';
     var docDate = data != null ? data['DocDate'].toString() : '';
     var cardCode = data != null ? data['CardCode'] : '';
     var cardName = data != null ? data['CardName'] : '';
     var remark = data != null ? data['remake'] : '';
 
-    // var resultCode = widget.qrData;
-    // List<dynamic> result = jsonDecode(resultCode);
-    // var docNum = result != null ? result[0]['DocNum'].toString() : '';
-    // var docDate = result != null ? result[0]['DocDate'].toString() : '';
-    // var cardCode = result != null ? result[0]['CardCode'] : '';
-    // var cardName = result != null ? result[0]['CardName'] : '';
-    // var remark = "";
-    // var items = result != null ? result[0]['Items'] : '';
-    // print(resultCode);
     return Scaffold(
         appBar: const HeaderApp(title: "GRPO"),
         body: Container(
@@ -155,41 +130,51 @@ class _GrpoState extends State<Grpo> {
                   valueQR: remark,
                   // controller: _remakeController
                 ),
-                Container(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, Routes.grpoDetail);
+                if (por1.isNotEmpty)
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: por1.length,
+                    itemBuilder: (context, index) {
+                      var item = por1[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GrpoDetail(
+                                itemCode: item['ItemCode'],
+                                description: item['Dscription'],
+                                whse: item['WhsCode'],
+                                openQty: item['OpenQty'].toString(),
+                                slThucTe: item['SlThucTe'].toString(),
+                                batch: item['Batch'].toString(),
+                                uoMCode: item['UomCode'].toString(),
+                                remake: item['remake'].toString(),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: readInput,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(item['ItemCode']),
+                              Text(item['Dscription']),
+                              Text(item['Batch'].toString()),
+                              Text(item['OpenQty'].toString()),
+                            ],
+                          ),
+                        ),
+                      );
                     },
-                    child: const Text('Xem Chi Tiết'),
                   ),
-                ),
-                // Column(
-                //   children: [
-                //     for (var item in result[0]['Items'])
-                //       Container(
-                //         width: double.infinity,
-                //         padding: const EdgeInsets.all(10),
-                //         margin: const EdgeInsets.all(10),
-                //         decoration: const BoxDecoration(
-                //           color: Colors.red,
-                //           borderRadius: BorderRadius.all(
-                //             Radius.circular(10),
-                //           ),
-                //         ),
-                //         child: Column(
-                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(item['ItemCode']),
-                //             Text(item['Dscription']),
-                //             Text(item['Quantity'].toString()),
-                //             Text(item['GTotal'].toString()),
-                //           ],
-                //         ),
-                //       )
-                //   ],
-                // ),
-
                 Container(
                   width: double.infinity,
                   margin: AppStyles.marginButton,

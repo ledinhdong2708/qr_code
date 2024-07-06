@@ -6,6 +6,7 @@ import 'package:qr_code/page/production/ifp/ifp.dart';
 import 'package:qr_code/page/production/rfp/rfp.dart';
 import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
+import 'package:qr_code/page/purchasin/goods_receipt/grpo_detail.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
 import 'package:qr_code/page/sales/creditmemo/ar_creditmemo.dart';
 import 'package:qr_code/page/sales/delivery/delivery.dart';
@@ -62,6 +63,7 @@ class Routes {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      //grpo
       case grpo:
         final qrData = settings.arguments as String; // Lấy qrData từ arguments
         return MaterialPageRoute(
