@@ -22,6 +22,7 @@ import 'package:qr_code/page/purchasin/goods_receipt/grpo_detail.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo_label.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return_detail.dart';
+import 'package:qr_code/page/purchasin/goods_return/goods_return_label.dart';
 import 'package:qr_code/page/purchasin/purchasing.dart';
 import 'package:qr_code/page/home.dart';
 import 'package:qr_code/page/login.dart';
@@ -94,6 +95,7 @@ class _MyAppState extends State<MyApp> {
               Routes.grpoDetail: (context) => const GrpoDetail(),
               Routes.grpoLabels: (context) => const GrpoLabels(),
               Routes.goodsReturnDetail: (context) => const GoodsReturnDetail(),
+              Routes.goodsReturnLabel: (context) => const GoodsReturnLabel(),
               Routes.apCreditMemoDetail: (context) =>
                   const ApCreditmemoDetail(),
               //sales

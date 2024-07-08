@@ -26,6 +26,8 @@ class Routes {
   static const String goodsReturn = '/home/purchasing/return/goods_return';
   static const String goodsReturnDetail =
       '/home/purchasing/return/goods_return/goods_return_detail';
+  static const String goodsReturnLabel =
+      '/home/purchasing/return/goods_return/goods_return_detail/goods_return_label';
   static const String apCreditMemo =
       '/home/purchasing/credit_memo/ap_credit_memo';
   static const String apCreditMemoDetail =
