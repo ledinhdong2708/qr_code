@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
-import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/header_app.dart';
-import 'package:qr_code/component/qr_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/routes/routes.dart';
+import 'package:qr_code/service/grpo_service.dart';
 
-class GrpoDetail extends StatelessWidget {
+class GrpoDetail extends StatefulWidget {
+  final String docEntry;
   final String itemCode;
   final String description;
   final String batch;
@@ -20,6 +20,7 @@ class GrpoDetail extends StatelessWidget {
 
   const GrpoDetail({
     super.key,
+    this.docEntry = "",
     this.itemCode = "",
     this.whse = "",
     this.slThucTe = "",
@@ -31,8 +32,67 @@ class GrpoDetail extends StatelessWidget {
   });
 
   @override
+  _GrpoDetailState createState() => _GrpoDetailState();
+}
+
+class _GrpoDetailState extends State<GrpoDetail> {
+  late TextEditingController itemCodeController;
+  late TextEditingController descriptionController;
+  late TextEditingController batchController;
+  late TextEditingController openQtyController;
+  late TextEditingController whseController;
+  late TextEditingController slThucTeController;
+  late TextEditingController uoMCodeController;
+  late TextEditingController remakeController;
+
+  @override
+  void initState() {
+    super.initState();
+    itemCodeController = TextEditingController(text: widget.itemCode);
+    descriptionController = TextEditingController(text: widget.description);
+    batchController = TextEditingController(text: widget.batch);
+    openQtyController = TextEditingController(text: widget.openQty);
+    whseController = TextEditingController(text: widget.whse);
+    slThucTeController = TextEditingController(text: widget.slThucTe);
+    uoMCodeController = TextEditingController(text: widget.uoMCode);
+    remakeController = TextEditingController(text: widget.remake);
+  }
+
+  @override
+  void dispose() {
+    itemCodeController.dispose();
+    descriptionController.dispose();
+    batchController.dispose();
+    openQtyController.dispose();
+    whseController.dispose();
+    slThucTeController.dispose();
+    uoMCodeController.dispose();
+    remakeController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submitData() async {
+    final data = {
+      'docEntry': widget.docEntry,
+      'itemCode': itemCodeController.text,
+      'itemName': descriptionController.text,
+      'batch': batchController.text,
+      'slYeuCau': openQtyController.text,
+      'whse': whseController.text,
+      'slThucTe': slThucTeController.text,
+      'uoMCode': uoMCodeController.text,
+      'remake': remakeController.text,
+    };
+
+    try {
+      await postData(data, context);
+    } catch (e) {
+      print('Error submitting data: $e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = TextEditingController();
     return Scaffold(
         appBar: const HeaderApp(title: "GRPO - Detail"),
         body: Container(
@@ -44,45 +104,51 @@ class GrpoDetail extends StatelessWidget {
             child: Column(
               children: [
                 buildTextFieldRow(
+                  controller: itemCodeController,
                   labelText: 'Item Code',
                   hintText: 'Item Code',
-                  valueQR: itemCode,
                 ),
                 buildTextFieldRow(
-                    labelText: 'Item Name',
-                    hintText: 'Item Name',
-                    valueQR: description),
+                  controller: descriptionController,
+                  labelText: 'Item Name',
+                  hintText: 'Item Name',
+                ),
                 buildTextFieldRow(
+                  controller: whseController,
                   labelText: 'Whse',
                   isEnable: true,
                   hintText: 'Whse',
-                  valueQR: whse,
                   icon: Icons.more_vert,
                 ),
                 buildTextFieldRow(
-                    labelText: 'SL Yêu Cầu',
-                    hintText: 'SL Yêu Cầu',
-                    valueQR: openQty),
+                  controller: openQtyController,
+                  labelText: 'SL Yêu Cầu',
+                  hintText: 'SL Yêu Cầu',
+                ),
                 buildTextFieldRow(
-                    labelText: 'SL Thực Tế',
-                    hintText: 'SL Thực Tế',
-                    valueQR: slThucTe,
-                    isEnable: true,
-                    icon: null),
+                  controller: slThucTeController,
+                  labelText: 'SL Thực Tế',
+                  hintText: 'SL Thực Tế',
+                  isEnable: true,
+                ),
                 buildTextFieldRow(
-                    labelText: 'Batch', hintText: 'Batch', valueQR: batch),
+                  controller: batchController,
+                  labelText: 'Batch',
+                  hintText: 'Batch',
+                  isEnable: true,
+                ),
                 buildTextFieldRow(
-                    labelText: 'UoM Code',
-                    hintText: 'UoM Code',
-                    valueQR: uoMCode),
+                  controller: uoMCodeController,
+                  labelText: 'UoM Code',
+                  hintText: 'UoM Code',
+                ),
                 buildTextFieldRow(
+                  controller: remakeController,
                   labelText: 'Remake',
                   isEnable: true,
                   hintText: 'Remake here',
-                  valueQR: remake,
                   icon: Icons.edit,
                 ),
-                // list item ở đây
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, Routes.grpoLabels);
@@ -105,7 +171,7 @@ class GrpoDetail extends StatelessWidget {
                       ),
                       CustomButton(
                         text: 'ADD',
-                        onPressed: () {},
+                        onPressed: _submitData,
                       ),
                     ],
                   ),
