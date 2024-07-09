@@ -15,71 +15,6 @@ import '../../../constants/urlAPI.dart';
 import '../../../service/goodreturn_service.dart';
 import 'goods_return_detail.dart';
 
-// class GoodsReturn extends StatelessWidget {
-//   final String qrData;
-//   const GoodsReturn({super.key, required this.qrData});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final Map<String, dynamic> qrDataMap = parseQrData(qrData);
-//     return Scaffold(
-//         appBar: const HeaderApp(title: "Goods Return"),
-//         body: Container(
-//           color: bgColor,
-//           width: double.infinity,
-//           height: double.infinity,
-//           padding: AppStyles.paddingContainer,
-//           child: SingleChildScrollView(
-//             child: Column(
-//               children: [
-//                 buildTextFieldRow(labelText: 'Doc No.', hintText: 'Doc No.'),
-//                 const DateInput(),
-//                 buildTextFieldRow(
-//                     labelText: 'Vendor Code', hintText: 'Vendor Code'),
-//                 buildTextFieldRow(
-//                     labelText: 'Vendor Name', hintText: 'Vendor Name'),
-//                 buildTextFieldRow(
-//                   labelText: 'Remake',
-//                   isEnable: true,
-//                   hintText: 'Remake here',
-//                   icon: Icons.edit,
-//                 ),
-//                 // **** nút vào xem good-return details trong list item b ấm vào dấu ... dọc ****
-//                 TextButton(
-//                   onPressed: () {
-//                     Navigator.pushNamed(context, Routes.goodsReturnDetail);
-//                   },
-//                   child: const Text('Xem Chi Tiết '),
-//                 ),
-//                 Container(
-//                   width: double.infinity,
-//                   margin: AppStyles.marginButton,
-//                   child: Align(
-//                     alignment: Alignment.centerRight,
-//                     child: CustomButton(
-//                       text: 'POST',
-//                       onPressed: () {},
-//                     ),
-//                   ),
-//                 )
-//               ],
-//             ),
-//           ),
-//         ));
-//   }
-//
-//   Map<String, dynamic> parseQrData(String qrData) {
-//     try {
-//       return jsonDecode(qrData);
-//     } catch (e) {
-//       // Xử lý lỗi nếu qrData không phải là chuỗi JSON hợp lệ
-//       print('Lỗi khi phân tích cú pháp qrData: $e');
-//       return {};
-//     }
-//   }
-// }
-
-
 class GoodsReturn extends StatefulWidget {
   final String qrData;
   const GoodsReturn({super.key, required this.qrData});
@@ -114,41 +49,41 @@ class _GoodsReturnState extends State<GoodsReturn> {
     });
   }
 
-  Future<void> updateDatabase(String remake) async {
-    final resultCode = widget.qrData;
-    if (goodreturn.isEmpty) {
-      print('No data to update');
-      return;
-    }
-    var data = goodreturn[0]['data'];
-    var updatedData = {
-      'docno': data['docno'].toString(),
-      'postday': data['postday'].toString(),
-      'vendorcode': data['vendorcode'],
-      'vendorname': data['vendorname'],
-      'remake': remake,
-    };
-    var url = Uri.parse('$serverIp/api/v1/grpo/$resultCode');
-    var response = await http.put(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(updatedData),
-    );
-    if (response.statusCode == 200) {
-      print('Update successful');
-      print(updatedData);
-      CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
-      // setState(() {
-      //   data['remake'] = remake;
-      //   // _remakeController.text = remake;
-      // });
-    } else {
-      print('Failed to update');
-      CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
-    }
-  }
+  // Future<void> updateDatabase(String remake) async {
+  //   final resultCode = widget.qrData;
+  //   if (goodreturn.isEmpty) {
+  //     print('No data to update');
+  //     return;
+  //   }
+  //   var data = goodreturn[0]['data'];
+  //   var updatedData = {
+  //     'docno': data['docno'].toString(),
+  //     'postday': data['postday'].toString(),
+  //     'vendorcode': data['vendorcode'],
+  //     'vendorname': data['vendorname'],
+  //     'remake': remake,
+  //   };
+  //   var url = Uri.parse('$serverIp/api/v1/grr/$resultCode');
+  //   var response = await http.put(
+  //     url,
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //     },
+  //     body: jsonEncode(updatedData),
+  //   );
+  //   if (response.statusCode == 200) {
+  //     print('Update successful');
+  //     print(updatedData);
+  //     CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+  //     // setState(() {
+  //     //   data['remake'] = remake;
+  //     //   // _remakeController.text = remake;
+  //     // });
+  //   } else {
+  //     print('Failed to update');
+  //     CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -207,6 +142,7 @@ class _GoodsReturnState extends State<GoodsReturn> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => GoodsReturnDetail(
+                                docEntry: item['DocEntry'],
                                 itemCode: item['ItemCode'],
                                 description: item['Dscription'],
                                 whse: item['WhsCode'],
@@ -254,8 +190,9 @@ class _GoodsReturnState extends State<GoodsReturn> {
                       CustomButton(
                         text: 'POST',
                         onPressed: () async {
-                          await updateDatabase(_remakeController.text);
-                        },
+                          await updateGrrDatabase(
+                          widget.qrData, _remakeController.text, context);
+                          },
                       ),
                     ],
                   ),

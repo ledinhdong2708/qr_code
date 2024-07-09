@@ -7,8 +7,10 @@ import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 
 import '../../../routes/routes.dart';
+import '../../../service/goodreturn_service.dart';
 
-class GoodsReturnDetail extends StatelessWidget {
+class GoodsReturnDetail extends StatefulWidget {
+  final String docEntry;
   final String itemCode;
   final String description;
   final String batch;
@@ -20,6 +22,7 @@ class GoodsReturnDetail extends StatelessWidget {
 
   const GoodsReturnDetail({
     super.key,
+    this.docEntry = "",
     this.itemCode = "",
     this.whse = "",
     this.slThucTe = "",
@@ -30,59 +33,68 @@ class GoodsReturnDetail extends StatelessWidget {
     this.openQty = "",
   });
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   final TextEditingController _controller = TextEditingController();
-  //   return Scaffold(
-  //       appBar: const HeaderApp(title: "Goods Return - Detail"),
-  //       body: Container(
-  //         color: bgColor,
-  //         width: double.infinity,
-  //         height: double.infinity,
-  //         padding: AppStyles.paddingContainer,
-  //         child: SingleChildScrollView(
-  //           child: Column(
-  //             children: [
-  //               buildTextFieldRow(
-  //                   labelText: 'Item Code', hintText: 'Item Code'),
-  //               buildTextFieldRow(
-  //                   labelText: 'Item Name', hintText: 'Item Name'),
-  //               buildTextFieldRow(labelText: 'Whse', hintText: 'Whse'),
-  //               buildTextFieldRow(
-  //                   labelText: 'SL Yêu Cầu', hintText: 'SL Yêu Cầu'),
-  //               QRCodeInput(
-  //                 labelText: 'SL Trả lại',
-  //                 controller: _controller,
-  //               ),
-  //               buildTextFieldRow(labelText: 'Batch', hintText: 'Batch'),
-  //               buildTextFieldRow(labelText: 'UoM Code', hintText: 'UoM Code'),
-  //               buildTextFieldRow(
-  //                 labelText: 'Remake',
-  //                 isEnable: true,
-  //                 hintText: 'Remake here',
-  //                 icon: Icons.edit,
-  //               ),
-  //               // để list item vào đây
-  //               Container(
-  //                 width: double.infinity,
-  //                 margin: AppStyles.marginButton,
-  //                 child: Align(
-  //                   alignment: Alignment.centerRight,
-  //                   child: CustomButton(
-  //                     text: 'ADD',
-  //                     onPressed: () {},
-  //                   ),
-  //                 ),
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       ));
-  // }
+  @override
+  _GoodReturnDetailState createState() => _GoodReturnDetailState();
+}
+
+class _GoodReturnDetailState extends State<GoodsReturnDetail> {
+  late TextEditingController itemCodeController;
+  late TextEditingController descriptionController;
+  late TextEditingController batchController;
+  late TextEditingController openQtyController;
+  late TextEditingController whseController;
+  late TextEditingController slThucTeController;
+  late TextEditingController uoMCodeController;
+  late TextEditingController remakeController;
+
+  @override
+  void initState() {
+    super.initState();
+    itemCodeController = TextEditingController(text: widget.itemCode);
+    descriptionController = TextEditingController(text: widget.description);
+    batchController = TextEditingController(text: widget.batch);
+    openQtyController = TextEditingController(text: widget.openQty);
+    whseController = TextEditingController(text: widget.whse);
+    slThucTeController = TextEditingController(text: widget.slThucTe);
+    uoMCodeController = TextEditingController(text: widget.uoMCode);
+    remakeController = TextEditingController(text: widget.remake);
+  }
+
+  @override
+  void dispose() {
+    itemCodeController.dispose();
+    descriptionController.dispose();
+    batchController.dispose();
+    openQtyController.dispose();
+    whseController.dispose();
+    slThucTeController.dispose();
+    uoMCodeController.dispose();
+    remakeController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submitData() async {
+    final data = {
+      'docEntry': widget.docEntry,
+      'itemCode': itemCodeController.text,
+      'itemName': descriptionController.text,
+      'batch': batchController.text,
+      'slYeuCau': openQtyController.text,
+      'whse': whseController.text,
+      'slThucTe': slThucTeController.text,
+      'uoMCode': uoMCodeController.text,
+      'remake': remakeController.text,
+    };
+
+    try {
+      await postData(data, context);
+    } catch (e) {
+      print('Error submitting data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = TextEditingController();
     return Scaffold(
         appBar: const HeaderApp(title: "Goods Return - Detail"),
         body: Container(
@@ -94,48 +106,54 @@ class GoodsReturnDetail extends StatelessWidget {
             child: Column(
               children: [
                 buildTextFieldRow(
+                  controller: itemCodeController,
                   labelText: 'Item Code',
                   hintText: 'Item Code',
-                  valueQR: itemCode,
                 ),
                 buildTextFieldRow(
-                    labelText: 'Item Name',
-                    hintText: 'Item Name',
-                    valueQR: description),
+                  controller: descriptionController,
+                  labelText: 'Item Name',
+                  hintText: 'Item Name',
+                ),
                 buildTextFieldRow(
+                  controller: whseController,
                   labelText: 'Whse',
                   isEnable: true,
                   hintText: 'Whse',
-                  valueQR: whse,
                   icon: Icons.more_vert,
                 ),
                 buildTextFieldRow(
-                    labelText: 'SL Yêu Cầu',
-                    hintText: 'SL Yêu Cầu',
-                    valueQR: openQty),
+                  controller: openQtyController,
+                  labelText: 'SL Yêu Cầu',
+                  hintText: 'SL Yêu Cầu',
+                ),
                 buildTextFieldRow(
-                    labelText: 'SL Thực Tế',
-                    hintText: 'SL Thực Tế',
-                    valueQR: slThucTe,
-                    isEnable: true,
-                    icon: null),
+                  controller: slThucTeController,
+                  labelText: 'SL Thực Tế',
+                  hintText: 'SL Thực Tế',
+                  isEnable: true,
+                ),
                 buildTextFieldRow(
-                    labelText: 'Batch', hintText: 'Batch', valueQR: batch),
+                  controller: batchController,
+                  labelText: 'Batch',
+                  hintText: 'Batch',
+                  isEnable: true,
+                ),
                 buildTextFieldRow(
-                    labelText: 'UoM Code',
-                    hintText: 'UoM Code',
-                    valueQR: uoMCode),
+                  controller: uoMCodeController,
+                  labelText: 'UoM Code',
+                  hintText: 'UoM Code',
+                ),
                 buildTextFieldRow(
+                  controller: remakeController,
                   labelText: 'Remake',
                   isEnable: true,
                   hintText: 'Remake here',
-                  valueQR: remake,
                   icon: Icons.edit,
                 ),
-                // list item ở đây
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, Routes.goodsReturnLabel);
+                    Navigator.pushNamed(context, Routes.grpoLabels);
                   },
                   child: const Text('Tạo Nhãn'),
                 ),
@@ -155,7 +173,7 @@ class GoodsReturnDetail extends StatelessWidget {
                       ),
                       CustomButton(
                         text: 'ADD',
-                        onPressed: () {},
+                        onPressed: _submitData,
                       ),
                     ],
                   ),
