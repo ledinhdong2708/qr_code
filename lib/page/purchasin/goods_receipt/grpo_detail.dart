@@ -39,6 +39,7 @@ class GrpoDetail extends StatefulWidget {
 }
 
 class _GrpoDetailState extends State<GrpoDetail> {
+  List<dynamic> grpoItemsDetail = [];
   late TextEditingController itemCodeController;
   late TextEditingController descriptionController;
   late TextEditingController batchController;
@@ -59,6 +60,15 @@ class _GrpoDetailState extends State<GrpoDetail> {
     slThucTeController = TextEditingController(text: widget.slThucTe);
     uoMCodeController = TextEditingController(text: widget.uoMCode);
     remakeController = TextEditingController(text: widget.remake);
+
+    fetchGrpoItemsDetailData(widget.docEntry, widget.lineNum).then((data) {
+      if (data != null && data['data'] is List) {
+        print(data['data']);
+        setState(() {
+          grpoItemsDetail = data['data'];
+        });
+      }
+    });
   }
 
   @override
@@ -89,7 +99,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
     };
 
     try {
-      await postData(data, context);
+      await postGrpoItemsData(data, context);
     } catch (e) {
       print('Error submitting data: $e');
     }
@@ -129,36 +139,78 @@ class _GrpoDetailState extends State<GrpoDetail> {
                   labelText: 'SL Yêu Cầu',
                   hintText: 'SL Yêu Cầu',
                 ),
-                buildTextFieldRow(
-                  controller: slThucTeController,
-                  labelText: 'SL Thực Tế',
-                  hintText: 'SL Thực Tế',
-                  isEnable: true,
-                ),
-                buildTextFieldRow(
-                  controller: batchController,
-                  labelText: 'Batch',
-                  hintText: 'Batch',
-                  isEnable: true,
-                ),
+                // buildTextFieldRow(
+                //   controller: slThucTeController,
+                //   labelText: 'SL Thực Tế',
+                //   hintText: 'SL Thực Tế',
+                //   isEnable: true,
+                // ),
+                // buildTextFieldRow(
+                //   controller: batchController,
+                //   labelText: 'Batch',
+                //   hintText: 'Batch',
+                //   isEnable: true,
+                // ),
                 buildTextFieldRow(
                   controller: uoMCodeController,
                   labelText: 'UoM Code',
                   hintText: 'UoM Code',
                 ),
-                buildTextFieldRow(
-                  controller: remakeController,
-                  labelText: 'Remake',
-                  isEnable: true,
-                  hintText: 'Remake here',
-                  icon: Icons.edit,
-                ),
+                // buildTextFieldRow(
+                //   controller: remakeController,
+                //   labelText: 'Remake',
+                //   isEnable: true,
+                //   hintText: 'Remake here',
+                //   icon: Icons.edit,
+                // ),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, Routes.grpoDetailItems);
                   },
                   child: const Text('Tạo Nhãn'),
                 ),
+                if (grpoItemsDetail.isNotEmpty)
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: grpoItemsDetail.length,
+                    itemBuilder: (context, index) {
+                      var item = grpoItemsDetail[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GrpoDetail(
+                                docEntry: item['DocEntry'],
+                                lineNum: item['LineNum'],
+                                slThucTe: item['SlThucTe'].toString(),
+                                batch: item['Batch'].toString(),
+                                remake: item['Remake'].toString(),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: readInput,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(item['SlThucTe'].toString()),
+                              Text(item['Batch'].toString()),
+                              Text(item['Remake'].toString()),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+
                 Container(
                   width: double.infinity,
                   margin: AppStyles.marginButton,
@@ -172,7 +224,10 @@ class _GrpoDetailState extends State<GrpoDetail> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const GrpoDetailItems(),
+                              builder: (context) => GrpoDetailItems(
+                                docEntry: widget.docEntry,
+                                lineNum: widget.lineNum,
+                              ),
                             ),
                           );
                         },

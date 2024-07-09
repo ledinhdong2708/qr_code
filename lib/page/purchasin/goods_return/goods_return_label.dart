@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
-import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/header_app.dart';
-import 'package:qr_code/component/qr_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';

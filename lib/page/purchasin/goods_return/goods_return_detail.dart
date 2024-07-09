@@ -153,7 +153,7 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, Routes.grpoLabels);
+                    Navigator.pushNamed(context, Routes.grpoDetailItems);
                   },
                   child: const Text('Tạo Nhãn'),
                 ),

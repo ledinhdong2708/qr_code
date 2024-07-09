@@ -42,7 +42,6 @@ class _GrpoState extends State<Grpo> {
       if (data != null && data['data'] is List) {
         setState(() {
           por1 = data['data'];
-          print(por1);
         });
       }
     });
