@@ -42,98 +42,11 @@ class _GrpoState extends State<Grpo> {
       if (data != null && data['data'] is List) {
         setState(() {
           por1 = data['data'];
+          print(por1);
         });
       }
     });
   }
-
-  // Future<void> updateDatabase(String remake) async {
-  //   final resultCode = widget.qrData;
-  //   if (grpo.isEmpty) {
-  //     print('No data to update');
-  //     return;
-  //   }
-  //   var data = grpo[0]['data'];
-  //   var updatedData = {
-  //     'docno': data['docno'].toString(),
-  //     'postday': data['postday'].toString(),
-  //     'vendorcode': data['vendorcode'],
-  //     'vendorname': data['vendorname'],
-  //     'remake': remake,
-  //   };
-  //   var url = Uri.parse('$serverIp/api/v1/grpo/$resultCode');
-  //   var response = await http.put(
-  //     url,
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //     body: jsonEncode(updatedData),
-  //   );
-  //   if (response.statusCode == 200) {
-  //     print('Update successful');
-  //     print(updatedData);
-  //     CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
-  //     // setState(() {
-  //     //   data['remake'] = remake;
-  //     //   // _remakeController.text = remake;
-  //     // });
-  //   } else {
-  //     print('Failed to update');
-  //     CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
-  //   }
-  // }
-
-  // Future<void> fetchAndUpdateDatabase() async {
-  //   final data = await fetchOporData(widget.qrData);
-  //   if (data != null) {
-  //     setState(() {
-  //       opor = data;
-  //       _remakeController.text = opor?['data']['remake'] ?? '';
-  //     });
-
-  //     final remake = _remakeController.text;
-  //     await updateDatabase(remake);
-  //   } else {
-  //     print('Failed to fetch data');
-  //   }
-  // }
-
-  // Future<void> updateDatabase(String remake) async {
-  //   final resultCode = widget.qrData;
-  //   if (opor == null || opor!.isEmpty) {
-  //     print('No data to update');
-  //     return;
-  //   }
-
-  //   var data = opor?['data'];
-  //   print(data);
-  //   var updatedData = {
-  //     'docentry': data['DocEntry'].toString(),
-  //     'docno': data['DocNum'].toString(),
-  //     'postday': data['DocDate'].toString(),
-  //     'vendorcode': data['CardCode'],
-  //     'vendorname': data['CardName'],
-  //     'remake': remake,
-  //   };
-
-  //   var url = Uri.parse('$serverIp/api/v1/grpo');
-  //   var response = await http.post(
-  //     url,
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //     body: jsonEncode(updatedData),
-  //   );
-
-  //   if (response.statusCode == 200) {
-  //     print('Update successful');
-  //     print(updatedData);
-  //     CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
-  //   } else {
-  //     print('Failed to update');
-  //     CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -192,6 +105,7 @@ class _GrpoState extends State<Grpo> {
                             MaterialPageRoute(
                               builder: (context) => GrpoDetail(
                                 docEntry: item['DocEntry'],
+                                lineNum: item['LineNum'],
                                 itemCode: item['ItemCode'],
                                 description: item['Dscription'],
                                 whse: item['WhsCode'],

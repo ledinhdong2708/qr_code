@@ -128,7 +128,7 @@ class _GoodsReturnState extends State<GoodsReturn> {
                   hintText: 'Remake here',
                   icon: Icons.edit,
                   valueQR: remark,
-                  // controller: _remakeController
+                  controller: _remakeController
                 ),
                 if (prr1.isNotEmpty)
                   ListView.builder(
@@ -143,6 +143,7 @@ class _GoodsReturnState extends State<GoodsReturn> {
                             MaterialPageRoute(
                               builder: (context) => GoodsReturnDetail(
                                 docEntry: item['DocEntry'],
+                                lineNum: item['LineNum'],
                                 itemCode: item['ItemCode'],
                                 description: item['Dscription'],
                                 whse: item['WhsCode'],

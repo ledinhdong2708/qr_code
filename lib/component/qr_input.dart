@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/page/qr_code_input.dart';
-import 'package:qr_code/page/qr_view_example.dart';
 
 class QRCodeInput extends StatelessWidget {
   final TextEditingController controller;

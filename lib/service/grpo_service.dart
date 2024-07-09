@@ -1,5 +1,6 @@
 // lib/fetch_data.dart
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_code/component/dialog.dart';
@@ -13,7 +14,6 @@ Future<Map<String, dynamic>?> fetchOporData(String resultCode) async {
     var decodedResponse = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
       final json = jsonDecode(decodedResponse);
-      // print(json);
       return json;
     } else {
       print("Failed to load data with status code: ${response.statusCode}");
@@ -102,7 +102,6 @@ Future<void> updateGrpoDatabase(
 
 Future<void> postData(Map<String, dynamic> data, BuildContext context) async {
   const String url = '$serverIp/api/v1/grpoitems';
-
   try {
     var response = await http.post(
       Uri.parse(url),
