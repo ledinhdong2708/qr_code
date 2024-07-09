@@ -45,6 +45,23 @@ Future<Map<String, dynamic>?> fetchPrr1Data(String resultCode) async {
   }
 }
 
+Future<void> fetchAndUpdateGrrDatabase(
+    String resultCode,
+    TextEditingController controller,
+    Function setStateCallback,
+    BuildContext context) async {
+  final data = await fetchOprrData(resultCode);
+  if (data != null) {
+    setStateCallback(() {
+      controller.text = data['data']['remake'] ?? '';
+    });
+
+    final remake = controller.text;
+    await updateGrrDatabase(resultCode, remake, context);
+  } else {
+    print('Failed to fetch data');
+  }
+}
 
 Future<void> updateGrrDatabase(
     String resultCode, String remake, BuildContext context) async {

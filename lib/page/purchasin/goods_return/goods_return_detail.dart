@@ -11,6 +11,7 @@ import '../../../service/goodreturn_service.dart';
 
 class GoodsReturnDetail extends StatefulWidget {
   final String docEntry;
+  final String lineNum;
   final String itemCode;
   final String description;
   final String batch;
@@ -23,6 +24,7 @@ class GoodsReturnDetail extends StatefulWidget {
   const GoodsReturnDetail({
     super.key,
     this.docEntry = "",
+    this.lineNum = "",
     this.itemCode = "",
     this.whse = "",
     this.slThucTe = "",
@@ -76,6 +78,7 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
   Future<void> _submitData() async {
     final data = {
       'docEntry': widget.docEntry,
+      'lineNum': widget.lineNum,
       'itemCode': itemCodeController.text,
       'itemName': descriptionController.text,
       'batch': batchController.text,
