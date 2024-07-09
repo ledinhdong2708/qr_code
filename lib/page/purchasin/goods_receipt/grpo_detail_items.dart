@@ -12,12 +12,20 @@ class GrpoDetailItems extends StatefulWidget {
   final String batch;
   final String slThucTe;
   final String remake;
+  final String itemCode;
+  final String itemName;
+  final String whse;
+  final String uoMCode;
   const GrpoDetailItems(
       {super.key,
       this.docEntry = '',
       this.lineNum = '',
       this.batch = '',
       this.slThucTe = '',
+      this.itemCode = '',
+      this.itemName = '',
+      this.whse = '',
+      this.uoMCode = '',
       this.remake = ''});
 
   @override
@@ -28,13 +36,22 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
   late TextEditingController batchController;
   late TextEditingController slThucTeController;
   late TextEditingController remakeController;
+  late TextEditingController itemCodeController;
+  late TextEditingController descriptionController;
+  late TextEditingController whseController;
+  late TextEditingController uoMCodeController;
+
   // final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    itemCodeController = TextEditingController(text: widget.itemCode);
+    descriptionController = TextEditingController(text: widget.itemName);
     batchController = TextEditingController(text: widget.batch);
+    whseController = TextEditingController(text: widget.whse);
     slThucTeController = TextEditingController(text: widget.slThucTe);
+    uoMCodeController = TextEditingController(text: widget.uoMCode);
     remakeController = TextEditingController(text: widget.remake);
   }
 
@@ -48,6 +65,10 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
 
   Future<void> _submitData() async {
     final data = {
+      'itemCode': itemCodeController.text,
+      'itemName': descriptionController.text,
+      'whse': whseController.text,
+      'uoMCode': uoMCodeController.text,
       'docEntry': widget.docEntry,
       'lineNum': widget.lineNum,
       'batch': batchController.text,
@@ -74,6 +95,26 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
         padding: AppStyles.paddingContainer,
         child: Column(
           children: [
+            buildTextFieldRow(
+              controller: itemCodeController,
+              labelText: 'Item Code',
+              hintText: 'Item Code',
+            ),
+            buildTextFieldRow(
+              controller: descriptionController,
+              labelText: 'Item Name',
+              hintText: 'Item Name',
+            ),
+            buildTextFieldRow(
+              controller: whseController,
+              labelText: 'Whse',
+              hintText: 'Whse',
+            ),
+            buildTextFieldRow(
+              controller: uoMCodeController,
+              labelText: 'UoMCode',
+              hintText: 'UoMCode',
+            ),
             buildTextFieldRow(
                 controller: slThucTeController,
                 labelText: 'Sl Thực tế',
