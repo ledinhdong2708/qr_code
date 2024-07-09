@@ -127,13 +127,13 @@ class _GrpoDetailState extends State<GrpoDetail> {
                   labelText: 'Item Name',
                   hintText: 'Item Name',
                 ),
-                buildTextFieldRow(
-                  controller: whseController,
-                  labelText: 'Whse',
-                  isEnable: true,
-                  hintText: 'Whse',
-                  icon: Icons.more_vert,
-                ),
+                // buildTextFieldRow(
+                //   controller: whseController,
+                //   labelText: 'Whse',
+                //   isEnable: true,
+                //   hintText: 'Whse',
+                //   icon: Icons.more_vert,
+                // ),
                 buildTextFieldRow(
                   controller: openQtyController,
                   labelText: 'SL Yêu Cầu',
@@ -151,11 +151,11 @@ class _GrpoDetailState extends State<GrpoDetail> {
                 //   hintText: 'Batch',
                 //   isEnable: true,
                 // ),
-                buildTextFieldRow(
-                  controller: uoMCodeController,
-                  labelText: 'UoM Code',
-                  hintText: 'UoM Code',
-                ),
+                // buildTextFieldRow(
+                //   controller: uoMCodeController,
+                //   labelText: 'UoM Code',
+                //   hintText: 'UoM Code',
+                // ),
                 // buildTextFieldRow(
                 //   controller: remakeController,
                 //   labelText: 'Remake',
@@ -169,48 +169,74 @@ class _GrpoDetailState extends State<GrpoDetail> {
                   },
                   child: const Text('Tạo Nhãn'),
                 ),
+                // if (grpoItemsDetail.isNotEmpty)
+                //   ListView.builder(
+                //     shrinkWrap: true,
+                //     itemCount: grpoItemsDetail.length,
+                //     itemBuilder: (context, index) {
+                //       var item = grpoItemsDetail[index];
+                //       return GestureDetector(
+                //         onTap: () {
+                //           Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //               builder: (context) => GrpoDetail(
+                //                 docEntry: item['DocEntry'],
+                //                 lineNum: item['LineNum'],
+                //                 slThucTe: item['SlThucTe'].toString(),
+                //                 batch: item['Batch'].toString(),
+                //                 remake: item['Remake'].toString(),
+                //               ),
+                //             ),
+                //           );
+                //         },
+                //         child: Container(
+                //           width: double.infinity,
+                //           padding: const EdgeInsets.all(10),
+                //           margin: const EdgeInsets.all(10),
+                //           decoration: BoxDecoration(
+                //             color: readInput,
+                //             borderRadius: BorderRadius.circular(10),
+                //           ),
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               Text(item['SlThucTe'].toString()),
+                //               Text(item['Batch'].toString()),
+                //               Text(item['Remake'].toString()),
+                //             ],
+                //           ),
+                //         ),
+                //       );
+                //     },
+                //   ),
                 if (grpoItemsDetail.isNotEmpty)
                   ListView.builder(
                     shrinkWrap: true,
                     itemCount: grpoItemsDetail.length,
                     itemBuilder: (context, index) {
                       var item = grpoItemsDetail[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GrpoDetail(
-                                docEntry: item['DocEntry'],
-                                lineNum: item['LineNum'],
-                                slThucTe: item['SlThucTe'].toString(),
-                                batch: item['Batch'].toString(),
-                                remake: item['Remake'].toString(),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: readInput,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(item['SlThucTe'].toString()),
-                              Text(item['Batch'].toString()),
-                              Text(item['Remake'].toString()),
-                            ],
-                          ),
+                      return Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: readInput,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(item['ItemCode'].toString()),
+                            Text(item['ItemName'].toString()),
+                            Text(item['SlThucTe'].toString()),
+                            Text(item['Batch'].toString()),
+                            Text(item['Remake'].toString()),
+                          ],
                         ),
                       );
                     },
                   ),
-
                 Container(
                   width: double.infinity,
                   margin: AppStyles.marginButton,
@@ -227,6 +253,10 @@ class _GrpoDetailState extends State<GrpoDetail> {
                               builder: (context) => GrpoDetailItems(
                                 docEntry: widget.docEntry,
                                 lineNum: widget.lineNum,
+                                itemCode: widget.itemCode,
+                                itemName: widget.description,
+                                whse: widget.whse,
+                                uoMCode: widget.uoMCode,
                               ),
                             ),
                           );
