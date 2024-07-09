@@ -7,18 +7,20 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final double horizontal;
   final double vertical;
+  final bool isEnabled;
   const CustomButton({
     Key? key,
     required this.text,
     required this.onPressed,
     this.horizontal = 12.0,
     this.vertical = 6.0,
+    this.isEnabled = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: isEnabled ? onPressed : null,
       style: ElevatedButton.styleFrom(
           backgroundColor: mainColor,
           shape: RoundedRectangleBorder(

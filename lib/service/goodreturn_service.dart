@@ -11,7 +11,6 @@ Future<Map<String, dynamic>?> fetchOprrData(String resultCode) async {
     var decodedResponse = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
       final json = jsonDecode(decodedResponse);
-      // print(json);
       return json;
     } else {
       print("Failed to load data with status code: ${response.statusCode}");
@@ -32,7 +31,6 @@ Future<Map<String, dynamic>?> fetchPrr1Data(String resultCode) async {
     if (response.statusCode == 200) {
       final json = jsonDecode(decodedResponse);
       print("Fetch PRR1 data successful");
-      // print(json);
       return json;
     } else {
       print("Failed to load data with status code: ${response.statusCode}");

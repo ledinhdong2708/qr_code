@@ -4,11 +4,13 @@ import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/page/purchasin/goods_receipt/grpo_detail_items.dart';
 import 'package:qr_code/routes/routes.dart';
 import 'package:qr_code/service/grpo_service.dart';
 
 class GrpoDetail extends StatefulWidget {
   final String docEntry;
+  final String lineNum;
   final String itemCode;
   final String description;
   final String batch;
@@ -21,6 +23,7 @@ class GrpoDetail extends StatefulWidget {
   const GrpoDetail({
     super.key,
     this.docEntry = "",
+    this.lineNum = "",
     this.itemCode = "",
     this.whse = "",
     this.slThucTe = "",
@@ -74,6 +77,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
   Future<void> _submitData() async {
     final data = {
       'docEntry': widget.docEntry,
+      'lineNum': widget.lineNum,
       'itemCode': itemCodeController.text,
       'itemName': descriptionController.text,
       'batch': batchController.text,
@@ -151,7 +155,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, Routes.grpoLabels);
+                    Navigator.pushNamed(context, Routes.grpoDetailItems);
                   },
                   child: const Text('Tạo Nhãn'),
                 ),
@@ -164,7 +168,14 @@ class _GrpoDetailState extends State<GrpoDetail> {
                     children: [
                       CustomButton(
                         text: 'New',
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const GrpoDetailItems(),
+                            ),
+                          );
+                        },
                       ),
                       const SizedBox(
                         width: 20,
