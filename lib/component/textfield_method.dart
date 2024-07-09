@@ -8,6 +8,7 @@ Row buildTextFieldRow({
   String? valueQR,
   final IconData? icon,
   TextEditingController? controller,
+  Widget? iconButton,
 }) {
   Color? fillColor = isEnable ? fieldInput : readInput;
   return Row(
@@ -41,6 +42,7 @@ Row buildTextFieldRow({
           ),
         ),
       ),
+      if (iconButton != null) iconButton,
     ],
   );
 }
