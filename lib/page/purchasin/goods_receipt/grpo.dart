@@ -132,6 +132,7 @@ class _GrpoState extends State<Grpo> {
                               Text(item['Dscription']),
                               Text(item['Batch'].toString()),
                               Text(item['OpenQty'].toString()),
+                              Text(item['SlThucTe'].toString()),
                             ],
                           ),
                         ),

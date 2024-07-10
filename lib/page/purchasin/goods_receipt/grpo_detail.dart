@@ -63,7 +63,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
 
     fetchGrpoItemsDetailData(widget.docEntry, widget.lineNum).then((data) {
       if (data != null && data['data'] is List) {
-        print(data['data']);
+        // print(data['data']);
         setState(() {
           grpoItemsDetail = data['data'];
         });

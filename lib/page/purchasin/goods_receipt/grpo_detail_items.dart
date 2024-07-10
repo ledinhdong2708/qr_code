@@ -4,6 +4,7 @@ import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/page/print_page.dart';
 import 'package:qr_code/service/grpo_service.dart';
 
 class GrpoDetailItems extends StatefulWidget {
@@ -141,11 +142,29 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
                 children: [
                   CustomButton(
                     text: 'PRINT',
-                    onPressed: _submitData,
+                    onPressed: () {
+                      final data = {
+                        'itemCode': itemCodeController.text,
+                        'itemName': descriptionController.text,
+                        'whse': whseController.text,
+                        'uoMCode': uoMCodeController.text,
+                        'docEntry': widget.docEntry,
+                        'lineNum': widget.lineNum,
+                        'batch': batchController.text,
+                        'slThucTe': slThucTeController.text,
+                        'remake': remakeController.text,
+                      };
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => PrintPage(data),
+                        ),
+                      );
+                    },
                   ),
                   CustomButton(
-                    text: 'CANCEL',
-                    onPressed: () {},
+                    text: 'CONFIRM',
+                    onPressed: _submitData,
                   ),
                 ],
               ),
