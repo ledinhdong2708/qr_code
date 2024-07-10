@@ -7,6 +7,7 @@ import 'package:qr_code/page/production/rfp/rfp.dart';
 import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
+import 'package:qr_code/page/purchasin/goods_return/goods_return_detail_item.dart';
 import 'package:qr_code/page/result_screen.dart';
 import 'package:qr_code/page/sales/delivery/delivery.dart';
 import 'package:qr_code/page/sales/returns/return.dart';
@@ -70,7 +71,14 @@ class _QRViewExampleState extends State<QRViewExample> {
         context,
         MaterialPageRoute(builder: (context) => GoodsReturn(qrData: qrData)),
       );
-    } else if (pageIdentifier == 'APCreditMemo') {
+    }
+    else if (pageIdentifier == 'GoodReturnDetailItems') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => GoodReturnDetailItems(qrData: qrData)),
+      );
+    }
+    else if (pageIdentifier == 'APCreditMemo') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ApCreditMemo(qrData: qrData)),
