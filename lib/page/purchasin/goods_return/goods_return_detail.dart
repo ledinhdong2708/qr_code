@@ -135,6 +135,12 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                   labelText: 'SL Thực Tế',
                   hintText: 'SL Thực Tế',
                   isEnable: true,
+                  iconButton: IconButton(
+                    icon: const Icon(Icons.qr_code_scanner),
+                    onPressed: () {
+
+                    },
+                  ),
                 ),
                 buildTextFieldRow(
                   controller: batchController,
