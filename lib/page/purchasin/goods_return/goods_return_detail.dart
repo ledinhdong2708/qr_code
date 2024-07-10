@@ -191,15 +191,15 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                   iconButton: IconButton(
                     icon: const Icon(Icons.qr_code_scanner),
                     onPressed: () {
-                      // _navigateAndDisplaySelection(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const QRViewExample(
-                              pageIdentifier: 'GoodReturnDetailItems',
-
-                            )),
-                      );
+                      _navigateAndDisplaySelection(context);
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => const QRViewExample(
+                      //         pageIdentifier: 'GoodReturnDetailItems',
+                      //
+                      //       )),
+                      // );
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(

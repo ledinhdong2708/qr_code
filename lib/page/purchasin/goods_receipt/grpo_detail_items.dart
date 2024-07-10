@@ -157,7 +157,7 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => PrintPage(data),
+                          builder: (_) => PrintPage(),
                         ),
                       );
                     },
