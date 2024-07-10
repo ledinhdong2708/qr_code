@@ -20,39 +20,35 @@ class _PrintPageState extends State<PrintPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => {initPrinter()});
+    WidgetsBinding.instance.addPostFrameCallback((_) => initPrinter());
   }
 
   Future<void> initPrinter() async {
     bluetoothPrint.startScan(timeout: const Duration(seconds: 2));
 
     if (!mounted) return;
-    bluetoothPrint.scanResults.listen(
-      (val) {
-        if (!mounted) return;
+    bluetoothPrint.scanResults.listen((val) {
+      if (!mounted) return;
+      setState(() {
+        _devices = val;
+      });
+      if (_devices.isEmpty) {
         setState(() {
-          _devices = val;
+          _devicesMsg = "Không có thiết bị nào";
         });
-        if (_devices.isEmpty) {
-          setState(() {
-            _devicesMsg = "No Devices";
-          });
-        }
-      },
-    );
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Printer'),
+        title: const Text('Chọn Máy In'),
         backgroundColor: Colors.redAccent,
       ),
       body: _devices.isEmpty
-          ? Center(
-              child: Text(_devicesMsg ?? ''),
-            )
+          ? Center(child: Text(_devicesMsg ?? ''))
           : ListView.builder(
               itemCount: _devices.length,
               itemBuilder: (c, i) {
@@ -60,9 +56,7 @@ class _PrintPageState extends State<PrintPage> {
                   leading: const Icon(Icons.print),
                   title: Text(_devices[i].name ?? ''),
                   subtitle: Text(_devices[i].address ?? ''),
-                  onTap: () {
-                    _startPrint(_devices[i]);
-                  },
+                  onTap: () => _startPrint(_devices[i]),
                 );
               },
             ),
@@ -71,45 +65,58 @@ class _PrintPageState extends State<PrintPage> {
 
   Future<void> _startPrint(BluetoothDevice device) async {
     if (device != null && device.address != null) {
-      await bluetoothPrint.connect(device);
+      try {
+        var connectResult = await bluetoothPrint.connect(device);
+        if (connectResult) {
+          Map<String, dynamic> config = {};
+          List<LineText> list = [];
 
-      Map<String, dynamic> config = {};
-      List<LineText> list = [];
+          list.add(
+            LineText(
+              type: LineText.TYPE_TEXT,
+              content: "Grocery App",
+              weight: 2,
+              width: 2,
+              height: 2,
+              align: LineText.ALIGN_CENTER,
+              linefeed: 1,
+            ),
+          );
 
-      list.add(
-        LineText(
-          type: LineText.TYPE_TEXT,
-          content: "Grocery App",
-          weight: 2,
-          width: 2,
-          height: 2,
-          align: LineText.ALIGN_CENTER,
-          linefeed: 1,
-        ),
-      );
+          widget.data.forEach((key, value) {
+            list.add(
+              LineText(
+                type: LineText.TYPE_TEXT,
+                content: key,
+                weight: 0,
+                align: LineText.ALIGN_LEFT,
+                linefeed: 1,
+              ),
+            );
 
-      widget.data.forEach((key, value) {
-        list.add(
-          LineText(
-            type: LineText.TYPE_TEXT,
-            content: key,
-            weight: 0,
-            align: LineText.ALIGN_LEFT,
-            linefeed: 1,
-          ),
+            list.add(
+              LineText(
+                type: LineText.TYPE_TEXT,
+                content: value,
+                align: LineText.ALIGN_LEFT,
+                linefeed: 1,
+              ),
+            );
+          });
+
+          await bluetoothPrint.printReceipt(config, list);
+        } else {
+          print("Kết nối thất bại");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Không thể kết nối đến thiết bị")),
+          );
+        }
+      } catch (e) {
+        print("Lỗi kết nối đến thiết bị: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Lỗi kết nối đến thiết bị: $e")),
         );
-
-        list.add(
-          LineText(
-            type: LineText.TYPE_TEXT,
-            content: value,
-            align: LineText.ALIGN_LEFT,
-            linefeed: 1,
-          ),
-        );
-      });
-
-      await bluetoothPrint.printReceipt(config, list);
+      }
     }
   }
 }
