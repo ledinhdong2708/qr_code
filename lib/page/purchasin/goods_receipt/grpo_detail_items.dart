@@ -76,7 +76,6 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
       'slThucTe': slThucTeController.text,
       'remake': remakeController.text,
     };
-
     try {
       await postGrpoItemsDetailData(
           data, context, widget.docEntry, widget.lineNum);

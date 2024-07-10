@@ -1,7 +1,6 @@
 import 'package:bluetooth_print/bluetooth_print.dart';
 import 'package:bluetooth_print/bluetooth_print_model.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class PrintPage extends StatefulWidget {
   final Map<String, String> data;
@@ -15,10 +14,12 @@ class _PrintPageState extends State<PrintPage> {
   BluetoothPrint bluetoothPrint = BluetoothPrint.instance;
   List<BluetoothDevice> _devices = [];
   String _devicesMsg = "";
-  final f = NumberFormat("\$###,###.00", "en_US");
+  // final f = NumberFormat("\$###,###.00", "en_US");
 
   @override
   void initState() {
+    print("aaaaaaaaaaaaaaaaaaaaaaa");
+    print(widget.data);
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => initPrinter());
   }
@@ -56,14 +57,71 @@ class _PrintPageState extends State<PrintPage> {
                   leading: const Icon(Icons.print),
                   title: Text(_devices[i].name ?? ''),
                   subtitle: Text(_devices[i].address ?? ''),
-                  onTap: () => _startPrint(_devices[i]),
+                  onTap: () => _print(_devices[i]),
                 );
               },
             ),
     );
   }
 
-  Future<void> _startPrint(BluetoothDevice device) async {
+  // Future<void> _startPrint(BluetoothDevice device) async {
+  //   if (device != null && device.address != null) {
+  //     try {
+  //       var connectResult = await bluetoothPrint.connect(device);
+  //       if (connectResult) {
+  //         Map<String, dynamic> config = {};
+  //         List<LineText> list = [];
+
+  //         list.add(
+  //           LineText(
+  //             type: LineText.TYPE_TEXT,
+  //             content: "Grocery App",
+  //             weight: 2,
+  //             width: 2,
+  //             height: 2,
+  //             align: LineText.ALIGN_CENTER,
+  //             linefeed: 1,
+  //           ),
+  //         );
+
+  //         widget.data.forEach((key, value) {
+  //           list.add(
+  //             LineText(
+  //               type: LineText.TYPE_TEXT,
+  //               content: key,
+  //               weight: 0,
+  //               align: LineText.ALIGN_LEFT,
+  //               linefeed: 1,
+  //             ),
+  //           );
+
+  //           list.add(
+  //             LineText(
+  //               type: LineText.TYPE_TEXT,
+  //               content: value,
+  //               align: LineText.ALIGN_LEFT,
+  //               linefeed: 1,
+  //             ),
+  //           );
+  //         });
+
+  //         await bluetoothPrint.printReceipt(config, list);
+  //       } else {
+  //         print("Kết nối thất bại");
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(content: Text("Không thể kết nối đến thiết bị")),
+  //         );
+  //       }
+  //     } catch (e) {
+  //       print("Lỗi kết nối đến thiết bị: $e");
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text("Lỗi kết nối đến thiết bị: $e")),
+  //       );
+  //     }
+  //   }
+  // }
+
+  Future<void> _print(BluetoothDevice device) async {
     if (device != null && device.address != null) {
       try {
         var connectResult = await bluetoothPrint.connect(device);
@@ -75,9 +133,9 @@ class _PrintPageState extends State<PrintPage> {
             LineText(
               type: LineText.TYPE_TEXT,
               content: "Grocery App",
-              weight: 2,
-              width: 2,
-              height: 2,
+              // weight: 2,
+              // width: 2,
+              // height: 2,
               align: LineText.ALIGN_CENTER,
               linefeed: 1,
             ),
@@ -88,7 +146,7 @@ class _PrintPageState extends State<PrintPage> {
               LineText(
                 type: LineText.TYPE_TEXT,
                 content: key,
-                weight: 0,
+                // weight: 0,
                 align: LineText.ALIGN_LEFT,
                 linefeed: 1,
               ),
