@@ -1,13 +1,17 @@
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
-import 'package:qr_code/page/print_page.dart';
 import 'package:qr_code/service/grpo_service.dart';
 
-class GrpoDetailItems extends StatefulWidget {
+
+class GoodReturnDetailItems extends StatefulWidget {
+  final String qrData;
   final String docEntry;
   final String lineNum;
   final String batch;
@@ -17,23 +21,24 @@ class GrpoDetailItems extends StatefulWidget {
   final String itemName;
   final String whse;
   final String uoMCode;
-  const GrpoDetailItems(
+  const GoodReturnDetailItems(
       {super.key,
-      this.docEntry = '',
-      this.lineNum = '',
-      this.batch = '',
-      this.slThucTe = '',
-      this.itemCode = '',
-      this.itemName = '',
-      this.whse = '',
-      this.uoMCode = '',
-      this.remake = ''});
+        required this.qrData,
+        this.docEntry = '',
+        this.lineNum = '',
+        this.batch = '',
+        this.slThucTe = '',
+        this.itemCode = '',
+        this.itemName = '',
+        this.whse = '',
+        this.uoMCode = '',
+        this.remake = ''});
 
   @override
-  _GrpoDetailItemsState createState() => _GrpoDetailItemsState();
+  _GoodReturnDetailItemsState createState() => _GoodReturnDetailItemsState();
 }
 
-class _GrpoDetailItemsState extends State<GrpoDetailItems> {
+class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
   late TextEditingController batchController;
   late TextEditingController slThucTeController;
   late TextEditingController remakeController;
@@ -47,13 +52,21 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
   @override
   void initState() {
     super.initState();
-    itemCodeController = TextEditingController(text: widget.itemCode);
-    descriptionController = TextEditingController(text: widget.itemName);
-    batchController = TextEditingController(text: widget.batch);
-    whseController = TextEditingController(text: widget.whse);
-    slThucTeController = TextEditingController(text: widget.slThucTe);
-    uoMCodeController = TextEditingController(text: widget.uoMCode);
-    remakeController = TextEditingController(text: widget.remake);
+    // itemCodeController = TextEditingController(text: widget.itemCode);
+    // descriptionController = TextEditingController(text: widget.itemName);
+    // batchController = TextEditingController(text: widget.batch);
+    // whseController = TextEditingController(text: widget.whse);
+    // slThucTeController = TextEditingController(text: widget.slThucTe);
+    // uoMCodeController = TextEditingController(text: widget.uoMCode);
+    // remakeController = TextEditingController(text: widget.remake);
+    final Map<String, dynamic> qrDataMap = jsonDecode(widget.qrData)['data'][0];
+    itemCodeController = TextEditingController(text: qrDataMap['ItemCode']);
+    descriptionController = TextEditingController(text: qrDataMap['ItemName']);
+    batchController = TextEditingController(text: qrDataMap['Batch']);
+    whseController = TextEditingController(text: qrDataMap['Whse']);
+    slThucTeController = TextEditingController(text: qrDataMap['SlThucTe']);
+    uoMCodeController = TextEditingController(text: qrDataMap['UoMCode']);
+    remakeController = TextEditingController(text: qrDataMap['Remake']);
   }
 
   @override
@@ -63,31 +76,49 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
     remakeController.dispose();
     super.dispose();
   }
-
-  Future<void> _submitData() async {
+  void _submitData() {
     final data = {
+      'docEntry': widget.docEntry,
+      'lineNum': widget.lineNum,
       'itemCode': itemCodeController.text,
       'itemName': descriptionController.text,
       'whse': whseController.text,
       'uoMCode': uoMCodeController.text,
-      'docEntry': widget.docEntry,
-      'lineNum': widget.lineNum,
-      'batch': batchController.text,
       'slThucTe': slThucTeController.text,
-      'remake': remakeController.text,
+      'batch': batchController.text,
+      'remake':remakeController.text,
     };
-    try {
-      await postGrpoItemsDetailData(
-          data, context, widget.docEntry, widget.lineNum);
-    } catch (e) {
-      print('Error submitting data: $e');
-    }
+
+    Navigator.pop(context, data);
   }
+
+  // Future<void> _submitData() async {
+  //   // final data = {
+  //   //   'itemCode': itemCodeController.text,
+  //   //   'itemName': descriptionController.text,
+  //   //   'whse': whseController.text,
+  //   //   'uoMCode': uoMCodeController.text,
+  //   //   'docEntry': widget.docEntry,
+  //   //   'lineNum': widget.lineNum,
+  //   //   'batch': batchController.text,
+  //   //   'slThucTe': slThucTeController.text,
+  //   //   'remake': remakeController.text,
+  //   // };
+  //   //
+  //   // try {
+  //   //   await postGrpoItemsDetailData(
+  //   //       data, context, widget.docEntry, widget.lineNum);
+  //   // } catch (e) {
+  //   //   print('Error submitting data: $e');
+  //   // }
+  //
+  //
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderApp(title: "GRPO - Detail - Items"),
+      appBar: const HeaderApp(title: "Good Return - Detail - Items"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -140,30 +171,13 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CustomButton(
-                    text: 'PRINT',
-                    onPressed: () {
-                      final data = {
-                        'itemCode': itemCodeController.text,
-                        'itemName': descriptionController.text,
-                        'whse': whseController.text,
-                        'uoMCode': uoMCodeController.text,
-                        'docEntry': widget.docEntry,
-                        'lineNum': widget.lineNum,
-                        'batch': batchController.text,
-                        'slThucTe': slThucTeController.text,
-                        'remake': remakeController.text,
-                      };
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => PrintPage(data: data),
-                        ),
-                      );
-                    },
+                    text: 'OK',
+                    // onPressed: _submitData,
+                    onPressed: _submitData,
                   ),
                   CustomButton(
-                    text: 'CONFIRM',
-                    onPressed: _submitData,
+                    text: 'CANCEL',
+                    onPressed: () {},
                   ),
                 ],
               ),
