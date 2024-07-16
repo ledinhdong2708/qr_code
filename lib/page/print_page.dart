@@ -1,14 +1,30 @@
+import 'dart:convert';
+
 import 'package:bluetooth_print/bluetooth_print.dart';
 import 'package:bluetooth_print/bluetooth_print_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PrintPage extends StatefulWidget {
+  final String data;
+  final String itemCode;
+  final String itemName;
+  const PrintPage({
+    super.key,
+    required this.data,
+    this.itemCode="",
+    this.itemName=""
+  });
   @override
   _PrintPageState createState() => _PrintPageState();
 }
 
+
+
 class _PrintPageState extends State<PrintPage> {
+  late String text;
+  late String itemCode;
+  late String itemName;
   BluetoothPrint bluetoothPrint = BluetoothPrint.instance;
   bool _scanning = false;
   List<BluetoothDevice> _devices = [];
@@ -18,7 +34,12 @@ class _PrintPageState extends State<PrintPage> {
   @override
   void initState() {
     super.initState();
+    text = widget.data;
+    itemCode = widget.itemCode;
+    itemName = widget.itemName;
+    //print("Received data: ${text}");
     _startScan();
+
   }
 
   void _startScan() {
@@ -61,23 +82,39 @@ class _PrintPageState extends State<PrintPage> {
     if (_selectedDevice != null) {
       Map<String, dynamic> config = {};
       List<LineText> list = [];
+      String qrText = 'QR Code - $itemCode - $itemName';
+      String utf8Text = utf8.decode(utf8.encode(qrText));
 
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: 'text',
+        content: utf8Text,
         align: LineText.ALIGN_CENTER,
         linefeed: 1,
-
       ));
+
+      // list.add(LineText(
+      //     type: LineText.TYPE_QRCODE,
+      //     content: '{"ItemCode": "01","ItemName": "012123","Whse": "2","SlThucTe": "123","UoMCode":"123","LineNum": "3","Batch": "dasdsad"}sssssssssssssssssssssssssssssssssss',
+      //     align: LineText.ALIGN_CENTER,
+      //     linefeed: 1,
+      //     size: 1
+      // ));
       list.add(LineText(
           type: LineText.TYPE_QRCODE,
-          content: '{"ItemCode": "01","ItemName": "012123","Whse": "2","SlThucTe": "123","UoMCode":"123","LineNum": "3","Batch": "dasdsad"}',
+          content: text,
           align: LineText.ALIGN_CENTER,
-          linefeed: 1,
+          linefeed: 5,
           size: 1
-
-
       ));
+
+
+      // list.add(LineText(
+      //     type: LineText.TYPE_QRCODE,
+      //     content: widget.data,
+      //     align: LineText.ALIGN_CENTER,
+      //     linefeed: 1,
+      //     size: 1
+      // ));
 
       await bluetoothPrint.printReceipt(config, list);
     }

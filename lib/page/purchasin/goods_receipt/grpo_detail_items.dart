@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/header_app.dart';
@@ -143,23 +145,31 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
                   CustomButton(
                     text: 'PRINT',
                     onPressed: () {
-                      final data = {
-                        'itemCode': itemCodeController.text,
-                        'itemName': descriptionController.text,
-                        'whse': whseController.text,
-                        'uoMCode': uoMCodeController.text,
-                        'docEntry': widget.docEntry,
-                        'lineNum': widget.lineNum,
-                        'batch': batchController.text,
-                        'slThucTe': slThucTeController.text,
-                        'remake': remakeController.text,
-                      };
+                      String jsonString = '{"ItemCode":"${itemCodeController.text}","ItemName":"${descriptionController.text}","Whse":"${whseController.text}","SlThucTe":"${slThucTeController.text}","UoMCode": "${uoMCodeController.text}","Batch":"${batchController.text}"}';
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (_) => const PrintPage(),
+                      //   ),
+                      // );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => PrintPage(),
+                          builder: (_) => PrintPage(
+                            data: jsonString,
+                            itemCode: itemCodeController.text,
+                            itemName: descriptionController.text,
+                          ),
                         ),
                       );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => PrintPage(
+                      //       data: data
+                      //     ),
+                      //   ),
+                      // );
                     },
                   ),
                   CustomButton(

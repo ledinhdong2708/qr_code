@@ -167,10 +167,11 @@ class _GoodsReturnState extends State<GoodsReturn> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(item['ItemCode']),
-                              Text(item['Dscription']),
-                              Text(item['Batch'].toString()),
-                              Text(item['OpenQty'].toString()),
+                              Text("ITEM ${index + 1}:"),
+                              Text("Code: ${item['ItemCode']}"),
+                              Text("Name: ${item['Dscription']}"),
+                              // Text("Batch: ${item['Batch']}"),
+                              Text("Open Quantity: ${item['OpenQty']}"),
                             ],
                           ),
                         ),
