@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/header_app.dart';
@@ -159,6 +161,14 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
                           builder: (_) => PrintPage(data: data),
                         ),
                       );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => PrintPage(
+                      //       data: data
+                      //     ),
+                      //   ),
+                      // );
                     },
                   ),
                   CustomButton(

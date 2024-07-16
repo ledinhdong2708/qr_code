@@ -9,6 +9,8 @@ import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/service/grpo_service.dart';
 
+import '../../../service/goodreturn_service.dart';
+
 
 class GoodReturnDetailItems extends StatefulWidget {
   final String qrData;
@@ -52,6 +54,7 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
   @override
   void initState() {
     super.initState();
+    print("data ${widget.qrData}");
     // itemCodeController = TextEditingController(text: widget.itemCode);
     // descriptionController = TextEditingController(text: widget.itemName);
     // batchController = TextEditingController(text: widget.batch);
@@ -59,7 +62,7 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
     // slThucTeController = TextEditingController(text: widget.slThucTe);
     // uoMCodeController = TextEditingController(text: widget.uoMCode);
     // remakeController = TextEditingController(text: widget.remake);
-    final Map<String, dynamic> qrDataMap = jsonDecode(widget.qrData)['data'][0];
+    final Map<String, dynamic> qrDataMap = jsonDecode(widget.qrData);
     itemCodeController = TextEditingController(text: qrDataMap['ItemCode']);
     descriptionController = TextEditingController(text: qrDataMap['ItemName']);
     batchController = TextEditingController(text: qrDataMap['Batch']);
@@ -76,20 +79,26 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
     remakeController.dispose();
     super.dispose();
   }
-  void _submitData() {
+
+  Future<void> _submitData() async {
     final data = {
-      'docEntry': widget.docEntry,
-      'lineNum': widget.lineNum,
       'itemCode': itemCodeController.text,
       'itemName': descriptionController.text,
       'whse': whseController.text,
       'uoMCode': uoMCodeController.text,
-      'slThucTe': slThucTeController.text,
+      'docEntry': widget.docEntry,
+      'lineNum': widget.lineNum,
       'batch': batchController.text,
-      'remake':remakeController.text,
+      'slThucTe': slThucTeController.text,
+      'remake': remakeController.text,
     };
 
-    Navigator.pop(context, data);
+    try {
+      await postGrrItemsDetailData(
+          data, context, widget.docEntry, widget.lineNum);
+    } catch (e) {
+      print('Error submitting data: $e');
+    }
   }
 
   // Future<void> _submitData() async {

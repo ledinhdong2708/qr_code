@@ -21,6 +21,7 @@ class Purchasing extends StatelessWidget {
               onTap: () {
                 // Navigator.push(
                 //   context,
+                //   MaterialPageRoute(builder: (context) => Grpo(qrData: "1")),
                 //   MaterialPageRoute(
                 //       builder: (context) => const QRViewExample(
                 //             pageIdentifier: 'GRPO',

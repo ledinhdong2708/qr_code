@@ -44,7 +44,7 @@ class GoodsReturnDetail extends StatefulWidget {
 }
 
 class _GoodReturnDetailState extends State<GoodsReturnDetail> {
-  List<Map<String, dynamic>> listGoodReturnItemsDetail = [];
+  List<dynamic> grrItemsDetail = [];
   late TextEditingController itemCodeController;
   late TextEditingController descriptionController;
   late TextEditingController batchController;
@@ -59,28 +59,42 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
     super.initState();
     itemCodeController = TextEditingController(text: widget.itemCode);
     descriptionController = TextEditingController(text: widget.description);
-    openQtyController = TextEditingController(text: widget.openQty);
-    slThucTeController = TextEditingController(text: widget.slThucTe);
     batchController = TextEditingController(text: widget.batch);
-    listGoodReturnItemsDetail = [];
+    openQtyController = TextEditingController(text: widget.openQty);
+    whseController = TextEditingController(text: widget.whse);
+    slThucTeController = TextEditingController(text: widget.slThucTe);
+    uoMCodeController = TextEditingController(text: widget.uoMCode);
+    remakeController = TextEditingController(text: widget.remake);
 
-    String qrData = jsonEncode({
-      'data': [
-        {
-          'ItemCode': widget.itemCode,
-          'ItemName': widget.description,
-          'Whse': widget.whse,
-          'SlThucTe': widget.slThucTe,
-          'UoMCode': widget.uoMCode,
-          'LineNum': widget.lineNum,
-          'Batch': widget.batch,
-          'Remake': widget.remake,
-          'DocEntry': widget.docEntry,
-        }
-      ]
+
+    // String qrData = jsonEncode({
+    //   'data': [
+    //     {
+    //       'ItemCode': widget.itemCode,
+    //       'ItemName': widget.description,
+    //       'Whse': widget.whse,
+    //       'SlThucTe': widget.slThucTe,
+    //       'UoMCode': widget.uoMCode,
+    //       'LineNum': widget.lineNum,
+    //       'Batch': widget.batch,
+    //       'Remake': widget.remake,
+    //       'DocEntry': widget.docEntry,
+    //     }
+    //   ]
+    // });
+    //
+    // print(qrData);
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    fetchGrrItemsDetailData(widget.docEntry, widget.lineNum).then((data) {
+      if (data != null && data['data'] is List) {
+        setState(() {
+          grrItemsDetail = data['data'];
+        });
+      }
     });
-
-    print(qrData);
   }
 
 
@@ -97,35 +111,35 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
     super.dispose();
   }
 
-  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => GoodReturnDetailItems(
-          qrData: jsonEncode({
-            'data': [
-              {
-                'ItemCode': widget.itemCode,
-                'ItemName': widget.description,
-                'Whse': widget.whse,
-                'SlThucTe': widget.slThucTe,
-                'UoMCode': widget.uoMCode,
-                'LineNum': widget.lineNum,
-                'Batch': widget.batch,
-                'Remake': widget.remake,
-                'DocEntry': widget.docEntry,
-              }
-            ]
-          }),
-        ),
-      ),
-    );
-    if (result != null && result is Map<String, dynamic>) {
-      setState(() {
-        listGoodReturnItemsDetail.add(result);
-      });
-    }
-  }
+  // Future<void> _navigateAndDisplaySelection(BuildContext context) async {
+  //   final result = await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => GoodReturnDetailItems(
+  //         qrData: jsonEncode({
+  //           'data': [
+  //             {
+  //               'ItemCode': widget.itemCode,
+  //               'ItemName': widget.description,
+  //               'Whse': widget.whse,
+  //               'SlThucTe': widget.slThucTe,
+  //               'UoMCode': widget.uoMCode,
+  //               'LineNum': widget.lineNum,
+  //               'Batch': widget.batch,
+  //               'Remake': widget.remake,
+  //               'DocEntry': widget.docEntry,
+  //             }
+  //           ]
+  //         }),
+  //       ),
+  //     ),
+  //   );
+  //   if (result != null && result is Map<String, dynamic>) {
+  //     setState(() {
+  //       grrItemsDetail.add(result);
+  //     });
+  //   }
+  // }
 
   Future<void> _submitData() async {
     final data = {
@@ -142,7 +156,7 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
     };
 
     try {
-      await postData(data, context);
+      await postGrrItemsData(data, context);
     } catch (e) {
       print('Error submitting data: $e');
     }
@@ -191,15 +205,16 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                   iconButton: IconButton(
                     icon: const Icon(Icons.qr_code_scanner),
                     onPressed: () {
-                      _navigateAndDisplaySelection(context);
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => const QRViewExample(
-                      //         pageIdentifier: 'GoodReturnDetailItems',
-                      //
-                      //       )),
-                      // );
+                      //_navigateAndDisplaySelection(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => QRViewExample(
+                              pageIdentifier: 'GoodReturnDetailItems',
+                              docEntry: widget.docEntry,
+                              lineNum: widget.lineNum,
+                            )),
+                      ).then((_) => _fetchData());
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(
@@ -238,18 +253,18 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                 //   hintText: 'Remake here',
                 //   icon: Icons.edit,
                 // ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, Routes.grpoDetailItems);
-                  },
-                  child: const Text('Tạo Nhãn'),
-                ),
-                if (listGoodReturnItemsDetail.isNotEmpty)
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, Routes.grpoDetailItems);
+                //   },
+                //   child: const Text('Tạo Nhãn'),
+                // ),
+                if (grrItemsDetail.isNotEmpty)
                   ListView.builder(
                     shrinkWrap: true,
-                    itemCount: listGoodReturnItemsDetail.length,
+                    itemCount: grrItemsDetail.length,
                     itemBuilder: (context, index) {
-                      var item = listGoodReturnItemsDetail[index];
+                      var item = grrItemsDetail[index];
                       return Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(10),
@@ -261,11 +276,10 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(item['itemCode'].toString()),
-                            Text(item['itemName'].toString()),
-                            Text(item['slThucTe'].toString()),
-                            Text(item['batch'].toString()),
-                            Text(item['remake'].toString()),
+                            Text("ITEM ${index + 1}:"),
+                            Text("Batch: ${item['Batch']}"),
+                            Text("SlThucTe: ${item['SlThucTe']}"),
+                            Text("Remake: ${item['Remake']}"),
                           ],
                         ),
                       );

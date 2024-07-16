@@ -16,7 +16,9 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 class QRViewExample extends StatefulWidget {
   // tạo mã định danh cho trang
   final String pageIdentifier;
-  const QRViewExample({super.key, required this.pageIdentifier});
+  final String docEntry;
+  final String lineNum;
+  const QRViewExample({super.key, required this.pageIdentifier, this.docEntry="", this.lineNum=""});
 
   @override
   State<StatefulWidget> createState() => _QRViewExampleState();
@@ -75,7 +77,7 @@ class _QRViewExampleState extends State<QRViewExample> {
     else if (pageIdentifier == 'GoodReturnDetailItems') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => GoodReturnDetailItems(qrData: qrData)),
+        MaterialPageRoute(builder: (context) => GoodReturnDetailItems(qrData: qrData, docEntry: widget.docEntry, lineNum: widget.lineNum)),
       );
     }
     else if (pageIdentifier == 'APCreditMemo') {

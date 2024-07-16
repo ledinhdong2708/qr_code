@@ -15,6 +15,9 @@ class PrintPage extends StatefulWidget {
 }
 
 class _PrintPageState extends State<PrintPage> {
+  late String text;
+  late String itemCode;
+  late String itemName;
   BluetoothPrint bluetoothPrint = BluetoothPrint.instance;
   bool _scanning = false;
   List<BluetoothDevice> _devices = [];
@@ -24,6 +27,10 @@ class _PrintPageState extends State<PrintPage> {
   @override
   void initState() {
     super.initState();
+    // text = widget.data;
+    // itemCode = widget.itemCode;
+    // itemName = widget.itemName;
+    //print("Received data: ${text}");
     _startScan();
   }
 
@@ -31,7 +38,7 @@ class _PrintPageState extends State<PrintPage> {
     setState(() {
       _scanning = true;
     });
-    bluetoothPrint.startScan(timeout: Duration(seconds: 4));
+    bluetoothPrint.startScan(timeout: const Duration(seconds: 4));
     bluetoothPrint.scanResults.listen((devices) {
       setState(() {
         _devices = devices;
@@ -75,6 +82,14 @@ class _PrintPageState extends State<PrintPage> {
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
+
+      // list.add(LineText(
+      //     type: LineText.TYPE_QRCODE,
+      //     content: '{"ItemCode": "01","ItemName": "012123","Whse": "2","SlThucTe": "123","UoMCode":"123","LineNum": "3","Batch": "dasdsad"}sssssssssssssssssssssssssssssssssss',
+      //     align: LineText.ALIGN_CENTER,
+      //     linefeed: 1,
+      //     size: 1
+      // ));
       list.add(LineText(
         type: LineText.TYPE_TEXT,
         content: 'Item Name: ${widget.data['itemName']}',
@@ -130,6 +145,14 @@ class _PrintPageState extends State<PrintPage> {
         linefeed: 1,
         size: 1,
       ));
+
+      // list.add(LineText(
+      //     type: LineText.TYPE_QRCODE,
+      //     content: widget.data,
+      //     align: LineText.ALIGN_CENTER,
+      //     linefeed: 1,
+      //     size: 1
+      // ));
 
       await bluetoothPrint.printReceipt(config, list);
     }

@@ -61,9 +61,12 @@ class _GrpoDetailState extends State<GrpoDetail> {
     uoMCodeController = TextEditingController(text: widget.uoMCode);
     remakeController = TextEditingController(text: widget.remake);
 
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
     fetchGrpoItemsDetailData(widget.docEntry, widget.lineNum).then((data) {
       if (data != null && data['data'] is List) {
-        // print(data['data']);
         setState(() {
           grpoItemsDetail = data['data'];
         });
@@ -165,7 +168,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
                 // ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, Routes.grpoDetailItems);
+                    Navigator.pushNamed(context, Routes.grpoDetailItems).then((_) => _fetchData());
                   },
                   child: const Text('Tạo Nhãn'),
                 ),
@@ -227,11 +230,16 @@ class _GrpoDetailState extends State<GrpoDetail> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(item['ItemCode'].toString()),
-                            Text(item['ItemName'].toString()),
-                            Text(item['SlThucTe'].toString()),
-                            Text(item['Batch'].toString()),
-                            Text(item['Remake'].toString()),
+                            Text("ITEM ${index + 1}:"),
+                            Text("Batch: ${item['Batch']}"),
+                            Text("SlThucTe: ${item['SlThucTe']}"),
+                            Text("Remake: ${item['Remake']}"),
+
+                            // Text(item['ItemCode'].toString()),
+                            // Text(item['ItemName'].toString()),
+                            // Text(item['SlThucTe'].toString()),
+                            // Text(item['Batch'].toString()),
+                            // Text(item['Remake'].toString()),
                           ],
                         ),
                       );
@@ -259,7 +267,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
                                 uoMCode: widget.uoMCode,
                               ),
                             ),
-                          );
+                          ).then((_) => _fetchData());
                         },
                       ),
                       const SizedBox(
