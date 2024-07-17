@@ -21,8 +21,10 @@ class Routes {
   static const String purchasing = '/home/purchasing';
   static const String grpo = '/home/purchasing/grpo';
   static const String grpoDetail = '/home/purchasing/grpo/grpo_detail';
+  static const String grpoAddNewDetailItems =
+      '/home/purchasing/grpo/grpo_detail/grpo_add_new_detail_items';
   static const String grpoDetailItems =
-      '/home/purchasing/grpo/grpo_detail/grpo_labels';
+      '/home/purchasing/grpo/grpo_detail/grpo_detail_items';
   static const String goodsReturn = '/home/purchasing/return/goods_return';
   static const String goodsReturnDetail =
       '/home/purchasing/return/goods_return/goods_return_detail';

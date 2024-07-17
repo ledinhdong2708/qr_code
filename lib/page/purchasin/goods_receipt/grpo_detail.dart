@@ -4,11 +4,13 @@ import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/page/purchasin/goods_receipt/grpo_add_new_detail_items.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo_detail_items.dart';
 import 'package:qr_code/routes/routes.dart';
 import 'package:qr_code/service/grpo_service.dart';
 
 class GrpoDetail extends StatefulWidget {
+  final String id;
   final String docEntry;
   final String lineNum;
   final String itemCode;
@@ -22,6 +24,7 @@ class GrpoDetail extends StatefulWidget {
 
   const GrpoDetail({
     super.key,
+    this.id = "",
     this.docEntry = "",
     this.lineNum = "",
     this.itemCode = "",
@@ -142,105 +145,56 @@ class _GrpoDetailState extends State<GrpoDetail> {
                   labelText: 'SL Yêu Cầu',
                   hintText: 'SL Yêu Cầu',
                 ),
-                // buildTextFieldRow(
-                //   controller: slThucTeController,
-                //   labelText: 'SL Thực Tế',
-                //   hintText: 'SL Thực Tế',
-                //   isEnable: true,
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, Routes.grpoDetailItems)
+                //         .then((_) => _fetchData());
+                //   },
+                //   child: const Text('Tạo Nhãn'),
                 // ),
-                // buildTextFieldRow(
-                //   controller: batchController,
-                //   labelText: 'Batch',
-                //   hintText: 'Batch',
-                //   isEnable: true,
-                // ),
-                // buildTextFieldRow(
-                //   controller: uoMCodeController,
-                //   labelText: 'UoM Code',
-                //   hintText: 'UoM Code',
-                // ),
-                // buildTextFieldRow(
-                //   controller: remakeController,
-                //   labelText: 'Remake',
-                //   isEnable: true,
-                //   hintText: 'Remake here',
-                //   icon: Icons.edit,
-                // ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, Routes.grpoDetailItems).then((_) => _fetchData());
-                  },
-                  child: const Text('Tạo Nhãn'),
-                ),
-                // if (grpoItemsDetail.isNotEmpty)
-                //   ListView.builder(
-                //     shrinkWrap: true,
-                //     itemCount: grpoItemsDetail.length,
-                //     itemBuilder: (context, index) {
-                //       var item = grpoItemsDetail[index];
-                //       return GestureDetector(
-                //         onTap: () {
-                //           Navigator.push(
-                //             context,
-                //             MaterialPageRoute(
-                //               builder: (context) => GrpoDetail(
-                //                 docEntry: item['DocEntry'],
-                //                 lineNum: item['LineNum'],
-                //                 slThucTe: item['SlThucTe'].toString(),
-                //                 batch: item['Batch'].toString(),
-                //                 remake: item['Remake'].toString(),
-                //               ),
-                //             ),
-                //           );
-                //         },
-                //         child: Container(
-                //           width: double.infinity,
-                //           padding: const EdgeInsets.all(10),
-                //           margin: const EdgeInsets.all(10),
-                //           decoration: BoxDecoration(
-                //             color: readInput,
-                //             borderRadius: BorderRadius.circular(10),
-                //           ),
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               Text(item['SlThucTe'].toString()),
-                //               Text(item['Batch'].toString()),
-                //               Text(item['Remake'].toString()),
-                //             ],
-                //           ),
-                //         ),
-                //       );
-                //     },
-                //   ),
+                //
                 if (grpoItemsDetail.isNotEmpty)
                   ListView.builder(
                     shrinkWrap: true,
                     itemCount: grpoItemsDetail.length,
                     itemBuilder: (context, index) {
                       var item = grpoItemsDetail[index];
-                      return Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(10),
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: readInput,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("ITEM ${index + 1}:"),
-                            Text("Batch: ${item['Batch']}"),
-                            Text("SlThucTe: ${item['SlThucTe']}"),
-                            Text("Remake: ${item['Remake']}"),
-
-                            // Text(item['ItemCode'].toString()),
-                            // Text(item['ItemName'].toString()),
-                            // Text(item['SlThucTe'].toString()),
-                            // Text(item['Batch'].toString()),
-                            // Text(item['Remake'].toString()),
-                          ],
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GrpoDetailItems(
+                                id: item['ID'].toString(),
+                                itemCode: item['ItemCode'],
+                                itemName: item['ItemName'],
+                                whse: item['Whse'],
+                                slThucTe: item['SlThucTe'].toString(),
+                                batch: item['Batch'].toString(),
+                                uoMCode: item['UoMCode'].toString(),
+                                remake: item['Remake'].toString(),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: readInput,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("ITEM ${index + 1}:"),
+                              Text("Batch: ${item['Batch']}"),
+                              Text("Id: ${item['ID']}"),
+                              Text("SlThucTe: ${item['SlThucTe']}"),
+                              Text("Remake: ${item['Remake']}"),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -258,7 +212,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => GrpoDetailItems(
+                              builder: (context) => GrpoAddNewDetailItems(
                                 docEntry: widget.docEntry,
                                 lineNum: widget.lineNum,
                                 itemCode: widget.itemCode,

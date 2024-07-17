@@ -7,9 +7,11 @@ import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/print_page.dart';
+import 'package:qr_code/service/grpo_service.dart';
 
-class GrpoDetailItems extends StatefulWidget {
-  final String id;
+class GrpoAddNewDetailItems extends StatefulWidget {
+  final String docEntry;
+  final String lineNum;
   final String batch;
   final String slThucTe;
   final String remake;
@@ -17,9 +19,10 @@ class GrpoDetailItems extends StatefulWidget {
   final String itemName;
   final String whse;
   final String uoMCode;
-  const GrpoDetailItems(
+  const GrpoAddNewDetailItems(
       {super.key,
-      this.id = '',
+      this.docEntry = '',
+      this.lineNum = '',
       this.batch = '',
       this.slThucTe = '',
       this.itemCode = '',
@@ -29,11 +32,10 @@ class GrpoDetailItems extends StatefulWidget {
       this.remake = ''});
 
   @override
-  _GrpoDetailItemsState createState() => _GrpoDetailItemsState();
+  _GrpoAddNewDetailItemsState createState() => _GrpoAddNewDetailItemsState();
 }
 
-class _GrpoDetailItemsState extends State<GrpoDetailItems> {
-  late TextEditingController idController;
+class _GrpoAddNewDetailItemsState extends State<GrpoAddNewDetailItems> {
   late TextEditingController batchController;
   late TextEditingController slThucTeController;
   late TextEditingController remakeController;
@@ -47,7 +49,6 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
   @override
   void initState() {
     super.initState();
-    idController = TextEditingController(text: widget.id);
     itemCodeController = TextEditingController(text: widget.itemCode);
     descriptionController = TextEditingController(text: widget.itemName);
     batchController = TextEditingController(text: widget.batch);
@@ -63,6 +64,26 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
     slThucTeController.dispose();
     remakeController.dispose();
     super.dispose();
+  }
+
+  Future<void> _submitData() async {
+    final data = {
+      'itemCode': itemCodeController.text,
+      'itemName': descriptionController.text,
+      'whse': whseController.text,
+      'uoMCode': uoMCodeController.text,
+      'docEntry': widget.docEntry,
+      'lineNum': widget.lineNum,
+      'batch': batchController.text,
+      'slThucTe': slThucTeController.text,
+      'remake': remakeController.text,
+    };
+    try {
+      await postGrpoItemsDetailData(
+          data, context, widget.docEntry, widget.lineNum);
+    } catch (e) {
+      print('Error submitting data: $e');
+    }
   }
 
   @override
@@ -124,11 +145,12 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
                     text: 'PRINT',
                     onPressed: () {
                       final data = {
-                        'id': idController.text,
                         'itemCode': itemCodeController.text,
                         'itemName': descriptionController.text,
                         'whse': whseController.text,
                         'uoMCode': uoMCodeController.text,
+                        'docEntry': widget.docEntry,
+                        'lineNum': widget.lineNum,
                         'batch': batchController.text,
                         'slThucTe': slThucTeController.text,
                         'remake': remakeController.text,
@@ -148,6 +170,10 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
                       //   ),
                       // );
                     },
+                  ),
+                  CustomButton(
+                    text: 'CONFIRM',
+                    onPressed: _submitData,
                   ),
                 ],
               ),
