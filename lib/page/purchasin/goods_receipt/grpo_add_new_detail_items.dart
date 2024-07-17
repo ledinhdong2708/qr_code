@@ -142,36 +142,6 @@ class _GrpoAddNewDetailItemsState extends State<GrpoAddNewDetailItems> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CustomButton(
-                    text: 'PRINT',
-                    onPressed: () {
-                      final data = {
-                        'itemCode': itemCodeController.text,
-                        'itemName': descriptionController.text,
-                        'whse': whseController.text,
-                        'uoMCode': uoMCodeController.text,
-                        'docEntry': widget.docEntry,
-                        'lineNum': widget.lineNum,
-                        'batch': batchController.text,
-                        'slThucTe': slThucTeController.text,
-                        'remake': remakeController.text,
-                      };
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => PrintPage(data: data),
-                        ),
-                      );
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => PrintPage(
-                      //       data: data
-                      //     ),
-                      //   ),
-                      // );
-                    },
-                  ),
-                  CustomButton(
                     text: 'CONFIRM',
                     onPressed: _submitData,
                   ),

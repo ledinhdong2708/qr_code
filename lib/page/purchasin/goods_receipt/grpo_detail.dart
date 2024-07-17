@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/header_app.dart';
+import 'package:qr_code/component/list_items.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
@@ -154,50 +155,80 @@ class _GrpoDetailState extends State<GrpoDetail> {
                 // ),
                 //
                 if (grpoItemsDetail.isNotEmpty)
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: grpoItemsDetail.length,
-                    itemBuilder: (context, index) {
-                      var item = grpoItemsDetail[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GrpoDetailItems(
-                                id: item['ID'].toString(),
-                                itemCode: item['ItemCode'],
-                                itemName: item['ItemName'],
-                                whse: item['Whse'],
-                                slThucTe: item['SlThucTe'].toString(),
-                                batch: item['Batch'].toString(),
-                                uoMCode: item['UoMCode'].toString(),
-                                remake: item['Remake'].toString(),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: readInput,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("ITEM ${index + 1}:"),
-                              Text("Batch: ${item['Batch']}"),
-                              Text("Id: ${item['ID']}"),
-                              Text("SlThucTe: ${item['SlThucTe']}"),
-                              Text("Remake: ${item['Remake']}"),
-                            ],
+                  // ListView.builder(
+                  //   shrinkWrap: true,
+                  //   itemCount: grpoItemsDetail.length,
+                  //   itemBuilder: (context, index) {
+                  //     var item = grpoItemsDetail[index];
+                  //     return GestureDetector(
+                  //       onTap: () {
+                  //         Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //             builder: (context) => GrpoDetailItems(
+                  //               id: item['ID'].toString(),
+                  //               itemCode: item['ItemCode'],
+                  //               itemName: item['ItemName'],
+                  //               whse: item['Whse'],
+                  //               slThucTe: item['SlThucTe'].toString(),
+                  //               batch: item['Batch'].toString(),
+                  //               uoMCode: item['UoMCode'].toString(),
+                  //               remake: item['Remake'].toString(),
+                  //             ),
+                  //           ),
+                  //         );
+                  //       },
+                  //       child: Container(
+                  //         width: double.infinity,
+                  //         padding: const EdgeInsets.all(10),
+                  //         margin: const EdgeInsets.all(10),
+                  //         decoration: BoxDecoration(
+                  //           color: readInput,
+                  //           borderRadius: BorderRadius.circular(10),
+                  //         ),
+                  //         child: Column(
+                  //           crossAxisAlignment: CrossAxisAlignment.start,
+                  //           children: [
+                  //             Text("ITEM ${index + 1}:"),
+                  //             Text("Batch: ${item['Batch']}"),
+                  //             Text("Id: ${item['ID']}"),
+                  //             Text("SlThucTe: ${item['SlThucTe']}"),
+                  //             Text("Remake: ${item['Remake']}"),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                  ListItems(
+                    listItems: grpoItemsDetail,
+                    onTapItem: (index) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GrpoDetailItems(
+                            id: grpoItemsDetail[index]['ID'].toString(),
+                            itemCode: grpoItemsDetail[index]['ItemCode'],
+                            itemName: grpoItemsDetail[index]['ItemName'],
+                            whse: grpoItemsDetail[index]['Whse'],
+                            slThucTe:
+                                grpoItemsDetail[index]['SlThucTe'].toString(),
+                            batch: grpoItemsDetail[index]['Batch'].toString(),
+                            uoMCode:
+                                grpoItemsDetail[index]['UoMCode'].toString(),
+                            remake: grpoItemsDetail[index]['Remake'].toString(),
                           ),
                         ),
                       );
                     },
+                    labelName1: 'ID',
+                    labelName2: 'Batch',
+                    labelName3: 'SlThucTe',
+                    labelName4: 'Remake',
+                    listChild1: 'ID',
+                    listChild3: 'Batch',
+                    listChild2: 'SlThucTe',
+                    listChild4: 'Remake',
                   ),
                 Container(
                   width: double.infinity,

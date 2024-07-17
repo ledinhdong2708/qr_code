@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/header_app.dart';
+import 'package:qr_code/component/list_items.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
@@ -92,53 +93,82 @@ class _GrpoState extends State<Grpo> {
                     valueQR: remark,
                     controller: _remakeController),
                 if (por1.isNotEmpty)
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: por1.length,
-                    itemBuilder: (context, index) {
-                      var item = por1[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GrpoDetail(
-                                docEntry: item['DocEntry'],
-                                lineNum: item['LineNum'],
-                                itemCode: item['ItemCode'],
-                                description: item['Dscription'],
-                                whse: item['WhsCode'],
-                                openQty: item['OpenQty'].toString(),
-                                slThucTe: item['SlThucTe'].toString(),
-                                batch: item['Batch'].toString(),
-                                uoMCode: item['UomCode'].toString(),
-                                remake: item['remake'].toString(),
-                              ),
+                  // ListView.builder(
+                  //   shrinkWrap: true,
+                  //   itemCount: por1.length,
+                  //   itemBuilder: (context, index) {
+                  //     var item = por1[index];
+                  //     return GestureDetector(
+                  //       onTap: () {
+                  //         Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //             builder: (context) => GrpoDetail(
+                  //               docEntry: item['DocEntry'],
+                  //               lineNum: item['LineNum'],
+                  //               itemCode: item['ItemCode'],
+                  //               description: item['Dscription'],
+                  //               whse: item['WhsCode'],
+                  //               openQty: item['OpenQty'].toString(),
+                  //               slThucTe: item['SlThucTe'].toString(),
+                  //               batch: item['Batch'].toString(),
+                  //               uoMCode: item['UomCode'].toString(),
+                  //               remake: item['remake'].toString(),
+                  //             ),
+                  //           ),
+                  //         );
+                  //       },
+                  //       child: Container(
+                  //         width: double.infinity,
+                  //         padding: const EdgeInsets.all(10),
+                  //         margin: const EdgeInsets.all(10),
+                  //         decoration: BoxDecoration(
+                  //           color: readInput,
+                  //           borderRadius: BorderRadius.circular(10),
+                  //         ),
+                  //         child: Column(
+                  //           crossAxisAlignment: CrossAxisAlignment.start,
+                  //           children: [
+                  //             Text("ITEM ${index + 1}:"),
+                  //             Text("Code: ${item['ItemCode']}"),
+                  //             Text("Name: ${item['Dscription']}"),
+                  //             // Text("Batch: ${item['Batch']}"),
+                  //             Text("Open Quantity: ${item['OpenQty']}"),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                  ListItems(
+                      listItems: por1,
+                      onTapItem: (index) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GrpoDetail(
+                              docEntry: por1[index]['DocEntry'],
+                              lineNum: por1[index]['LineNum'],
+                              itemCode: por1[index]['ItemCode'],
+                              description: por1[index]['Dscription'],
+                              whse: por1[index]['WhsCode'],
+                              openQty: por1[index]['OpenQty'].toString(),
+                              slThucTe: por1[index]['SlThucTe'].toString(),
+                              batch: por1[index]['Batch'].toString(),
+                              uoMCode: por1[index]['UomCode'].toString(),
+                              remake: por1[index]['remake'].toString(),
                             ),
-                          );
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: readInput,
-                            borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("ITEM ${index + 1}:"),
-                              Text("Code: ${item['ItemCode']}"),
-                              Text("Name: ${item['Dscription']}"),
-                              // Text("Batch: ${item['Batch']}"),
-                              Text("Open Quantity: ${item['OpenQty']}"),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                      labelName1: 'DocNo',
+                      labelName2: 'Code',
+                      labelName3: 'Name',
+                      labelName4: 'SlYeuCau',
+                      listChild1: 'DocEntry',
+                      listChild2: 'ItemCode',
+                      listChild3: 'Dscription',
+                      listChild4: 'OpenQty'),
                 Container(
                   width: double.infinity,
                   margin: AppStyles.marginButton,
