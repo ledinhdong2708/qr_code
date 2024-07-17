@@ -3,7 +3,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:qr_code/constants/colors.dart';
 
 class CustomDialog {
-  static void showDialog(BuildContext context, String message, String type) {
+  static void showDialog(BuildContext context, String message, String type,
+      {VoidCallback? onOkPressed}) {
     DialogType dialogType;
     IconData icon;
     Color iconColor;
@@ -41,7 +42,11 @@ class CustomDialog {
         size: 60,
       ),
       showCloseIcon: true,
-      btnOkOnPress: () {},
+      btnOkOnPress: () {
+        if (onOkPressed != null) {
+          onOkPressed();
+        }
+      },
     ).show();
   }
 }

@@ -89,7 +89,7 @@ class _GrpoAddNewDetailItemsState extends State<GrpoAddNewDetailItems> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderApp(title: "GRPO - Detail - Items"),
+      appBar: const HeaderApp(title: "GRPO - Add - New - Detail - Items"),
       body: Container(
         width: double.infinity,
         height: double.infinity,

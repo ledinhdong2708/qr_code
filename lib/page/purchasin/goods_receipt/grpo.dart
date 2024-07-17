@@ -93,53 +93,6 @@ class _GrpoState extends State<Grpo> {
                     valueQR: remark,
                     controller: _remakeController),
                 if (por1.isNotEmpty)
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   itemCount: por1.length,
-                  //   itemBuilder: (context, index) {
-                  //     var item = por1[index];
-                  //     return GestureDetector(
-                  //       onTap: () {
-                  //         Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //             builder: (context) => GrpoDetail(
-                  //               docEntry: item['DocEntry'],
-                  //               lineNum: item['LineNum'],
-                  //               itemCode: item['ItemCode'],
-                  //               description: item['Dscription'],
-                  //               whse: item['WhsCode'],
-                  //               openQty: item['OpenQty'].toString(),
-                  //               slThucTe: item['SlThucTe'].toString(),
-                  //               batch: item['Batch'].toString(),
-                  //               uoMCode: item['UomCode'].toString(),
-                  //               remake: item['remake'].toString(),
-                  //             ),
-                  //           ),
-                  //         );
-                  //       },
-                  //       child: Container(
-                  //         width: double.infinity,
-                  //         padding: const EdgeInsets.all(10),
-                  //         margin: const EdgeInsets.all(10),
-                  //         decoration: BoxDecoration(
-                  //           color: readInput,
-                  //           borderRadius: BorderRadius.circular(10),
-                  //         ),
-                  //         child: Column(
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             Text("ITEM ${index + 1}:"),
-                  //             Text("Code: ${item['ItemCode']}"),
-                  //             Text("Name: ${item['Dscription']}"),
-                  //             // Text("Batch: ${item['Batch']}"),
-                  //             Text("Open Quantity: ${item['OpenQty']}"),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
                   ListItems(
                       listItems: por1,
                       onTapItem: (index) {

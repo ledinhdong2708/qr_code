@@ -46,11 +46,6 @@ class ListItems extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Text("ITEM ${index + 1}:"),
-                // Text("Batch: ${item['Batch']}"),
-                // Text("Id: ${item['ID']}"),
-                // Text("SlThucTe: ${item['SlThucTe']}"),
-                // Text("Remake: ${item['Remake']}"),
                 Text('$labelName1: ${item[listChild1]}'),
                 Text('$labelName2: ${item[listChild2]}'),
                 Text('$labelName3: ${item[listChild3]}'),
