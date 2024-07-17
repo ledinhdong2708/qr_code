@@ -139,11 +139,27 @@ Future<void> postGrpoItemsDetailData(Map<String, dynamic> data,
 
     if (response.statusCode == 200) {
       print('Data successfully sent to server');
-      CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+      CustomDialog.showDialog(
+        context,
+        'Cập nhật thành công!',
+        'success',
+        onOkPressed: () {
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 1);
+        },
+      );
     } else {
       print('Failed to send data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
-      CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
+      CustomDialog.showDialog(
+        context,
+        'Cập nhật thất bại!',
+        'error',
+        onOkPressed: () {
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 2);
+        },
+      );
     }
   } catch (e) {
     print('Error during POST request: $e');

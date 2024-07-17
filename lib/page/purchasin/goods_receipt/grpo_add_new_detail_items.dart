@@ -89,7 +89,7 @@ class _GrpoAddNewDetailItemsState extends State<GrpoAddNewDetailItems> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderApp(title: "GRPO - Detail - Items"),
+      appBar: const HeaderApp(title: "GRPO - Add - New - Detail - Items"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -141,36 +141,6 @@ class _GrpoAddNewDetailItemsState extends State<GrpoAddNewDetailItems> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CustomButton(
-                    text: 'PRINT',
-                    onPressed: () {
-                      final data = {
-                        'itemCode': itemCodeController.text,
-                        'itemName': descriptionController.text,
-                        'whse': whseController.text,
-                        'uoMCode': uoMCodeController.text,
-                        'docEntry': widget.docEntry,
-                        'lineNum': widget.lineNum,
-                        'batch': batchController.text,
-                        'slThucTe': slThucTeController.text,
-                        'remake': remakeController.text,
-                      };
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => PrintPage(data: data),
-                        ),
-                      );
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => PrintPage(
-                      //       data: data
-                      //     ),
-                      //   ),
-                      // );
-                    },
-                  ),
                   CustomButton(
                     text: 'CONFIRM',
                     onPressed: _submitData,
