@@ -144,7 +144,8 @@ Future<void> postGrpoItemsDetailData(Map<String, dynamic> data,
         'Cập nhật thành công!',
         'success',
         onOkPressed: () {
-          Navigator.pop(context);
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 1);
         },
       );
     } else {
@@ -155,7 +156,8 @@ Future<void> postGrpoItemsDetailData(Map<String, dynamic> data,
         'Cập nhật thất bại!',
         'error',
         onOkPressed: () {
-          Navigator.pop(context);
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 2);
         },
       );
     }
