@@ -6,25 +6,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PrintPage extends StatefulWidget {
-  final String data;
-  final String itemCode;
-  final String itemName;
-  const PrintPage({
-    super.key,
-    required this.data,
-    this.itemCode="",
-    this.itemName=""
-  });
+  final Map<String, String> data;
+
+  const PrintPage({super.key, required this.data});
+
   @override
   _PrintPageState createState() => _PrintPageState();
 }
 
-
-
 class _PrintPageState extends State<PrintPage> {
-  late String text;
-  late String itemCode;
-  late String itemName;
   BluetoothPrint bluetoothPrint = BluetoothPrint.instance;
   bool _scanning = false;
   List<BluetoothDevice> _devices = [];
@@ -34,19 +24,14 @@ class _PrintPageState extends State<PrintPage> {
   @override
   void initState() {
     super.initState();
-    text = widget.data;
-    itemCode = widget.itemCode;
-    itemName = widget.itemName;
-    //print("Received data: ${text}");
     _startScan();
-
   }
 
   void _startScan() {
     setState(() {
       _scanning = true;
     });
-    bluetoothPrint.startScan(timeout: Duration(seconds: 4));
+    bluetoothPrint.startScan(timeout: const Duration(seconds: 4));
     bluetoothPrint.scanResults.listen((devices) {
       setState(() {
         _devices = devices;
@@ -82,39 +67,84 @@ class _PrintPageState extends State<PrintPage> {
     if (_selectedDevice != null) {
       Map<String, dynamic> config = {};
       List<LineText> list = [];
-      String qrText = 'QR Code - $itemCode - $itemName';
-      String utf8Text = utf8.decode(utf8.encode(qrText));
+      String jsonData = jsonEncode(widget.data);
 
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: utf8Text,
-        align: LineText.ALIGN_CENTER,
+        content:
+            utf8.decode(utf8.encode('Item Code: ${widget.data['itemCode']}')),
+        align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
 
-      // list.add(LineText(
-      //     type: LineText.TYPE_QRCODE,
-      //     content: '{"ItemCode": "01","ItemName": "012123","Whse": "2","SlThucTe": "123","UoMCode":"123","LineNum": "3","Batch": "dasdsad"}sssssssssssssssssssssssssssssssssss',
-      //     align: LineText.ALIGN_CENTER,
-      //     linefeed: 1,
-      //     size: 1
-      // ));
       list.add(LineText(
-          type: LineText.TYPE_QRCODE,
-          content: text,
-          align: LineText.ALIGN_CENTER,
-          linefeed: 5,
-          size: 1
+        type: LineText.TYPE_TEXT,
+        content:
+            utf8.decode(utf8.encode('Item Name: ${widget.data['itemName']}')),
+        align: LineText.ALIGN_LEFT,
+        linefeed: 1,
       ));
 
+      list.add(LineText(
+        type: LineText.TYPE_TEXT,
+        content: utf8.decode(utf8.encode('Warehouse: ${widget.data['whse']}')),
+        align: LineText.ALIGN_LEFT,
+        linefeed: 1,
+      ));
 
-      // list.add(LineText(
-      //     type: LineText.TYPE_QRCODE,
-      //     content: widget.data,
-      //     align: LineText.ALIGN_CENTER,
-      //     linefeed: 1,
-      //     size: 1
-      // ));
+      list.add(LineText(
+        type: LineText.TYPE_TEXT,
+        content:
+            utf8.decode(utf8.encode('UoM Code: ${widget.data['uoMCode']}')),
+        align: LineText.ALIGN_LEFT,
+        linefeed: 1,
+      ));
+
+      list.add(LineText(
+        type: LineText.TYPE_TEXT,
+        content:
+            utf8.decode(utf8.encode('Doc Entry: ${widget.data['docEntry']}')),
+        align: LineText.ALIGN_LEFT,
+        linefeed: 1,
+      ));
+
+      list.add(LineText(
+        type: LineText.TYPE_TEXT,
+        content:
+            utf8.decode(utf8.encode('Line Number: ${widget.data['lineNum']}')),
+        align: LineText.ALIGN_LEFT,
+        linefeed: 1,
+      ));
+
+      list.add(LineText(
+        type: LineText.TYPE_TEXT,
+        content: utf8.decode(utf8.encode('Batch: ${widget.data['batch']}')),
+        align: LineText.ALIGN_LEFT,
+        linefeed: 1,
+      ));
+
+      list.add(LineText(
+        type: LineText.TYPE_TEXT,
+        content:
+            utf8.decode(utf8.encode('SL Thuc Te: ${widget.data['slThucTe']}')),
+        align: LineText.ALIGN_LEFT,
+        linefeed: 1,
+      ));
+
+      list.add(LineText(
+        type: LineText.TYPE_TEXT,
+        content: utf8.decode(utf8.encode('Remake: ${widget.data['remake']}')),
+        align: LineText.ALIGN_LEFT,
+        linefeed: 1,
+      ));
+
+      list.add(LineText(
+        type: LineText.TYPE_QRCODE,
+        content: 'Item Code: ${widget.data['itemCode']}',
+        align: LineText.ALIGN_CENTER,
+        linefeed: 1,
+        size: 1,
+      ));
 
       await bluetoothPrint.printReceipt(config, list);
     }
@@ -130,7 +160,7 @@ class _PrintPageState extends State<PrintPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bluetooth Print Example'),
+        title: const Text('Bluetooth Print'),
       ),
       body: Column(
         children: [
@@ -138,8 +168,8 @@ class _PrintPageState extends State<PrintPage> {
             onPressed: _scanning
                 ? null
                 : () {
-              _startScan();
-            },
+                    _startScan();
+                  },
             child: Text(_scanning ? 'Scanning...' : 'Start Scan'),
           ),
           Expanded(
@@ -158,7 +188,7 @@ class _PrintPageState extends State<PrintPage> {
           ),
           ElevatedButton(
             onPressed: _selectedDevice == null ? null : _print,
-            child: Text('Print'),
+            child: const Text('Print'),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

@@ -78,7 +78,6 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
       'slThucTe': slThucTeController.text,
       'remake': remakeController.text,
     };
-
     try {
       await postGrpoItemsDetailData(
           data, context, widget.docEntry, widget.lineNum);
@@ -145,21 +144,21 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
                   CustomButton(
                     text: 'PRINT',
                     onPressed: () {
-                      String jsonString = '{"ItemCode":"${itemCodeController.text}","ItemName":"${descriptionController.text}","Whse":"${whseController.text}","SlThucTe":"${slThucTeController.text}","UoMCode": "${uoMCodeController.text}","Batch":"${batchController.text}"}';
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (_) => const PrintPage(),
-                      //   ),
-                      // );
+                      final data = {
+                        'itemCode': itemCodeController.text,
+                        'itemName': descriptionController.text,
+                        'whse': whseController.text,
+                        'uoMCode': uoMCodeController.text,
+                        'docEntry': widget.docEntry,
+                        'lineNum': widget.lineNum,
+                        'batch': batchController.text,
+                        'slThucTe': slThucTeController.text,
+                        'remake': remakeController.text,
+                      };
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => PrintPage(
-                            data: jsonString,
-                            itemCode: itemCodeController.text,
-                            itemName: descriptionController.text,
-                          ),
+                          builder: (_) => PrintPage(data: data),
                         ),
                       );
                       // Navigator.push(
