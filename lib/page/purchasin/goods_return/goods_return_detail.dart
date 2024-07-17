@@ -265,22 +265,43 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                     itemCount: grrItemsDetail.length,
                     itemBuilder: (context, index) {
                       var item = grrItemsDetail[index];
-                      return Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(10),
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: readInput,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("ITEM ${index + 1}:"),
-                            Text("Batch: ${item['Batch']}"),
-                            Text("SlThucTe: ${item['SlThucTe']}"),
-                            Text("Remake: ${item['Remake']}"),
-                          ],
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GoodReturnDetailItems(
+                                id: item['ID'].toString(),
+                                itemCode: item['ItemCode'],
+                                itemName: item['ItemName'],
+                                whse: item['Whse'],
+                                slThucTe: item['SlThucTe'].toString(),
+                                batch: item['Batch'].toString(),
+                                uoMCode: item['UoMCode'].toString(),
+                                remake: item['Remake'].toString(),
+                                isEditable: false,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: readInput,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("ITEM ${index + 1}:"),
+                              Text("Batch: ${item['Batch']}"),
+                              Text("Id: ${item['ID']}"),
+                              Text("SlThucTe: ${item['SlThucTe']}"),
+                              Text("Remake: ${item['Remake']}"),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -292,10 +313,6 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CustomButton(
-                        text: 'New',
-                        onPressed: () {},
-                      ),
                       const SizedBox(
                         width: 20,
                       ),
