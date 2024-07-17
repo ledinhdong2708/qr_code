@@ -11,10 +11,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: bgColor,
-      title: Center(
-        child: Image.asset("assets/logofti.png", height: 100, width: 100),
-      ),
+      flexibleSpace: Image.asset("assets/logofti.png", height: 200, width: 200),
       toolbarHeight: 100,
     );
+
+
   }
 }
