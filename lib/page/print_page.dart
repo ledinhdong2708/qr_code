@@ -102,22 +102,6 @@ class _PrintPageState extends State<PrintPage> {
 
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content:
-            utf8.decode(utf8.encode('Doc Entry: ${widget.data['docEntry']}')),
-        align: LineText.ALIGN_LEFT,
-        linefeed: 1,
-      ));
-
-      list.add(LineText(
-        type: LineText.TYPE_TEXT,
-        content:
-            utf8.decode(utf8.encode('Line Number: ${widget.data['lineNum']}')),
-        align: LineText.ALIGN_LEFT,
-        linefeed: 1,
-      ));
-
-      list.add(LineText(
-        type: LineText.TYPE_TEXT,
         content: utf8.decode(utf8.encode('Batch: ${widget.data['batch']}')),
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
@@ -140,7 +124,7 @@ class _PrintPageState extends State<PrintPage> {
 
       list.add(LineText(
         type: LineText.TYPE_QRCODE,
-        content: 'Item Code: ${widget.data['itemCode']}',
+        content: 'Item Code: ${widget.data['id']}',
         align: LineText.ALIGN_CENTER,
         linefeed: 1,
         size: 1,

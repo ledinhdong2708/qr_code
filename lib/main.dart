@@ -19,6 +19,7 @@ import 'package:qr_code/page/production/rfp/rfp_labels.dart';
 import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo_detail.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo_detail.dart';
+import 'package:qr_code/page/purchasin/goods_receipt/grpo_add_new_detail_items.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo_detail_items.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return_detail.dart';
@@ -93,6 +94,8 @@ class _MyAppState extends State<MyApp> {
               // purchasing
               Routes.purchasing: (context) => const Purchasing(),
               Routes.grpoDetail: (context) => const GrpoDetail(),
+              Routes.grpoAddNewDetailItems: (context) =>
+                  const GrpoAddNewDetailItems(),
               Routes.grpoDetailItems: (context) => const GrpoDetailItems(),
               Routes.goodsReturnDetail: (context) => const GoodsReturnDetail(),
               Routes.goodsReturnLabel: (context) => const GoodsReturnLabel(),
