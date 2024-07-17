@@ -32,8 +32,8 @@ import 'package:qr_code/page/sales/creditmemo/ar_creditmemo_detail.dart';
 import 'package:qr_code/page/sales/creditmemo/ar_creditmemo_label.dart';
 import 'package:qr_code/page/sales/delivery/delivery.dart';
 import 'package:qr_code/page/sales/delivery/delivery_detail.dart';
-import 'package:qr_code/page/sales/returns/return.dart';
-import 'package:qr_code/page/sales/returns/returndetail.dart';
+import 'package:qr_code/page/sales/returns/sales_return.dart';
+import 'package:qr_code/page/sales/returns/sales_return_detail.dart';
 import 'package:qr_code/page/sales/returns/returnlabel.dart';
 import 'package:qr_code/page/sales/sales.dart';
 import 'package:qr_code/page/user_detail.dart';
@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> {
               //sales
               Routes.sales: (context) => const Sales(),
               Routes.deliveryDetail: (context) => const DeliveryDetail(),
-              Routes.returnDetail: (context) => const ReturnDetail(),
+              Routes.returnDetail: (context) => const SalesReturnDetail(),
               Routes.returnLabels: (context) => const ReturnLabels(),
               Routes.arCreditMemoDetail: (context) =>
                   const ARCreditmemoDetail(),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/page/qr_view_example.dart';
+import 'package:qr_code/page/sales/delivery/delivery.dart';
+import 'package:qr_code/page/sales/returns/sales_return.dart';
 import 'package:qr_code/routes/routes.dart';
 
 class Sales extends StatelessWidget {
@@ -19,24 +21,35 @@ class Sales extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => const QRViewExample(
+                //             pageIdentifier: 'Delivery',
+                //           )),
+                // );
+
+                // To testing api
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const QRViewExample(
-                            pageIdentifier: 'Delivery',
-                          )),
+                  MaterialPageRoute(builder: (context) => const Delivery(qrData: "1")),
                 );
               },
               child: card("assets/delivery.png", "Delivery"),
             ),
             InkWell(
               onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => const QRViewExample(
+                //             pageIdentifier: 'SalesReturn',
+                //           )),
+                // );
+                // To testing api
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const QRViewExample(
-                            pageIdentifier: 'Return',
-                          )),
+                  MaterialPageRoute(builder: (context) => const SalesReturn(qrData: "1")),
                 );
               },
               child: card("assets/return.png", "Return"),

@@ -10,7 +10,7 @@ import 'package:qr_code/page/purchasin/goods_receipt/grpo_detail.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
 import 'package:qr_code/page/sales/creditmemo/ar_creditmemo.dart';
 import 'package:qr_code/page/sales/delivery/delivery.dart';
-import 'package:qr_code/page/sales/returns/return.dart';
+import 'package:qr_code/page/sales/returns/sales_return.dart';
 
 class Routes {
   static const String login = '/';
@@ -92,7 +92,7 @@ class Routes {
       case returns:
         final qrData = settings.arguments as String; // Lấy qrData từ arguments
         return MaterialPageRoute(
-          builder: (context) => Return(qrData: qrData),
+          builder: (context) => SalesReturn(qrData: qrData),
         );
       case arCreditMemo:
         final qrData = settings.arguments as String; // Lấy qrData từ arguments

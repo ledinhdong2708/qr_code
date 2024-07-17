@@ -10,7 +10,7 @@ import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return_detail_item.dart';
 import 'package:qr_code/page/result_screen.dart';
 import 'package:qr_code/page/sales/delivery/delivery.dart';
-import 'package:qr_code/page/sales/returns/return.dart';
+import 'package:qr_code/page/sales/returns/sales_return.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRViewExample extends StatefulWidget {
@@ -90,15 +90,15 @@ class _QRViewExampleState extends State<QRViewExample> {
         context,
         MaterialPageRoute(builder: (context) => Delivery(qrData: qrData)),
       );
-    } else if (pageIdentifier == 'Return') {
+    } else if (pageIdentifier == 'SalesReturn') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Return(qrData: qrData)),
+        MaterialPageRoute(builder: (context) => SalesReturn(qrData: qrData)),
       );
     } else if (pageIdentifier == 'ARCreditMemo') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Return(qrData: qrData)),
+        MaterialPageRoute(builder: (context) => ApCreditMemo(qrData: qrData)),
       );
     } else if (pageIdentifier == 'ifp') {
       Navigator.push(
