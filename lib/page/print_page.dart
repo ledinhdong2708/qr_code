@@ -15,9 +15,6 @@ class PrintPage extends StatefulWidget {
 }
 
 class _PrintPageState extends State<PrintPage> {
-  late String text;
-  late String itemCode;
-  late String itemName;
   BluetoothPrint bluetoothPrint = BluetoothPrint.instance;
   bool _scanning = false;
   List<BluetoothDevice> _devices = [];
@@ -27,10 +24,6 @@ class _PrintPageState extends State<PrintPage> {
   @override
   void initState() {
     super.initState();
-    // text = widget.data;
-    // itemCode = widget.itemCode;
-    // itemName = widget.itemName;
-    //print("Received data: ${text}");
     _startScan();
   }
 
@@ -78,81 +71,80 @@ class _PrintPageState extends State<PrintPage> {
 
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: 'Item Code: ${widget.data['itemCode']}',
+        content:
+            utf8.decode(utf8.encode('Item Code: ${widget.data['itemCode']}')),
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
 
-      // list.add(LineText(
-      //     type: LineText.TYPE_QRCODE,
-      //     content: '{"ItemCode": "01","ItemName": "012123","Whse": "2","SlThucTe": "123","UoMCode":"123","LineNum": "3","Batch": "dasdsad"}sssssssssssssssssssssssssssssssssss',
-      //     align: LineText.ALIGN_CENTER,
-      //     linefeed: 1,
-      //     size: 1
-      // ));
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: 'Item Name: ${widget.data['itemName']}',
+        content:
+            utf8.decode(utf8.encode('Item Name: ${widget.data['itemName']}')),
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
+
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: 'Warehouse: ${widget.data['whse']}',
+        content: utf8.decode(utf8.encode('Warehouse: ${widget.data['whse']}')),
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
+
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: 'UoM Code: ${widget.data['uoMCode']}',
+        content:
+            utf8.decode(utf8.encode('UoM Code: ${widget.data['uoMCode']}')),
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
+
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: 'Doc Entry: ${widget.data['docEntry']}',
+        content:
+            utf8.decode(utf8.encode('Doc Entry: ${widget.data['docEntry']}')),
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
+
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: 'Line Number: ${widget.data['lineNum']}',
+        content:
+            utf8.decode(utf8.encode('Line Number: ${widget.data['lineNum']}')),
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
+
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: 'Batch: ${widget.data['batch']}',
+        content: utf8.decode(utf8.encode('Batch: ${widget.data['batch']}')),
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
+
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: 'SL Thuc Te: ${widget.data['slThucTe']}',
+        content:
+            utf8.decode(utf8.encode('SL Thuc Te: ${widget.data['slThucTe']}')),
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
+
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: 'Remake: ${widget.data['remake']}',
+        content: utf8.decode(utf8.encode('Remake: ${widget.data['remake']}')),
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
+
       list.add(LineText(
         type: LineText.TYPE_QRCODE,
-        content: jsonData,
+        content: 'Item Code: ${widget.data['itemCode']}',
         align: LineText.ALIGN_CENTER,
         linefeed: 1,
         size: 1,
       ));
-
-      // list.add(LineText(
-      //     type: LineText.TYPE_QRCODE,
-      //     content: widget.data,
-      //     align: LineText.ALIGN_CENTER,
-      //     linefeed: 1,
-      //     size: 1
-      // ));
 
       await bluetoothPrint.printReceipt(config, list);
     }
