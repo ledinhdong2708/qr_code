@@ -5,11 +5,14 @@ import 'package:qr_code/page/inventory/inventorytransfer/inventory_transfer.dart
 import 'package:qr_code/page/production/ifp/ifp.dart';
 import 'package:qr_code/page/production/rfp/rfp.dart';
 import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo.dart';
+import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo_detail_items.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return_detail_item.dart';
 import 'package:qr_code/page/result_screen.dart';
+import 'package:qr_code/page/sales/creditmemo/ar_creditmemo.dart';
 import 'package:qr_code/page/sales/delivery/delivery.dart';
+import 'package:qr_code/page/sales/delivery/delivery_detail_items.dart';
 import 'package:qr_code/page/sales/returns/sales_return.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -85,12 +88,26 @@ class _QRViewExampleState extends State<QRViewExample> {
         context,
         MaterialPageRoute(builder: (context) => ApCreditMemo(qrData: qrData)),
       );
-    } else if (pageIdentifier == 'Delivery') {
+    }
+    else if (pageIdentifier == 'ApCreditMemoDetailItems') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ApCreditmemoDetailItems(qrData: qrData, docEntry: widget.docEntry, lineNum: widget.lineNum)),
+      );
+    }
+    else if (pageIdentifier == 'Delivery') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Delivery(qrData: qrData)),
       );
-    } else if (pageIdentifier == 'SalesReturn') {
+    }
+    else if (pageIdentifier == 'DeliveryDetailItems') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DeliveryDetailItems(qrData: qrData, docEntry: widget.docEntry, lineNum: widget.lineNum)),
+      );
+    }
+    else if (pageIdentifier == 'SalesReturn') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => SalesReturn(qrData: qrData)),
@@ -98,7 +115,7 @@ class _QRViewExampleState extends State<QRViewExample> {
     } else if (pageIdentifier == 'ARCreditMemo') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ApCreditMemo(qrData: qrData)),
+        MaterialPageRoute(builder: (context) => ARCreditMemo(qrData: qrData)),
       );
     } else if (pageIdentifier == 'ifp') {
       Navigator.push(

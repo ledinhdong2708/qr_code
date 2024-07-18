@@ -8,6 +8,7 @@ import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 
+import '../../../component/list_items.dart';
 import '../../../routes/routes.dart';
 import '../../../service/goodreturn_service.dart';
 import '../../qr_view_example.dart';
@@ -65,25 +66,6 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
     slThucTeController = TextEditingController(text: widget.slThucTe);
     uoMCodeController = TextEditingController(text: widget.uoMCode);
     remakeController = TextEditingController(text: widget.remake);
-
-
-    // String qrData = jsonEncode({
-    //   'data': [
-    //     {
-    //       'ItemCode': widget.itemCode,
-    //       'ItemName': widget.description,
-    //       'Whse': widget.whse,
-    //       'SlThucTe': widget.slThucTe,
-    //       'UoMCode': widget.uoMCode,
-    //       'LineNum': widget.lineNum,
-    //       'Batch': widget.batch,
-    //       'Remake': widget.remake,
-    //       'DocEntry': widget.docEntry,
-    //     }
-    //   ]
-    // });
-    //
-    // print(qrData);
     _fetchData();
   }
 
@@ -185,13 +167,6 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                   labelText: 'Item Name',
                   hintText: 'Item Name',
                 ),
-                // buildTextFieldRow(
-                //   controller: whseController,
-                //   labelText: 'Whse',
-                //   isEnable: true,
-                //   hintText: 'Whse',
-                //   icon: Icons.more_vert,
-                // ),
                 buildTextFieldRow(
                   controller: openQtyController,
                   labelText: 'SL Yêu Cầu',
@@ -215,96 +190,38 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                               lineNum: widget.lineNum,
                             )),
                       ).then((_) => _fetchData());
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => GoodReturnDetailItems(
-                      //       qrData: jsonEncode({
-                      //         'docEntry': widget.docEntry,
-                      //         'lineNum': widget.lineNum,
-                      //         'itemCode': widget.itemCode,
-                      //         'itemName': widget.description,
-                      //         'whse': widget.whse,
-                      //         'uoMCode': widget.uoMCode,
-                      //         'slThucTe': widget.slThucTe,
-                      //         'batch': widget.batch,
-                      //       }),
-                      //     ),
-                      //   ),
-                      // );
                     },
                   ),
                 ),
-                // buildTextFieldRow(
-                //   controller: batchController,
-                //   labelText: 'Batch',
-                //   hintText: 'Batch',
-                //   isEnable: true,
-                // ),
-                // buildTextFieldRow(
-                //   controller: uoMCodeController,
-                //   labelText: 'UoM Code',
-                //   hintText: 'UoM Code',
-                // ),
-                // buildTextFieldRow(
-                //   controller: remakeController,
-                //   labelText: 'Remake',
-                //   isEnable: true,
-                //   hintText: 'Remake here',
-                //   icon: Icons.edit,
-                // ),
-                // TextButton(
-                //   onPressed: () {
-                //     Navigator.pushNamed(context, Routes.grpoDetailItems);
-                //   },
-                //   child: const Text('Tạo Nhãn'),
-                // ),
                 if (grrItemsDetail.isNotEmpty)
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: grrItemsDetail.length,
-                    itemBuilder: (context, index) {
-                      var item = grrItemsDetail[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GoodReturnDetailItems(
-                                id: item['ID'].toString(),
-                                itemCode: item['ItemCode'],
-                                itemName: item['ItemName'],
-                                whse: item['Whse'],
-                                slThucTe: item['SlThucTe'].toString(),
-                                batch: item['Batch'].toString(),
-                                uoMCode: item['UoMCode'].toString(),
-                                remake: item['Remake'].toString(),
-                                isEditable: false,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: readInput,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("ITEM ${index + 1}:"),
-                              Text("Batch: ${item['Batch']}"),
-                              Text("Id: ${item['ID']}"),
-                              Text("SlThucTe: ${item['SlThucTe']}"),
-                              Text("Remake: ${item['Remake']}"),
-                            ],
+                  ListItems(
+                    listItems: grrItemsDetail,
+                    onTapItem: (index) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GoodReturnDetailItems(
+                            isEditable: false,
+                            id: grrItemsDetail[index]['ID'].toString(),
+                            itemCode: grrItemsDetail[index]['ItemCode'],
+                            itemName: grrItemsDetail[index]['ItemName'],
+                            whse: grrItemsDetail[index]['Whse'],
+                            slThucTe: grrItemsDetail[index]['SlThucTe'].toString(),
+                            batch: grrItemsDetail[index]['Batch'].toString(),
+                            uoMCode: grrItemsDetail[index]['UoMCode'].toString(),
+                            remake: grrItemsDetail[index]['Remake'].toString(),
                           ),
                         ),
                       );
                     },
+                    labelName1: 'ID',
+                    labelName2: 'Batch',
+                    labelName3: 'SlThucTe',
+                    labelName4: 'Remake',
+                    listChild1: 'ID',
+                    listChild3: 'Batch',
+                    listChild2: 'SlThucTe',
+                    listChild4: 'Remake',
                   ),
                 Container(
                   width: double.infinity,

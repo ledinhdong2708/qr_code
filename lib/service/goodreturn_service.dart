@@ -163,11 +163,22 @@ Future<void> postGrrItemsDetailData(Map<String, dynamic> data,
 
     if (response.statusCode == 200) {
       print('Data successfully sent to server');
-      CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+      CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success',
+        onOkPressed: () {
+        int count = 0;
+        Navigator.of(context).popUntil((_) => count++ >= 2);
+      },
+      );
+
     } else {
       print('Failed to send data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
-      CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
+      CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error',
+      onOkPressed: () {
+        int count = 0;
+        Navigator.of(context).popUntil((_) => count++ >= 2);
+      },
+      );
     }
   } catch (e) {
     print('Error during POST request: $e');
@@ -195,7 +206,7 @@ Future<Map<String, dynamic>?> fetchGrrItemsDetailData(
     return null;
   }
 }
-
+// QR quet ma batch tu grpo sang grr
 Future<Map<String, dynamic>?> fetchQRGrrItemsDetailData(
     String docentry, String linenum, String id) async {
   final url = '$serverIp/api/v1/grpoitemsdetail/$docentry/$linenum/$id';
