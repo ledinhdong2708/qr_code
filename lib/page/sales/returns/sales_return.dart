@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/header_app.dart';
@@ -26,6 +27,7 @@ class SalesReturn extends StatefulWidget {
 
 class _SalesReturnState extends State<SalesReturn> {
   final TextEditingController _remakeController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
   Barcode? result;
   List<dynamic> sales_return = [];
   Map<String, dynamic>? orrr;
@@ -35,9 +37,15 @@ class _SalesReturnState extends State<SalesReturn> {
     super.initState();
     fetchOrrrData(widget.qrData).then((data) {
       if (data != null) {
+        if (data['data'] != null && data['data']['DocDate'] != null) {
+          DateTime parsedDate = DateTime.parse(data['data']['DocDate']);
+          String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+          data['data']['DocDate'] = formattedDate;
+        }
         setState(() {
           orrr = data;
           _remakeController.text = orrr?['data']['remake'] ?? '';
+          _dateController.text = orrr?['data']['DocDate'] ?? '';
         });
       }
     });
@@ -76,6 +84,7 @@ class _SalesReturnState extends State<SalesReturn> {
                 ),
                 DateInput(
                   postDay: docDate,
+                  controller: _dateController,
                 ),
                 buildTextFieldRow(
                   labelText: 'Vendor Code',
@@ -139,7 +148,10 @@ class _SalesReturnState extends State<SalesReturn> {
                         text: 'POST',
                         onPressed: () async {
                           await updateSrrDatabase(
-                              widget.qrData, _remakeController.text, context);
+                              widget.qrData,
+                              _remakeController.text,
+                              _dateController.text,
+                              context);
                         },
                       ),
                     ],

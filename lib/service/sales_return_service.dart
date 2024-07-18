@@ -54,17 +54,19 @@ Future<void> fetchAndUpdateSrrDatabase(
   if (data != null) {
     setStateCallback(() {
       controller.text = data['data']['remake'] ?? '';
+      controller.text = data['data']['postday'] ?? '';
     });
 
     final remake = controller.text;
-    await updateSrrDatabase(resultCode, remake, context);
+    final docDate = controller.text;
+    await updateSrrDatabase(resultCode, remake, docDate, context);
   } else {
     print('Failed to fetch data');
   }
 }
 
 Future<void> updateSrrDatabase(
-    String resultCode, String remake, BuildContext context) async {
+    String resultCode, String remake, String docDate, BuildContext context) async {
   final data = await fetchOrrrData(resultCode);
   if (data == null || data.isEmpty) {
     print('No data to update');
@@ -74,7 +76,7 @@ Future<void> updateSrrDatabase(
   var updatedData = {
     'docentry': data['data']['DocEntry'].toString(),
     'docno': data['data']['DocNum'].toString(),
-    'postday': data['data']['DocDate'].toString(),
+    'postday': docDate,
     'vendorcode': data['data']['CardCode'],
     'vendorname': data['data']['CardName'],
     'remake': remake,
