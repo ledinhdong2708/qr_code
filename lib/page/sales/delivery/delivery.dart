@@ -110,7 +110,7 @@ class _DeliveryState extends State<Delivery> {
                               itemCode: rdr1[index]['ItemCode'],
                               description: rdr1[index]['Dscription'],
                               whse: rdr1[index]['WhsCode'],
-                              openQty: rdr1[index]['OpenQty'].toString(),
+                              slYeuCau: rdr1[index]['OpenQty'].toString(),
                               slThucTe: rdr1[index]['SlThucTe'].toString(),
                               batch: rdr1[index]['Batch'].toString(),
                               uoMCode: rdr1[index]['UomCode'].toString(),

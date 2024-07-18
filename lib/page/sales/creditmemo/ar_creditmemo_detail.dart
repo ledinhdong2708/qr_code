@@ -13,6 +13,7 @@ import 'package:qr_code/page/sales/returns/sales_return_detail_items.dart';
 import 'package:qr_code/routes/routes.dart';
 import 'package:qr_code/service/ar_credit_memo_service.dart';
 
+import '../../../component/dialog.dart';
 import '../../../component/list_items.dart';
 import '../../../service/sales_return_service.dart';
 import '../../qr_view_example.dart';
@@ -23,7 +24,7 @@ class ArCreditmemoDetail extends StatefulWidget {
   final String itemCode;
   final String description;
   final String batch;
-  final String openQty;
+  final String slYeuCau;
   final String whse;
   final String slThucTe;
   final String uoMCode;
@@ -40,7 +41,7 @@ class ArCreditmemoDetail extends StatefulWidget {
     this.remake = "",
     this.description = "",
     this.batch = "",
-    this.openQty = "",
+    this.slYeuCau = "",
   });
   @override
   _ArCreditmemoDetailState createState() => _ArCreditmemoDetailState();
@@ -63,7 +64,7 @@ class _ArCreditmemoDetailState extends State<ArCreditmemoDetail> {
     itemCodeController = TextEditingController(text: widget.itemCode);
     descriptionController = TextEditingController(text: widget.description);
     batchController = TextEditingController(text: widget.batch);
-    openQtyController = TextEditingController(text: widget.openQty);
+    openQtyController = TextEditingController(text: widget.slYeuCau);
     whseController = TextEditingController(text: widget.whse);
     slThucTeController = TextEditingController(text: widget.slThucTe);
     uoMCodeController = TextEditingController(text: widget.uoMCode);
@@ -76,6 +77,16 @@ class _ArCreditmemoDetailState extends State<ArCreditmemoDetail> {
       if (data != null && data['data'] is List) {
         setState(() {
           arcreditmemoItemsDetail = data['data'];
+
+          if (arcreditmemoItemsDetail.isNotEmpty) {
+            itemCodeController.text = arcreditmemoItemsDetail[0]['ItemCode'];
+            descriptionController.text = arcreditmemoItemsDetail[0]['ItemName'];
+            batchController.text = arcreditmemoItemsDetail[0]['Batch'];
+            whseController.text = arcreditmemoItemsDetail[0]['Whse'];
+            slThucTeController.text = arcreditmemoItemsDetail[0]['SlThucTe'].toString();
+            uoMCodeController.text = arcreditmemoItemsDetail[0]['UoMCode'].toString();
+            remakeController.text = arcreditmemoItemsDetail[0]['Remake'].toString();
+          }
         });
       }
     });
@@ -96,21 +107,33 @@ class _ArCreditmemoDetailState extends State<ArCreditmemoDetail> {
   }
 
   Future<void> _submitData() async {
-    final data = {
-      'docEntry': widget.docEntry,
-      'lineNum': widget.lineNum,
-      'itemCode': itemCodeController.text,
-      'itemName': descriptionController.text,
-      'batch': batchController.text,
-      'slYeuCau': openQtyController.text,
-      'whse': whseController.text,
-      'slThucTe': slThucTeController.text,
-      'uoMCode': uoMCodeController.text,
-      'remake': remakeController.text,
-    };
+    int successfulCount = 0;
+    int totalItems = arcreditmemoItemsDetail.length;
 
     try {
-      await postArCreditMemoItemsData(data, context);
+      for (var item in arcreditmemoItemsDetail) {
+        final data = {
+          'docEntry': widget.docEntry,
+          'lineNum': widget.lineNum,
+          'itemCode': item['ItemCode'],
+          'itemName': item['ItemName'],
+          'batch': item['Batch'],
+          'slYeuCau': widget.slYeuCau,
+          'whse': item['Whse'],
+          'slThucTe': item['SlThucTe'].toString(),
+          'uoMCode': item['UoMCode'].toString(),
+          'remake': item['Remake'].toString(),
+        };
+
+        await postArCreditMemoItemsData(data, context);
+        successfulCount++;
+      }
+
+      // Check if all items were successfully submitted
+      if (successfulCount == totalItems) {
+        print('All data successfully sent to server');
+        CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+      }
     } catch (e) {
       print('Error submitting data: $e');
     }

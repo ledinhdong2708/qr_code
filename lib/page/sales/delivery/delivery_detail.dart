@@ -9,6 +9,7 @@ import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/sales/delivery/delivery_detail_items.dart';
 
+import '../../../component/dialog.dart';
 import '../../../component/list_items.dart';
 import '../../../routes/routes.dart';
 import '../../../service/delivery_service.dart';
@@ -20,7 +21,7 @@ class DeliveryDetail extends StatefulWidget {
   final String itemCode;
   final String description;
   final String batch;
-  final String openQty;
+  final String slYeuCau;
   final String whse;
   final String slThucTe;
   final String uoMCode;
@@ -37,7 +38,7 @@ class DeliveryDetail extends StatefulWidget {
     this.remake = "",
     this.description = "",
     this.batch = "",
-    this.openQty = "",
+    this.slYeuCau = "",
   });
 
   @override
@@ -61,7 +62,7 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
     itemCodeController = TextEditingController(text: widget.itemCode);
     descriptionController = TextEditingController(text: widget.description);
     batchController = TextEditingController(text: widget.batch);
-    openQtyController = TextEditingController(text: widget.openQty);
+    openQtyController = TextEditingController(text: widget.slYeuCau);
     whseController = TextEditingController(text: widget.whse);
     slThucTeController = TextEditingController(text: widget.slThucTe);
     uoMCodeController = TextEditingController(text: widget.uoMCode);
@@ -74,6 +75,16 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
       if (data != null && data['data'] is List) {
         setState(() {
           deliveryItemsDetail = data['data'];
+
+          if (deliveryItemsDetail.isNotEmpty) {
+            itemCodeController.text = deliveryItemsDetail[0]['ItemCode'];
+            descriptionController.text = deliveryItemsDetail[0]['ItemName'];
+            batchController.text = deliveryItemsDetail[0]['Batch'];
+            whseController.text = deliveryItemsDetail[0]['Whse'];
+            slThucTeController.text = deliveryItemsDetail[0]['SlThucTe'].toString();
+            uoMCodeController.text = deliveryItemsDetail[0]['UoMCode'].toString();
+            remakeController.text = deliveryItemsDetail[0]['Remake'].toString();
+          }
         });
       }
     });
@@ -93,52 +104,34 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
     super.dispose();
   }
 
-  // Future<void> _navigateAndDisplaySelection(BuildContext context) async {
-  //   final result = await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => GoodReturnDetailItems(
-  //         qrData: jsonEncode({
-  //           'data': [
-  //             {
-  //               'ItemCode': widget.itemCode,
-  //               'ItemName': widget.description,
-  //               'Whse': widget.whse,
-  //               'SlThucTe': widget.slThucTe,
-  //               'UoMCode': widget.uoMCode,
-  //               'LineNum': widget.lineNum,
-  //               'Batch': widget.batch,
-  //               'Remake': widget.remake,
-  //               'DocEntry': widget.docEntry,
-  //             }
-  //           ]
-  //         }),
-  //       ),
-  //     ),
-  //   );
-  //   if (result != null && result is Map<String, dynamic>) {
-  //     setState(() {
-  //       grrItemsDetail.add(result);
-  //     });
-  //   }
-  // }
-
   Future<void> _submitData() async {
-    final data = {
-      'docEntry': widget.docEntry,
-      'lineNum': widget.lineNum,
-      'itemCode': itemCodeController.text,
-      'itemName': descriptionController.text,
-      'batch': batchController.text,
-      'slYeuCau': openQtyController.text,
-      'whse': whseController.text,
-      'slThucTe': slThucTeController.text,
-      'uoMCode': uoMCodeController.text,
-      'remake': remakeController.text,
-    };
+    int successfulCount = 0;
+    int totalItems = deliveryItemsDetail.length;
 
     try {
-      await postDeliveryItemsData(data, context);
+      for (var item in deliveryItemsDetail) {
+        final data = {
+          'docEntry': widget.docEntry,
+          'lineNum': widget.lineNum,
+          'itemCode': item['ItemCode'],
+          'itemName': item['ItemName'],
+          'batch': item['Batch'],
+          'slYeuCau': widget.slYeuCau,
+          'whse': item['Whse'],
+          'slThucTe': item['SlThucTe'].toString(),
+          'uoMCode': item['UoMCode'].toString(),
+          'remake': item['Remake'].toString(),
+        };
+
+        await postDeliveryItemsData(data, context);
+        successfulCount++;
+      }
+
+      // Check if all items were successfully submitted
+      if (successfulCount == totalItems) {
+        print('All data successfully sent to server');
+        CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+      }
     } catch (e) {
       print('Error submitting data: $e');
     }

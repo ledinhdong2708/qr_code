@@ -22,7 +22,6 @@ import 'package:qr_code/page/login.dart';
 import 'package:qr_code/page/sales/creditmemo/ar_creditmemo_detail.dart';
 import 'package:qr_code/page/sales/delivery/delivery_detail.dart';
 import 'package:qr_code/page/sales/returns/sales_return_detail.dart';
-import 'package:qr_code/page/sales/returns/returnlabel.dart';
 import 'package:qr_code/page/sales/sales.dart';
 import 'package:qr_code/page/user_detail.dart';
 import 'package:qr_code/routes/routes.dart';
@@ -91,7 +90,6 @@ class _MyAppState extends State<MyApp> {
               Routes.sales: (context) => const Sales(),
               Routes.deliveryDetail: (context) => const DeliveryDetail(),
               Routes.returnDetail: (context) => const SalesReturnDetail(),
-              Routes.returnLabels: (context) => const ReturnLabels(),
               Routes.arCreditMemoDetail: (context) =>
                   const ArCreditmemoDetail(),
               //inventory

@@ -106,7 +106,7 @@ class _ARCreditMemoState extends State<ARCreditMemo> {
                               itemCode: rrr1[index]['ItemCode'],
                               description: rrr1[index]['Dscription'],
                               whse: rrr1[index]['WhsCode'],
-                              openQty: rrr1[index]['OpenQty'].toString(),
+                              slYeuCau: rrr1[index]['OpenQty'].toString(),
                               slThucTe: rrr1[index]['SlThucTe'].toString(),
                               batch: rrr1[index]['Batch'].toString(),
                               uoMCode: rrr1[index]['UomCode'].toString(),
