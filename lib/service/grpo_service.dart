@@ -14,6 +14,7 @@ Future<Map<String, dynamic>?> fetchOporData(String resultCode) async {
     var decodedResponse = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
       final json = jsonDecode(decodedResponse);
+      print(json);
       return json;
     } else {
       print("Failed to load data with status code: ${response.statusCode}");
@@ -55,17 +56,19 @@ Future<void> fetchAndUpdateGrpoDatabase(
   if (data != null) {
     setStateCallback(() {
       controller.text = data['data']['remake'] ?? '';
+      controller.text = data['data']['postday'] ?? '';
     });
 
     final remake = controller.text;
-    await updateGrpoDatabase(resultCode, remake, context);
+    final docDate = controller.text;
+    await updateGrpoDatabase(resultCode, remake, docDate, context);
   } else {
     print('Failed to fetch data');
   }
 }
 
-Future<void> updateGrpoDatabase(
-    String resultCode, String remake, BuildContext context) async {
+Future<void> updateGrpoDatabase(String resultCode, String remake,
+    String docDate, BuildContext context) async {
   final data = await fetchOporData(resultCode);
   if (data == null || data.isEmpty) {
     print('No data to update');
@@ -75,7 +78,7 @@ Future<void> updateGrpoDatabase(
   var updatedData = {
     'docentry': data['data']['DocEntry'].toString(),
     'docno': data['data']['DocNum'].toString(),
-    'postday': data['data']['DocDate'].toString(),
+    'postday': docDate,
     'vendorcode': data['data']['CardCode'],
     'vendorname': data['data']['CardName'],
     'remake': remake,
