@@ -8,6 +8,7 @@ import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 
+import '../../../component/dialog.dart';
 import '../../../component/list_items.dart';
 import '../../../routes/routes.dart';
 import '../../../service/goodreturn_service.dart';
@@ -22,6 +23,7 @@ class GoodsReturnDetail extends StatefulWidget {
   final String batch;
   final String openQty;
   final String whse;
+  final String slYeuCau;
   final String slThucTe;
   final String uoMCode;
   final String remake;
@@ -32,6 +34,7 @@ class GoodsReturnDetail extends StatefulWidget {
     this.lineNum = "",
     this.itemCode = "",
     this.whse = "",
+    this.slYeuCau = "",
     this.slThucTe = "",
     this.uoMCode = "",
     this.remake = "",
@@ -49,7 +52,7 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
   late TextEditingController itemCodeController;
   late TextEditingController descriptionController;
   late TextEditingController batchController;
-  late TextEditingController openQtyController;
+  late TextEditingController slYeuCauController;
   late TextEditingController whseController;
   late TextEditingController slThucTeController;
   late TextEditingController uoMCodeController;
@@ -61,7 +64,7 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
     itemCodeController = TextEditingController(text: widget.itemCode);
     descriptionController = TextEditingController(text: widget.description);
     batchController = TextEditingController(text: widget.batch);
-    openQtyController = TextEditingController(text: widget.openQty);
+    slYeuCauController = TextEditingController(text: widget.slYeuCau);
     whseController = TextEditingController(text: widget.whse);
     slThucTeController = TextEditingController(text: widget.slThucTe);
     uoMCodeController = TextEditingController(text: widget.uoMCode);
@@ -74,6 +77,16 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
       if (data != null && data['data'] is List) {
         setState(() {
           grrItemsDetail = data['data'];
+
+          if (grrItemsDetail.isNotEmpty) {
+            itemCodeController.text = grrItemsDetail[0]['ItemCode'];
+            descriptionController.text = grrItemsDetail[0]['ItemName'];
+            batchController.text = grrItemsDetail[0]['Batch'];
+            whseController.text = grrItemsDetail[0]['Whse'];
+            slThucTeController.text = grrItemsDetail[0]['SlThucTe'].toString();
+            uoMCodeController.text = grrItemsDetail[0]['UoMCode'].toString();
+            remakeController.text = grrItemsDetail[0]['Remake'].toString();
+          }
         });
       }
     });
@@ -85,7 +98,7 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
     itemCodeController.dispose();
     descriptionController.dispose();
     batchController.dispose();
-    openQtyController.dispose();
+    slYeuCauController.dispose();
     whseController.dispose();
     slThucTeController.dispose();
     uoMCodeController.dispose();
@@ -93,52 +106,35 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
     super.dispose();
   }
 
-  // Future<void> _navigateAndDisplaySelection(BuildContext context) async {
-  //   final result = await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => GoodReturnDetailItems(
-  //         qrData: jsonEncode({
-  //           'data': [
-  //             {
-  //               'ItemCode': widget.itemCode,
-  //               'ItemName': widget.description,
-  //               'Whse': widget.whse,
-  //               'SlThucTe': widget.slThucTe,
-  //               'UoMCode': widget.uoMCode,
-  //               'LineNum': widget.lineNum,
-  //               'Batch': widget.batch,
-  //               'Remake': widget.remake,
-  //               'DocEntry': widget.docEntry,
-  //             }
-  //           ]
-  //         }),
-  //       ),
-  //     ),
-  //   );
-  //   if (result != null && result is Map<String, dynamic>) {
-  //     setState(() {
-  //       grrItemsDetail.add(result);
-  //     });
-  //   }
-  // }
 
   Future<void> _submitData() async {
-    final data = {
-      'docEntry': widget.docEntry,
-      'lineNum': widget.lineNum,
-      'itemCode': itemCodeController.text,
-      'itemName': descriptionController.text,
-      'batch': batchController.text,
-      'slYeuCau': openQtyController.text,
-      'whse': whseController.text,
-      'slThucTe': slThucTeController.text,
-      'uoMCode': uoMCodeController.text,
-      'remake': remakeController.text,
-    };
+    int successfulCount = 0;
+    int totalItems = grrItemsDetail.length;
 
     try {
-      await postGrrItemsData(data, context);
+      for (var item in grrItemsDetail) {
+        final data = {
+          'docEntry': widget.docEntry,
+          'lineNum': widget.lineNum,
+          'itemCode': item['ItemCode'],
+          'itemName': item['ItemName'],
+          'batch': item['Batch'],
+          'slYeuCau': widget.slYeuCau,
+          'whse': item['Whse'],
+          'slThucTe': item['SlThucTe'].toString(),
+          'uoMCode': item['UoMCode'].toString(),
+          'remake': item['Remake'].toString(),
+        };
+
+        await postGrrItemsData(data, context);
+        successfulCount++;
+      }
+
+      // Check if all items were successfully submitted
+      if (successfulCount == totalItems) {
+        print('All data successfully sent to server');
+        CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+      }
     } catch (e) {
       print('Error submitting data: $e');
     }
@@ -168,7 +164,7 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                   hintText: 'Item Name',
                 ),
                 buildTextFieldRow(
-                  controller: openQtyController,
+                  controller: slYeuCauController,
                   labelText: 'SL Yêu Cầu',
                   hintText: 'SL Yêu Cầu',
                 ),

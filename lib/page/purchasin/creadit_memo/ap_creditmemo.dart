@@ -109,7 +109,7 @@ class _ApCreditMemoState extends State<ApCreditMemo> {
                               itemCode: prr1[index]['ItemCode'],
                               description: prr1[index]['Dscription'],
                               whse: prr1[index]['WhsCode'],
-                              openQty: prr1[index]['OpenQty'].toString(),
+                              slYeuCau: prr1[index]['OpenQty'].toString(),
                               slThucTe: prr1[index]['SlThucTe'].toString(),
                               batch: prr1[index]['Batch'].toString(),
                               uoMCode: prr1[index]['UomCode'].toString(),
