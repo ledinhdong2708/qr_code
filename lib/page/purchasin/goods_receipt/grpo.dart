@@ -31,6 +31,7 @@ class _GrpoState extends State<Grpo> {
   @override
   void initState() {
     super.initState();
+
     fetchOporData(widget.qrData).then((data) {
       if (data != null) {
         setState(() {

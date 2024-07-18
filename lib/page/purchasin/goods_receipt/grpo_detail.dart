@@ -68,11 +68,33 @@ class _GrpoDetailState extends State<GrpoDetail> {
     _fetchData();
   }
 
+  // Future<void> _fetchData() async {
+  //   fetchGrpoItemsDetailData(widget.docEntry, widget.lineNum).then((data) {
+  //     if (data != null && data['data'] is List) {
+  //       setState(() {
+  //         grpoItemsDetail = data['data'];
+  //       });
+  //     }
+  //   });
+  // }
+
   Future<void> _fetchData() async {
     fetchGrpoItemsDetailData(widget.docEntry, widget.lineNum).then((data) {
       if (data != null && data['data'] is List) {
         setState(() {
           grpoItemsDetail = data['data'];
+
+          // Cập nhật các TextEditingController với dữ liệu mới
+          if (grpoItemsDetail.isNotEmpty) {
+            itemCodeController.text = grpoItemsDetail[0]['ItemCode'];
+            descriptionController.text = grpoItemsDetail[0]['ItemName'];
+            batchController.text = grpoItemsDetail[0]['Batch'];
+            openQtyController.text = ''; // Chưa rõ giá trị
+            whseController.text = grpoItemsDetail[0]['Whse'];
+            slThucTeController.text = grpoItemsDetail[0]['SlThucTe'].toString();
+            uoMCodeController.text = grpoItemsDetail[0]['UoMCode'].toString();
+            remakeController.text = grpoItemsDetail[0]['Remake'].toString();
+          }
         });
       }
     });
@@ -91,22 +113,65 @@ class _GrpoDetailState extends State<GrpoDetail> {
     super.dispose();
   }
 
-  Future<void> _submitData() async {
-    final data = {
-      'docEntry': widget.docEntry,
-      'lineNum': widget.lineNum,
-      'itemCode': itemCodeController.text,
-      'itemName': descriptionController.text,
-      'batch': batchController.text,
-      'slYeuCau': openQtyController.text,
-      'whse': whseController.text,
-      'slThucTe': slThucTeController.text,
-      'uoMCode': uoMCodeController.text,
-      'remake': remakeController.text,
-    };
+  // Future<void> _submitData() async {
+  //   final data = {
+  //     'docEntry': widget.docEntry,
+  //     'lineNum': widget.lineNum,
+  //     'itemCode': itemCodeController.text,
+  //     'itemName': descriptionController.text,
+  //     'batch': batchController.text,
+  //     'slYeuCau': openQtyController.text,
+  //     'whse': whseController.text,
+  //     'slThucTe': slThucTeController.text,
+  //     'uoMCode': uoMCodeController.text,
+  //     'remake': remakeController.text,
+  //   };
 
+  //   try {
+  //     await postGrpoItemsData(data, context);
+  //   } catch (e) {
+  //     print('Error submitting data: $e');
+  //   }
+  // }
+
+  // Future<void> _submitData() async {
+  //   final data = {
+  //     'docEntry': widget.docEntry,
+  //     'lineNum': widget.lineNum,
+  //     'itemCode': itemCodeController.text,
+  //     'itemName': descriptionController.text,
+  //     'batch': batchController.text,
+  //     'slYeuCau': openQtyController.text,
+  //     'whse': whseController.text,
+  //     'slThucTe': slThucTeController.text,
+  //     'uoMCode': uoMCodeController.text,
+  //     'remake': remakeController.text,
+  //   };
+
+  //   try {
+  //     await postGrpoItemsData(data, context);
+  //   } catch (e) {
+  //     print('Error submitting data: $e');
+  //   }
+  // }
+  Future<void> _submitData() async {
     try {
-      await postGrpoItemsData(data, context);
+      for (var item in grpoItemsDetail) {
+        final data = {
+          'docEntry': widget.docEntry,
+          'lineNum': widget.lineNum,
+          'itemCode': item['ItemCode'],
+          'itemName': item['ItemName'],
+          'batch': item['Batch'],
+          'slYeuCau': '', // Cần cập nhật giá trị tương ứng
+          'whse': item['Whse'],
+          'slThucTe': item['SlThucTe'].toString(),
+          'uoMCode': item['UoMCode'].toString(),
+          'remake': item['Remake'].toString(),
+        };
+
+        await postGrpoItemsData(data, context);
+      }
     } catch (e) {
       print('Error submitting data: $e');
     }
