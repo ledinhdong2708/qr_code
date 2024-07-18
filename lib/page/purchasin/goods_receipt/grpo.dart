@@ -106,7 +106,7 @@ class _GrpoState extends State<Grpo> {
                               itemCode: por1[index]['ItemCode'],
                               description: por1[index]['Dscription'],
                               whse: por1[index]['WhsCode'],
-                              openQty: por1[index]['OpenQty'].toString(),
+                              slYeuCau: por1[index]['OpenQty'].toString(),
                               slThucTe: por1[index]['SlThucTe'].toString(),
                               batch: por1[index]['Batch'].toString(),
                               uoMCode: por1[index]['UomCode'].toString(),

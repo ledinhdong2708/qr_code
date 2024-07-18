@@ -114,7 +114,6 @@ Future<void> postGrpoItemsData(
 
     if (response.statusCode == 200) {
       print('Data successfully sent to server');
-      CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
     } else {
       print('Failed to send data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');

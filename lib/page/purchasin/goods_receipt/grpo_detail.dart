@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
+import 'package:qr_code/component/dialog.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/list_items.dart';
 import 'package:qr_code/component/textfield_method.dart';
@@ -17,7 +18,7 @@ class GrpoDetail extends StatefulWidget {
   final String itemCode;
   final String description;
   final String batch;
-  final String openQty;
+  final String slYeuCau;
   final String whse;
   final String slThucTe;
   final String uoMCode;
@@ -35,7 +36,7 @@ class GrpoDetail extends StatefulWidget {
     this.remake = "",
     this.description = "",
     this.batch = "",
-    this.openQty = "",
+    this.slYeuCau = "",
   });
 
   @override
@@ -47,7 +48,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
   late TextEditingController itemCodeController;
   late TextEditingController descriptionController;
   late TextEditingController batchController;
-  late TextEditingController openQtyController;
+  late TextEditingController slYeuCauController;
   late TextEditingController whseController;
   late TextEditingController slThucTeController;
   late TextEditingController uoMCodeController;
@@ -59,7 +60,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
     itemCodeController = TextEditingController(text: widget.itemCode);
     descriptionController = TextEditingController(text: widget.description);
     batchController = TextEditingController(text: widget.batch);
-    openQtyController = TextEditingController(text: widget.openQty);
+    slYeuCauController = TextEditingController(text: widget.slYeuCau);
     whseController = TextEditingController(text: widget.whse);
     slThucTeController = TextEditingController(text: widget.slThucTe);
     uoMCodeController = TextEditingController(text: widget.uoMCode);
@@ -68,28 +69,16 @@ class _GrpoDetailState extends State<GrpoDetail> {
     _fetchData();
   }
 
-  // Future<void> _fetchData() async {
-  //   fetchGrpoItemsDetailData(widget.docEntry, widget.lineNum).then((data) {
-  //     if (data != null && data['data'] is List) {
-  //       setState(() {
-  //         grpoItemsDetail = data['data'];
-  //       });
-  //     }
-  //   });
-  // }
-
   Future<void> _fetchData() async {
     fetchGrpoItemsDetailData(widget.docEntry, widget.lineNum).then((data) {
       if (data != null && data['data'] is List) {
         setState(() {
           grpoItemsDetail = data['data'];
 
-          // Cập nhật các TextEditingController với dữ liệu mới
           if (grpoItemsDetail.isNotEmpty) {
             itemCodeController.text = grpoItemsDetail[0]['ItemCode'];
             descriptionController.text = grpoItemsDetail[0]['ItemName'];
             batchController.text = grpoItemsDetail[0]['Batch'];
-            openQtyController.text = ''; // Chưa rõ giá trị
             whseController.text = grpoItemsDetail[0]['Whse'];
             slThucTeController.text = grpoItemsDetail[0]['SlThucTe'].toString();
             uoMCodeController.text = grpoItemsDetail[0]['UoMCode'].toString();
@@ -105,7 +94,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
     itemCodeController.dispose();
     descriptionController.dispose();
     batchController.dispose();
-    openQtyController.dispose();
+    slYeuCauController.dispose();
     whseController.dispose();
     slThucTeController.dispose();
     uoMCodeController.dispose();
@@ -113,48 +102,10 @@ class _GrpoDetailState extends State<GrpoDetail> {
     super.dispose();
   }
 
-  // Future<void> _submitData() async {
-  //   final data = {
-  //     'docEntry': widget.docEntry,
-  //     'lineNum': widget.lineNum,
-  //     'itemCode': itemCodeController.text,
-  //     'itemName': descriptionController.text,
-  //     'batch': batchController.text,
-  //     'slYeuCau': openQtyController.text,
-  //     'whse': whseController.text,
-  //     'slThucTe': slThucTeController.text,
-  //     'uoMCode': uoMCodeController.text,
-  //     'remake': remakeController.text,
-  //   };
-
-  //   try {
-  //     await postGrpoItemsData(data, context);
-  //   } catch (e) {
-  //     print('Error submitting data: $e');
-  //   }
-  // }
-
-  // Future<void> _submitData() async {
-  //   final data = {
-  //     'docEntry': widget.docEntry,
-  //     'lineNum': widget.lineNum,
-  //     'itemCode': itemCodeController.text,
-  //     'itemName': descriptionController.text,
-  //     'batch': batchController.text,
-  //     'slYeuCau': openQtyController.text,
-  //     'whse': whseController.text,
-  //     'slThucTe': slThucTeController.text,
-  //     'uoMCode': uoMCodeController.text,
-  //     'remake': remakeController.text,
-  //   };
-
-  //   try {
-  //     await postGrpoItemsData(data, context);
-  //   } catch (e) {
-  //     print('Error submitting data: $e');
-  //   }
-  // }
   Future<void> _submitData() async {
+    int successfulCount = 0;
+    int totalItems = grpoItemsDetail.length;
+
     try {
       for (var item in grpoItemsDetail) {
         final data = {
@@ -163,7 +114,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
           'itemCode': item['ItemCode'],
           'itemName': item['ItemName'],
           'batch': item['Batch'],
-          'slYeuCau': '', // Cần cập nhật giá trị tương ứng
+          'slYeuCau': widget.slYeuCau,
           'whse': item['Whse'],
           'slThucTe': item['SlThucTe'].toString(),
           'uoMCode': item['UoMCode'].toString(),
@@ -171,6 +122,13 @@ class _GrpoDetailState extends State<GrpoDetail> {
         };
 
         await postGrpoItemsData(data, context);
+        successfulCount++;
+      }
+
+      // Check if all items were successfully submitted
+      if (successfulCount == totalItems) {
+        print('All data successfully sent to server');
+        CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
       }
     } catch (e) {
       print('Error submitting data: $e');
@@ -200,7 +158,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
                   hintText: 'Item Name',
                 ),
                 buildTextFieldRow(
-                  controller: openQtyController,
+                  controller: slYeuCauController,
                   labelText: 'SL Yêu Cầu',
                   hintText: 'SL Yêu Cầu',
                 ),
