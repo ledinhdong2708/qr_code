@@ -54,17 +54,19 @@ Future<void> fetchAndUpdateGrrDatabase(
   if (data != null) {
     setStateCallback(() {
       controller.text = data['data']['remake'] ?? '';
+      controller.text = data['data']['postday'] ?? '';
     });
 
     final remake = controller.text;
-    await updateGrrDatabase(resultCode, remake, context);
+    final docDate = controller.text;
+    await updateGrrDatabase(resultCode, remake, docDate, context);
   } else {
     print('Failed to fetch data');
   }
 }
 
 Future<void> updateGrrDatabase(
-    String resultCode, String remake, BuildContext context) async {
+    String resultCode, String remake, String docDate, BuildContext context) async {
   final data = await fetchOprrData(resultCode);
   if (data == null || data.isEmpty) {
     print('No data to update');
@@ -74,7 +76,7 @@ Future<void> updateGrrDatabase(
   var updatedData = {
     'docentry': data['data']['DocEntry'].toString(),
     'docno': data['data']['DocNum'].toString(),
-    'postday': data['data']['DocDate'].toString(),
+    'postday': docDate,
     'vendorcode': data['data']['CardCode'],
     'vendorname': data['data']['CardName'],
     'remake': remake,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/header_app.dart';
@@ -26,6 +27,7 @@ class GoodsReturn extends StatefulWidget {
 
 class _GoodsReturnState extends State<GoodsReturn> {
   final TextEditingController _remakeController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
   Barcode? result;
   List<dynamic> goodreturn = [];
   Map<String, dynamic>? oprr;
@@ -35,9 +37,15 @@ class _GoodsReturnState extends State<GoodsReturn> {
     super.initState();
     fetchOprrData(widget.qrData).then((data) {
       if (data != null) {
+        if (data['data'] != null && data['data']['DocDate'] != null) {
+          DateTime parsedDate = DateTime.parse(data['data']['DocDate']);
+          String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+          data['data']['DocDate'] = formattedDate;
+        }
         setState(() {
           oprr = data;
           _remakeController.text = oprr?['data']['remake'] ?? '';
+          _dateController.text = oprr?['data']['DocDate'] ?? '';
         });
       }
     });
@@ -76,6 +84,7 @@ class _GoodsReturnState extends State<GoodsReturn> {
                 ),
                 DateInput(
                   postDay: docDate,
+                  controller: _dateController,
                 ),
                 buildTextFieldRow(
                   labelText: 'Vendor Code',
@@ -140,7 +149,10 @@ class _GoodsReturnState extends State<GoodsReturn> {
                         text: 'POST',
                         onPressed: () async {
                           await updateGrrDatabase(
-                          widget.qrData, _remakeController.text, context);
+                          widget.qrData,
+                              _remakeController.text,
+                              _dateController.text,
+                              context);
                           },
                       ),
                     ],
