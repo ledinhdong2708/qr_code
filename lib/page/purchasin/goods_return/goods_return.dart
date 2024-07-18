@@ -11,6 +11,7 @@ import 'package:qr_code/routes/routes.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:http/http.dart' as http;
 import '../../../component/dialog.dart';
+import '../../../component/list_items.dart';
 import '../../../constants/urlAPI.dart';
 import '../../../service/goodreturn_service.dart';
 import 'goods_return_detail.dart';
@@ -48,42 +49,6 @@ class _GoodsReturnState extends State<GoodsReturn> {
       }
     });
   }
-
-  // Future<void> updateDatabase(String remake) async {
-  //   final resultCode = widget.qrData;
-  //   if (goodreturn.isEmpty) {
-  //     print('No data to update');
-  //     return;
-  //   }
-  //   var data = goodreturn[0]['data'];
-  //   var updatedData = {
-  //     'docno': data['docno'].toString(),
-  //     'postday': data['postday'].toString(),
-  //     'vendorcode': data['vendorcode'],
-  //     'vendorname': data['vendorname'],
-  //     'remake': remake,
-  //   };
-  //   var url = Uri.parse('$serverIp/api/v1/grr/$resultCode');
-  //   var response = await http.put(
-  //     url,
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //     body: jsonEncode(updatedData),
-  //   );
-  //   if (response.statusCode == 200) {
-  //     print('Update successful');
-  //     print(updatedData);
-  //     CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
-  //     // setState(() {
-  //     //   data['remake'] = remake;
-  //     //   // _remakeController.text = remake;
-  //     // });
-  //   } else {
-  //     print('Failed to update');
-  //     CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -130,54 +95,36 @@ class _GoodsReturnState extends State<GoodsReturn> {
                   valueQR: remark,
                   controller: _remakeController
                 ),
-                if (prr1.isNotEmpty)
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: prr1.length,
-                    itemBuilder: (context, index) {
-                      var item = prr1[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GoodsReturnDetail(
-                                docEntry: item['DocEntry'],
-                                lineNum: item['LineNum'],
-                                itemCode: item['ItemCode'],
-                                description: item['Dscription'],
-                                whse: item['WhsCode'],
-                                openQty: item['OpenQty'].toString(),
-                                slThucTe: item['SlThucTe'].toString(),
-                                batch: item['Batch'].toString(),
-                                uoMCode: item['UomCode'].toString(),
-                                remake: item['remake'].toString(),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: readInput,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("ITEM ${index + 1}:"),
-                              Text("Code: ${item['ItemCode']}"),
-                              Text("Name: ${item['Dscription']}"),
-                              // Text("Batch: ${item['Batch']}"),
-                              Text("Open Quantity: ${item['OpenQty']}"),
-                            ],
-                          ),
+              if (prr1.isNotEmpty)
+                ListItems(
+                  listItems: prr1,
+                  onTapItem: (index) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GoodsReturnDetail(
+                          docEntry: prr1[index]['DocEntry'],
+                          lineNum: prr1[index]['LineNum'],
+                          itemCode: prr1[index]['ItemCode'],
+                          description: prr1[index]['Dscription'],
+                          whse: prr1[index]['WhsCode'],
+                          openQty: prr1[index]['OpenQty'].toString(),
+                          slThucTe: prr1[index]['SlThucTe'].toString(),
+                          batch: prr1[index]['Batch'].toString(),
+                          uoMCode: prr1[index]['UomCode'].toString(),
+                          remake: prr1[index]['remake'].toString(),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
+                  labelName1: 'DocNo',
+                  labelName2: 'Code',
+                  labelName3: 'Name',
+                  labelName4: 'SlYeuCau',
+                  listChild1: 'DocEntry',
+                  listChild2: 'ItemCode',
+                  listChild3: 'Dscription',
+                  listChild4: 'OpenQty'),
                 Container(
                   width: double.infinity,
                   margin: AppStyles.marginButton,

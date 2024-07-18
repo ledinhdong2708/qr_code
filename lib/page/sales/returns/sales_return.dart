@@ -11,6 +11,7 @@ import 'package:qr_code/page/sales/returns/sales_return_detail.dart';
 import 'package:qr_code/routes/routes.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../../../component/list_items.dart';
 import '../../../service/sales_return_service.dart';
 
 class SalesReturn extends StatefulWidget {
@@ -94,53 +95,35 @@ class _SalesReturnState extends State<SalesReturn> {
                     valueQR: remark,
                     controller: _remakeController),
                 if (rrr1.isNotEmpty)
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: rrr1.length,
-                    itemBuilder: (context, index) {
-                      var item = rrr1[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SalesReturnDetail(
-                                docEntry: item['DocEntry'],
-                                lineNum: item['LineNum'],
-                                itemCode: item['ItemCode'],
-                                description: item['Dscription'],
-                                whse: item['WhsCode'],
-                                openQty: item['OpenQty'].toString(),
-                                slThucTe: item['SlThucTe'].toString(),
-                                batch: item['Batch'].toString(),
-                                uoMCode: item['UomCode'].toString(),
-                                remake: item['remake'].toString(),
-                              ),
+                  ListItems(
+                      listItems: rrr1,
+                      onTapItem: (index) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SalesReturnDetail(
+                              docEntry: rrr1[index]['DocEntry'],
+                              lineNum: rrr1[index]['LineNum'],
+                              itemCode: rrr1[index]['ItemCode'],
+                              description: rrr1[index]['Dscription'],
+                              whse: rrr1[index]['WhsCode'],
+                              openQty: rrr1[index]['OpenQty'].toString(),
+                              slThucTe: rrr1[index]['SlThucTe'].toString(),
+                              batch: rrr1[index]['Batch'].toString(),
+                              uoMCode: rrr1[index]['UomCode'].toString(),
+                              remake: rrr1[index]['remake'].toString(),
                             ),
-                          );
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: readInput,
-                            borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("ITEM ${index + 1}:"),
-                              Text("Code: ${item['ItemCode']}"),
-                              Text("Name: ${item['Dscription']}"),
-                              // Text("Batch: ${item['Batch']}"),
-                              Text("Open Quantity: ${item['OpenQty']}"),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                      labelName1: 'DocNo',
+                      labelName2: 'Code',
+                      labelName3: 'Name',
+                      labelName4: 'SlYeuCau',
+                      listChild1: 'DocEntry',
+                      listChild2: 'ItemCode',
+                      listChild3: 'Dscription',
+                      listChild4: 'OpenQty'),
                 Container(
                   width: double.infinity,
                   margin: AppStyles.marginButton,

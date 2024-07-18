@@ -6,8 +6,8 @@ import 'package:qr_code/constants/urlApi.dart';
 
 import '../component/dialog.dart';
 
-Future<Map<String, dynamic>?> fetchOrrrData(String resultCode) async {
-  final url = '$serverIp/api/v1/orrr/$resultCode';
+Future<Map<String, dynamic>?> fetchOrdrData(String resultCode) async {
+  final url = '$serverIp/api/v1/ordr/$resultCode';
   final uri = Uri.parse(url);
   try {
     final response = await http.get(uri);
@@ -20,52 +20,52 @@ Future<Map<String, dynamic>?> fetchOrrrData(String resultCode) async {
       return null;
     }
   } catch (e) {
-    print("Error fetching ORRR data: $e");
+    print("Error fetching ORDR data: $e");
     return null;
   }
 }
 
-Future<Map<String, dynamic>?> fetchRrr1Data(String resultCode) async {
-  final url = '$serverIp/api/v1/rrr1/$resultCode';
+Future<Map<String, dynamic>?> fetchRdr1Data(String resultCode) async {
+  final url = '$serverIp/api/v1/rdr1/$resultCode';
   final uri = Uri.parse(url);
   try {
     final response = await http.get(uri);
     var decodedResponse = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
       final json = jsonDecode(decodedResponse);
-      print("Fetch RRR1 data successful");
+      print("Fetch RDR1 data successful");
       return json;
     } else {
       print("Failed to load data with status code: ${response.statusCode}");
       return null;
     }
   } catch (e) {
-    print("Error fetching RRR1 data: $e");
+    print("Error fetching RDR1 data: $e");
     return null;
   }
 }
 
-Future<void> fetchAndUpdateSrrDatabase(
+Future<void> fetchAndUpdateDeliveryDatabase(
     String resultCode,
     TextEditingController controller,
     Function setStateCallback,
     BuildContext context) async {
-  final data = await fetchOrrrData(resultCode);
+  final data = await fetchOrdrData(resultCode);
   if (data != null) {
     setStateCallback(() {
       controller.text = data['data']['remake'] ?? '';
     });
 
     final remake = controller.text;
-    await updateSrrDatabase(resultCode, remake, context);
+    await updateDeliveryDatabase(resultCode, remake, context);
   } else {
     print('Failed to fetch data');
   }
 }
 
-Future<void> updateSrrDatabase(
+Future<void> updateDeliveryDatabase(
     String resultCode, String remake, BuildContext context) async {
-  final data = await fetchOrrrData(resultCode);
+  final data = await fetchOrdrData(resultCode);
   if (data == null || data.isEmpty) {
     print('No data to update');
     return;
@@ -80,7 +80,7 @@ Future<void> updateSrrDatabase(
     'remake': remake,
   };
 
-  var url = Uri.parse('$serverIp/api/v1/srr');
+  var url = Uri.parse('$serverIp/api/v1/delivery');
   var response = await http.post(
     url,
     headers: <String, String>{
@@ -100,7 +100,7 @@ Future<void> updateSrrDatabase(
 }
 
 Future<void> postData(Map<String, dynamic> data, BuildContext context) async {
-  const String url = '$serverIp/api/v1/srritems';
+  const String url = '$serverIp/api/v1/deliveryitems';
 
   try {
     var response = await http.post(
@@ -124,9 +124,9 @@ Future<void> postData(Map<String, dynamic> data, BuildContext context) async {
   }
 }
 
-Future<void> postSrrItemsData(
+Future<void> postDeliveryItemsData(
     Map<String, dynamic> data, BuildContext context) async {
-  const String url = '$serverIp/api/v1/srritems';
+  const String url = '$serverIp/api/v1/deliveryitems';
   try {
     var response = await http.post(
       Uri.parse(url),
@@ -149,9 +149,9 @@ Future<void> postSrrItemsData(
   }
 }
 
-Future<void> postSrrItemsDetailData(Map<String, dynamic> data,
+Future<void> postDeliveryItemsDetailData(Map<String, dynamic> data,
     BuildContext context, String docentry, String linenum) async {
-  final String url = '$serverIp/api/v1/srritemsdetail/$docentry/$linenum';
+  final String url = '$serverIp/api/v1/deliveryitemsdetail/$docentry/$linenum';
   try {
     var response = await http.post(
       Uri.parse(url),
@@ -164,19 +164,20 @@ Future<void> postSrrItemsDetailData(Map<String, dynamic> data,
     if (response.statusCode == 200) {
       print('Data successfully sent to server');
       CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success',
-      onOkPressed: () {
-        int count = 0;
-        Navigator.of(context).popUntil((_) => count++ >= 1);
-      },
+        onOkPressed: () {
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 2);
+        },
       );
+
     } else {
       print('Failed to send data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
       CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error',
-      onOkPressed: () {
-        int count = 0;
-        Navigator.of(context).popUntil((_) => count++ >= 1);
-      },
+        onOkPressed: () {
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 2);
+        },
       );
     }
   } catch (e) {
@@ -184,16 +185,16 @@ Future<void> postSrrItemsDetailData(Map<String, dynamic> data,
   }
 }
 
-Future<Map<String, dynamic>?> fetchSrrItemsDetailData(
+Future<Map<String, dynamic>?> fetchDeliveryItemsDetailData(
     String docentry, String linenum) async {
-  final url = '$serverIp/api/v1/srritemsdetail/Detail/$docentry/$linenum';
+  final url = '$serverIp/api/v1/deliveryitemsdetail/Detail/$docentry/$linenum';
   final uri = Uri.parse(url);
   try {
     final response = await http.get(uri);
     var decodedResponse = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
       final json = jsonDecode(decodedResponse);
-      print("Fetch srritemsdetail data successful");
+      print("Fetch deliveryitemsdetail data successful");
       print(json);
       return json;
     } else {
@@ -201,7 +202,29 @@ Future<Map<String, dynamic>?> fetchSrrItemsDetailData(
       return null;
     }
   } catch (e) {
-    print("Error fetching srritemsdetail data: $e");
+    print("Error fetching deliveryitemsdetail data: $e");
+    return null;
+  }
+}
+
+Future<Map<String, dynamic>?> fetchQRDeliveryItemsDetailData(
+    String docentry, String linenum, String id) async {
+  final url = '$serverIp/api/v1/grpoitemsdetail/$docentry/$linenum/$id';
+  final uri = Uri.parse(url);
+  try {
+    final response = await http.get(uri);
+    var decodedResponse = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(decodedResponse);
+      print("Fetch QR deliveryitemsdetail data successful");
+      print(json);
+      return json;
+    } else {
+      print("Failed to load data with status code: ${response.statusCode}");
+      return null;
+    }
+  } catch (e) {
+    print("Error fetching QR deliveryitemsdetail data: $e");
     return null;
   }
 }

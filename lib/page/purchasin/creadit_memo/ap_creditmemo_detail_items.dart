@@ -9,10 +9,10 @@ import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/service/grpo_service.dart';
 
-import '../../../service/goodreturn_service.dart';
+import '../../../service/ap_credit_memo_service.dart';
 
 
-class GoodReturnDetailItems extends StatefulWidget {
+class ApCreditmemoDetailItems extends StatefulWidget {
   final String qrData;
   final String id;
   final String docEntry;
@@ -25,7 +25,7 @@ class GoodReturnDetailItems extends StatefulWidget {
   final String whse;
   final String uoMCode;
   final bool isEditable;
-  const GoodReturnDetailItems(
+  const ApCreditmemoDetailItems(
       {super.key,
         this.qrData = '',
         this.id = '',
@@ -42,11 +42,11 @@ class GoodReturnDetailItems extends StatefulWidget {
       });
 
   @override
-  _GoodReturnDetailItemsState createState() => _GoodReturnDetailItemsState();
+  _ApCreditmemoDetailItemsState createState() => _ApCreditmemoDetailItemsState();
 }
 
-class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
-  Map<String, dynamic>? GRPO_QR;
+class _ApCreditmemoDetailItemsState extends State<ApCreditmemoDetailItems> {
+  Map<String, dynamic>? ApCreditMemo_QR;
   late TextEditingController idController;
   late TextEditingController batchController;
   late TextEditingController slThucTeController;
@@ -72,11 +72,11 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
     if (widget.qrData.isNotEmpty) {
       // If QR data is provided, fetch data
       String id = extractIdFromQRData(widget.qrData);
-      fetchQRGrrItemsDetailData(widget.docEntry, widget.lineNum, id).then((data) {
+      fetchQRApCreditMemoItemsDetailData(widget.docEntry, widget.lineNum, id).then((data) {
         if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
           final itemData = data['data'][0];
           setState(() {
-            GRPO_QR = itemData;
+            ApCreditMemo_QR = itemData;
             itemCodeController.text = itemData['ItemCode']?.toString() ?? '';
             descriptionController.text = itemData['ItemName']?.toString() ?? '';
             batchController.text = itemData['Batch']?.toString() ?? '';
@@ -143,7 +143,7 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
     };
 
     try {
-      await postGrrItemsDetailData(
+      await postApCreditMemoItemsDetailData(
           data, context, widget.docEntry, widget.lineNum);
     } catch (e) {
       print('Error submitting data: $e');
@@ -154,7 +154,7 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: const HeaderApp(title: "Good Return - Detail - Items"),
+      appBar: const HeaderApp(title: "A/P Credit Memo - Detail - Items"),
       body: Container(
         width: double.infinity,
         height: double.infinity,

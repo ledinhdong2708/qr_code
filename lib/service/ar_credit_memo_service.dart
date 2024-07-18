@@ -45,7 +45,7 @@ Future<Map<String, dynamic>?> fetchRrr1Data(String resultCode) async {
   }
 }
 
-Future<void> fetchAndUpdateSrrDatabase(
+Future<void> fetchAndUpdateArCreditMemoDatabase(
     String resultCode,
     TextEditingController controller,
     Function setStateCallback,
@@ -57,13 +57,13 @@ Future<void> fetchAndUpdateSrrDatabase(
     });
 
     final remake = controller.text;
-    await updateSrrDatabase(resultCode, remake, context);
+    await updateArCreditMemoDatabase(resultCode, remake, context);
   } else {
     print('Failed to fetch data');
   }
 }
 
-Future<void> updateSrrDatabase(
+Future<void> updateArCreditMemoDatabase(
     String resultCode, String remake, BuildContext context) async {
   final data = await fetchOrrrData(resultCode);
   if (data == null || data.isEmpty) {
@@ -80,7 +80,7 @@ Future<void> updateSrrDatabase(
     'remake': remake,
   };
 
-  var url = Uri.parse('$serverIp/api/v1/srr');
+  var url = Uri.parse('$serverIp/api/v1/arcreditmemo');
   var response = await http.post(
     url,
     headers: <String, String>{
@@ -100,7 +100,7 @@ Future<void> updateSrrDatabase(
 }
 
 Future<void> postData(Map<String, dynamic> data, BuildContext context) async {
-  const String url = '$serverIp/api/v1/srritems';
+  const String url = '$serverIp/api/v1/arcreditmemoitems';
 
   try {
     var response = await http.post(
@@ -124,9 +124,9 @@ Future<void> postData(Map<String, dynamic> data, BuildContext context) async {
   }
 }
 
-Future<void> postSrrItemsData(
+Future<void> postArCreditMemoItemsData(
     Map<String, dynamic> data, BuildContext context) async {
-  const String url = '$serverIp/api/v1/srritems';
+  const String url = '$serverIp/api/v1/arcreditmemoitems';
   try {
     var response = await http.post(
       Uri.parse(url),
@@ -149,9 +149,9 @@ Future<void> postSrrItemsData(
   }
 }
 
-Future<void> postSrrItemsDetailData(Map<String, dynamic> data,
+Future<void> postArCreditMemoItemsDetailData(Map<String, dynamic> data,
     BuildContext context, String docentry, String linenum) async {
-  final String url = '$serverIp/api/v1/srritemsdetail/$docentry/$linenum';
+  final String url = '$serverIp/api/v1/arcreditmemoitemsdetail/$docentry/$linenum';
   try {
     var response = await http.post(
       Uri.parse(url),
@@ -164,19 +164,19 @@ Future<void> postSrrItemsDetailData(Map<String, dynamic> data,
     if (response.statusCode == 200) {
       print('Data successfully sent to server');
       CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success',
-      onOkPressed: () {
-        int count = 0;
-        Navigator.of(context).popUntil((_) => count++ >= 1);
-      },
+        onOkPressed: () {
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 1);
+        },
       );
     } else {
       print('Failed to send data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
       CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error',
-      onOkPressed: () {
-        int count = 0;
-        Navigator.of(context).popUntil((_) => count++ >= 1);
-      },
+        onOkPressed: () {
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 1);
+        },
       );
     }
   } catch (e) {
@@ -184,16 +184,16 @@ Future<void> postSrrItemsDetailData(Map<String, dynamic> data,
   }
 }
 
-Future<Map<String, dynamic>?> fetchSrrItemsDetailData(
+Future<Map<String, dynamic>?> fetchArCreditMemoItemsDetailData(
     String docentry, String linenum) async {
-  final url = '$serverIp/api/v1/srritemsdetail/Detail/$docentry/$linenum';
+  final url = '$serverIp/api/v1/arcreditmemoitemsdetail/Detail/$docentry/$linenum';
   final uri = Uri.parse(url);
   try {
     final response = await http.get(uri);
     var decodedResponse = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
       final json = jsonDecode(decodedResponse);
-      print("Fetch srritemsdetail data successful");
+      print("Fetch arcreditmemoitemsdetail data successful");
       print(json);
       return json;
     } else {
@@ -201,7 +201,7 @@ Future<Map<String, dynamic>?> fetchSrrItemsDetailData(
       return null;
     }
   } catch (e) {
-    print("Error fetching srritemsdetail data: $e");
+    print("Error fetching arcreditmemoitemsdetail data: $e");
     return null;
   }
 }
