@@ -1,8 +1,5 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/header_app.dart';
@@ -16,7 +13,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class Grpo extends StatefulWidget {
   final String qrData;
-  Grpo({super.key, required this.qrData});
+  const Grpo({super.key, required this.qrData});
 
   @override
   State<Grpo> createState() => _GrpoState();
@@ -24,6 +21,7 @@ class Grpo extends StatefulWidget {
 
 class _GrpoState extends State<Grpo> {
   final TextEditingController _remakeController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
   Barcode? result;
   List<dynamic> grpo = [];
   Map<String, dynamic>? opor;
@@ -34,9 +32,15 @@ class _GrpoState extends State<Grpo> {
 
     fetchOporData(widget.qrData).then((data) {
       if (data != null) {
+        if (data['data'] != null && data['data']['DocDate'] != null) {
+          DateTime parsedDate = DateTime.parse(data['data']['DocDate']);
+          String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+          data['data']['DocDate'] = formattedDate;
+        }
         setState(() {
           opor = data;
           _remakeController.text = opor?['data']['remake'] ?? '';
+          _dateController.text = opor?['data']['DocDate'] ?? '';
         });
       }
     });
@@ -75,6 +79,7 @@ class _GrpoState extends State<Grpo> {
                 ),
                 DateInput(
                   postDay: docDate,
+                  controller: _dateController,
                 ),
                 buildTextFieldRow(
                   labelText: 'Vendor Code',
@@ -138,7 +143,10 @@ class _GrpoState extends State<Grpo> {
                         text: 'POST',
                         onPressed: () async {
                           await updateGrpoDatabase(
-                              widget.qrData, _remakeController.text, context);
+                              widget.qrData,
+                              _remakeController.text,
+                              _dateController.text,
+                              context);
                         },
                       ),
                     ],

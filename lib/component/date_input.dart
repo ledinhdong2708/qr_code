@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_code/constants/colors.dart'; // Import intl package
@@ -7,14 +5,30 @@ import 'package:qr_code/constants/colors.dart'; // Import intl package
 class DateInput extends StatefulWidget {
   final String labelText;
   final String postDay;
-  const DateInput({super.key, this.labelText = 'Post.Date', this.postDay = ""});
+  final TextEditingController? controller;
+
+  const DateInput({
+    super.key,
+    this.labelText = 'Post.Date',
+    this.postDay = "",
+    this.controller,
+  });
 
   @override
   _DateInputState createState() => _DateInputState();
 }
 
 class _DateInputState extends State<DateInput> {
-  final _dateController = TextEditingController();
+  late TextEditingController _internalController;
+
+  @override
+  void initState() {
+    super.initState();
+    _internalController = widget.controller ?? TextEditingController();
+    if (widget.postDay.isNotEmpty) {
+      _internalController.text = widget.postDay;
+    }
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -25,8 +39,7 @@ class _DateInputState extends State<DateInput> {
     );
     if (picked != null) {
       setState(() {
-        _dateController.text =
-            DateFormat('yyyy-MM-dd').format(picked); // Format the date
+        _internalController.text = DateFormat('yyyy-MM-dd').format(picked);
       });
     }
   }
@@ -45,9 +58,7 @@ class _DateInputState extends State<DateInput> {
               height: 45,
               margin: const EdgeInsets.all(10),
               child: TextField(
-                  controller: widget.postDay == null
-                      ? _dateController
-                      : TextEditingController(text: widget.postDay),
+                  controller: _internalController,
                   enabled: true,
                   decoration: InputDecoration(
                       border: InputBorder.none,
