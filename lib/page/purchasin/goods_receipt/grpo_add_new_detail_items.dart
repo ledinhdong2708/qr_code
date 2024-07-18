@@ -90,65 +90,65 @@ class _GrpoAddNewDetailItemsState extends State<GrpoAddNewDetailItems> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const HeaderApp(title: "GRPO - Add - New - Detail - Items"),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: bgColor,
-        padding: AppStyles.paddingContainer,
-        child: Column(
-          children: [
-            buildTextFieldRow(
-              controller: itemCodeController,
-              labelText: 'Item Code',
-              hintText: 'Item Code',
-            ),
-            buildTextFieldRow(
-              controller: descriptionController,
-              labelText: 'Item Name',
-              hintText: 'Item Name',
-            ),
-            buildTextFieldRow(
-              controller: whseController,
-              labelText: 'Whse',
-              hintText: 'Whse',
-            ),
-            buildTextFieldRow(
-              controller: uoMCodeController,
-              labelText: 'UoMCode',
-              hintText: 'UoMCode',
-            ),
-            buildTextFieldRow(
-                controller: slThucTeController,
-                labelText: 'Sl Thực tế',
-                hintText: 'Sl Thực tế',
-                isEnable: true),
-            buildTextFieldRow(
-                controller: batchController,
-                labelText: 'Batch',
-                hintText: 'Batch',
-                isEnable: true),
-            buildTextFieldRow(
-                controller: remakeController,
-                labelText: 'Remake',
-                hintText: 'Remake',
-                isEnable: true),
-            Flexible(
-              child: Container(),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CustomButton(
-                    text: 'CONFIRM',
-                    onPressed: _submitData,
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          color: bgColor,
+          padding: AppStyles.paddingContainer,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildTextFieldRow(
+                controller: itemCodeController,
+                labelText: 'Item Code',
+                hintText: 'Item Code',
               ),
-            ),
-          ],
+              buildTextFieldRow(
+                controller: descriptionController,
+                labelText: 'Item Name',
+                hintText: 'Item Name',
+              ),
+              buildTextFieldRow(
+                controller: whseController,
+                labelText: 'Whse',
+                hintText: 'Whse',
+              ),
+              buildTextFieldRow(
+                controller: uoMCodeController,
+                labelText: 'UoMCode',
+                hintText: 'UoMCode',
+              ),
+              buildTextFieldRow(
+                  controller: slThucTeController,
+                  labelText: 'Sl Thực tế',
+                  hintText: 'Sl Thực tế',
+                  isEnable: true),
+              buildTextFieldRow(
+                  controller: batchController,
+                  labelText: 'Batch',
+                  hintText: 'Batch',
+                  isEnable: true),
+              buildTextFieldRow(
+                  controller: remakeController,
+                  labelText: 'Remake',
+                  hintText: 'Remake',
+                  isEnable: true),
+              const SizedBox(height: 20),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CustomButton(
+                      text: 'CONFIRM',
+                      onPressed: _submitData,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

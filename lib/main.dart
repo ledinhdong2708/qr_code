@@ -29,12 +29,12 @@ import 'package:qr_code/routes/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => const MyApp(), // Wrap your app
-    ),
-  );
+  runApp(const MyApp()
+      // DevicePreview(
+      //   enabled: !kReleaseMode,
+      //   builder: (context) => const MyApp(), // Wrap your app
+      // ),
+      );
 }
 
 class MyApp extends StatefulWidget {
@@ -69,8 +69,8 @@ class _MyAppState extends State<MyApp> {
           return MaterialApp(
             // ignore: deprecated_member_use
             useInheritedMediaQuery: true,
-            locale: DevicePreview.locale(context),
-            builder: DevicePreview.appBuilder,
+            // locale: DevicePreview.locale(context),
+            // builder: DevicePreview.appBuilder,
             debugShowCheckedModeBanner: false,
             initialRoute: token != null ? Routes.home : Routes.login,
             onGenerateRoute: Routes.generateRoute,

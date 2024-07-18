@@ -8,7 +8,6 @@ import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo_add_new_detail_items.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo_detail_items.dart';
-import 'package:qr_code/routes/routes.dart';
 import 'package:qr_code/service/grpo_service.dart';
 
 class GrpoDetail extends StatefulWidget {
@@ -144,92 +143,89 @@ class _GrpoDetailState extends State<GrpoDetail> {
           width: double.infinity,
           height: double.infinity,
           padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                buildTextFieldRow(
-                  controller: itemCodeController,
-                  labelText: 'Item Code',
-                  hintText: 'Item Code',
-                ),
-                buildTextFieldRow(
-                  controller: descriptionController,
-                  labelText: 'Item Name',
-                  hintText: 'Item Name',
-                ),
-                buildTextFieldRow(
-                  controller: slYeuCauController,
-                  labelText: 'SL Yêu Cầu',
-                  hintText: 'SL Yêu Cầu',
-                ),
-                if (grpoItemsDetail.isNotEmpty)
-                  ListItems(
-                    listItems: grpoItemsDetail,
-                    onTapItem: (index) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => GrpoDetailItems(
-                            id: grpoItemsDetail[index]['ID'].toString(),
-                            itemCode: grpoItemsDetail[index]['ItemCode'],
-                            itemName: grpoItemsDetail[index]['ItemName'],
-                            whse: grpoItemsDetail[index]['Whse'],
-                            slThucTe:
-                                grpoItemsDetail[index]['SlThucTe'].toString(),
-                            batch: grpoItemsDetail[index]['Batch'].toString(),
-                            uoMCode:
-                                grpoItemsDetail[index]['UoMCode'].toString(),
-                            remake: grpoItemsDetail[index]['Remake'].toString(),
-                          ),
+          child: Column(
+            children: [
+              buildTextFieldRow(
+                controller: itemCodeController,
+                labelText: 'Item Code',
+                hintText: 'Item Code',
+              ),
+              buildTextFieldRow(
+                controller: descriptionController,
+                labelText: 'Item Name',
+                hintText: 'Item Name',
+              ),
+              buildTextFieldRow(
+                controller: slYeuCauController,
+                labelText: 'SL Yêu Cầu',
+                hintText: 'SL Yêu Cầu',
+              ),
+              if (grpoItemsDetail.isNotEmpty)
+                ListItems(
+                  listItems: grpoItemsDetail,
+                  onTapItem: (index) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GrpoDetailItems(
+                          id: grpoItemsDetail[index]['ID'].toString(),
+                          itemCode: grpoItemsDetail[index]['ItemCode'],
+                          itemName: grpoItemsDetail[index]['ItemName'],
+                          whse: grpoItemsDetail[index]['Whse'],
+                          slThucTe:
+                              grpoItemsDetail[index]['SlThucTe'].toString(),
+                          batch: grpoItemsDetail[index]['Batch'].toString(),
+                          uoMCode: grpoItemsDetail[index]['UoMCode'].toString(),
+                          remake: grpoItemsDetail[index]['Remake'].toString(),
                         ),
-                      );
-                    },
-                    labelName1: 'ID',
-                    labelName2: 'Batch',
-                    labelName3: 'SlThucTe',
-                    labelName4: 'Remake',
-                    listChild1: 'ID',
-                    listChild3: 'Batch',
-                    listChild2: 'SlThucTe',
-                    listChild4: 'Remake',
-                  ),
-                Container(
-                  width: double.infinity,
-                  margin: AppStyles.marginButton,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CustomButton(
-                        text: 'New',
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GrpoAddNewDetailItems(
-                                docEntry: widget.docEntry,
-                                lineNum: widget.lineNum,
-                                itemCode: widget.itemCode,
-                                itemName: widget.description,
-                                whse: widget.whse,
-                                uoMCode: widget.uoMCode,
-                              ),
+                      ),
+                    );
+                  },
+                  labelName1: 'ID',
+                  labelName2: 'Batch',
+                  labelName3: 'SlThucTe',
+                  labelName4: 'Remake',
+                  listChild1: 'ID',
+                  listChild3: 'Batch',
+                  listChild2: 'SlThucTe',
+                  listChild4: 'Remake',
+                ),
+              Container(
+                width: double.infinity,
+                margin: AppStyles.marginButton,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CustomButton(
+                      text: 'New',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GrpoAddNewDetailItems(
+                              docEntry: widget.docEntry,
+                              lineNum: widget.lineNum,
+                              itemCode: widget.itemCode,
+                              itemName: widget.description,
+                              whse: widget.whse,
+                              uoMCode: widget.uoMCode,
                             ),
-                          ).then((_) => _fetchData());
-                        },
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      CustomButton(
-                        text: 'ADD',
-                        onPressed: _submitData,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                          ),
+                        ).then((_) => _fetchData());
+                      },
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    CustomButton(
+                      text: 'ADD',
+                      onPressed: _submitData,
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ));
   }

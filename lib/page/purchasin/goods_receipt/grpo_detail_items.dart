@@ -29,6 +29,7 @@ class GrpoDetailItems extends StatefulWidget {
       this.remake = ''});
 
   @override
+  // ignore: library_private_types_in_public_api
   _GrpoDetailItemsState createState() => _GrpoDetailItemsState();
 }
 

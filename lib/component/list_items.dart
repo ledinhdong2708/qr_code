@@ -28,33 +28,37 @@ class ListItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: listItems.length,
-      itemBuilder: (context, index) {
-        var item = listItems[index];
-        return GestureDetector(
-          onTap: () => onTapItem(index),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
+    return Expanded(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: listItems.length,
+        itemBuilder: (context, index) {
+          var item = listItems[index];
+          return SingleChildScrollView(
+            child: GestureDetector(
+              onTap: () => onTapItem(index),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('$labelName1: ${item[listChild1]}'),
+                    Text('$labelName2: ${item[listChild2]}'),
+                    Text('$labelName3: ${item[listChild3]}'),
+                    Text('$labelName4: ${item[listChild4]}'),
+                  ],
+                ),
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('$labelName1: ${item[listChild1]}'),
-                Text('$labelName2: ${item[listChild2]}'),
-                Text('$labelName3: ${item[listChild3]}'),
-                Text('$labelName4: ${item[listChild4]}'),
-              ],
-            ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
