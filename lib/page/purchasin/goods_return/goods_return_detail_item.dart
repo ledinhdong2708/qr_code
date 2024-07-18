@@ -14,6 +14,7 @@ import '../../../service/goodreturn_service.dart';
 
 class GoodReturnDetailItems extends StatefulWidget {
   final String qrData;
+  final String id;
   final String docEntry;
   final String lineNum;
   final String batch;
@@ -23,9 +24,11 @@ class GoodReturnDetailItems extends StatefulWidget {
   final String itemName;
   final String whse;
   final String uoMCode;
+  final bool isEditable;
   const GoodReturnDetailItems(
       {super.key,
-        required this.qrData,
+        this.qrData = '',
+        this.id = '',
         this.docEntry = '',
         this.lineNum = '',
         this.batch = '',
@@ -34,13 +37,17 @@ class GoodReturnDetailItems extends StatefulWidget {
         this.itemName = '',
         this.whse = '',
         this.uoMCode = '',
-        this.remake = ''});
+        this.remake = '',
+        this.isEditable = true,
+      });
 
   @override
   _GoodReturnDetailItemsState createState() => _GoodReturnDetailItemsState();
 }
 
 class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
+  Map<String, dynamic>? GRPO_QR;
+  late TextEditingController idController;
   late TextEditingController batchController;
   late TextEditingController slThucTeController;
   late TextEditingController remakeController;
@@ -48,28 +55,58 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
   late TextEditingController descriptionController;
   late TextEditingController whseController;
   late TextEditingController uoMCodeController;
-
-  // final TextEditingController _controller = TextEditingController();
+  bool isLoading = true;
+  bool isConfirmEnabled = false;
 
   @override
   void initState() {
     super.initState();
-    print("data ${widget.qrData}");
-    // itemCodeController = TextEditingController(text: widget.itemCode);
-    // descriptionController = TextEditingController(text: widget.itemName);
-    // batchController = TextEditingController(text: widget.batch);
-    // whseController = TextEditingController(text: widget.whse);
-    // slThucTeController = TextEditingController(text: widget.slThucTe);
-    // uoMCodeController = TextEditingController(text: widget.uoMCode);
-    // remakeController = TextEditingController(text: widget.remake);
-    final Map<String, dynamic> qrDataMap = jsonDecode(widget.qrData);
-    itemCodeController = TextEditingController(text: qrDataMap['ItemCode']);
-    descriptionController = TextEditingController(text: qrDataMap['ItemName']);
-    batchController = TextEditingController(text: qrDataMap['Batch']);
-    whseController = TextEditingController(text: qrDataMap['Whse']);
-    slThucTeController = TextEditingController(text: qrDataMap['SlThucTe']);
-    uoMCodeController = TextEditingController(text: qrDataMap['UoMCode']);
-    remakeController = TextEditingController(text: qrDataMap['Remake']);
+    batchController = TextEditingController();
+    slThucTeController = TextEditingController();
+    remakeController = TextEditingController();
+    itemCodeController = TextEditingController();
+    descriptionController = TextEditingController();
+    whseController = TextEditingController();
+    uoMCodeController = TextEditingController();
+    //print("data ${widget.qrData}");
+    if (widget.qrData.isNotEmpty) {
+      // If QR data is provided, fetch data
+      String id = extractIdFromQRData(widget.qrData);
+      fetchQRGrrItemsDetailData(widget.docEntry, widget.lineNum, id).then((data) {
+        if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
+          final itemData = data['data'][0];
+          setState(() {
+            GRPO_QR = itemData;
+            itemCodeController.text = itemData['ItemCode']?.toString() ?? '';
+            descriptionController.text = itemData['ItemName']?.toString() ?? '';
+            batchController.text = itemData['Batch']?.toString() ?? '';
+            whseController.text = itemData['Whse']?.toString() ?? '';
+            slThucTeController.text = itemData['SlThucTe']?.toString() ?? '';
+            uoMCodeController.text = itemData['UoMCode']?.toString() ?? '';
+            remakeController.text = itemData['Remake']?.toString() ?? '';
+            isLoading = false;
+            isConfirmEnabled = true;
+          });
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+        }
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+        isConfirmEnabled = false;
+      });
+    }
+  }
+
+  String extractIdFromQRData(String qrData) {
+    final prefix = "Item Code: ";
+    if (qrData.startsWith(prefix)) {
+      return qrData.substring(prefix.length);
+    }
+    return "";
   }
 
   @override
@@ -77,6 +114,10 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
     batchController.dispose();
     slThucTeController.dispose();
     remakeController.dispose();
+    itemCodeController.dispose();
+    descriptionController.dispose();
+    whseController.dispose();
+    uoMCodeController.dispose();
     super.dispose();
   }
 
@@ -101,31 +142,9 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
     }
   }
 
-  // Future<void> _submitData() async {
-  //   // final data = {
-  //   //   'itemCode': itemCodeController.text,
-  //   //   'itemName': descriptionController.text,
-  //   //   'whse': whseController.text,
-  //   //   'uoMCode': uoMCodeController.text,
-  //   //   'docEntry': widget.docEntry,
-  //   //   'lineNum': widget.lineNum,
-  //   //   'batch': batchController.text,
-  //   //   'slThucTe': slThucTeController.text,
-  //   //   'remake': remakeController.text,
-  //   // };
-  //   //
-  //   // try {
-  //   //   await postGrpoItemsDetailData(
-  //   //       data, context, widget.docEntry, widget.lineNum);
-  //   // } catch (e) {
-  //   //   print('Error submitting data: $e');
-  //   // }
-  //
-  //
-  // }
-
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: const HeaderApp(title: "Good Return - Detail - Items"),
       body: Container(
@@ -156,20 +175,21 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
               hintText: 'UoMCode',
             ),
             buildTextFieldRow(
-                controller: slThucTeController,
-                labelText: 'Sl Thực tế',
-                hintText: 'Sl Thực tế',
-                isEnable: true),
+              controller: slThucTeController,
+              labelText: 'Sl Thực tế',
+              hintText: 'Sl Thực tế',
+            ),
             buildTextFieldRow(
-                controller: batchController,
-                labelText: 'Batch',
-                hintText: 'Batch',
-                isEnable: true),
+              controller: batchController,
+              labelText: 'Batch',
+              hintText: 'Batch',
+            ),
             buildTextFieldRow(
-                controller: remakeController,
-                labelText: 'Remake',
-                hintText: 'Remake',
-                isEnable: true),
+              controller: remakeController,
+              labelText: 'Remake',
+              hintText: 'Remake',
+              isEnable: widget.isEditable,
+            ),
             Flexible(
               child: Container(),
             ),
@@ -180,13 +200,11 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CustomButton(
-                    text: 'OK',
+                    text: 'Confirm',
+                    isEnabled: isConfirmEnabled,
                     // onPressed: _submitData,
                     onPressed: _submitData,
-                  ),
-                  CustomButton(
-                    text: 'CANCEL',
-                    onPressed: () {},
+
                   ),
                 ],
               ),

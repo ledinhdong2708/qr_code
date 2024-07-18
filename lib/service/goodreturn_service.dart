@@ -196,5 +196,27 @@ Future<Map<String, dynamic>?> fetchGrrItemsDetailData(
   }
 }
 
+Future<Map<String, dynamic>?> fetchQRGrrItemsDetailData(
+    String docentry, String linenum, String id) async {
+  final url = '$serverIp/api/v1/grpoitemsdetail/$docentry/$linenum/$id';
+  final uri = Uri.parse(url);
+  try {
+    final response = await http.get(uri);
+    var decodedResponse = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(decodedResponse);
+      print("Fetch QR grritemsdetail data successful");
+      print(json);
+      return json;
+    } else {
+      print("Failed to load data with status code: ${response.statusCode}");
+      return null;
+    }
+  } catch (e) {
+    print("Error fetching QR grritemsdetail data: $e");
+    return null;
+  }
+}
+
 
 
