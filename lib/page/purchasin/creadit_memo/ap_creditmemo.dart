@@ -75,7 +75,6 @@ class _ApCreditMemoState extends State<ApCreditMemo> {
           height: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
             child: Column(
               children: [
                 buildTextFieldRow(
@@ -161,7 +160,6 @@ class _ApCreditMemoState extends State<ApCreditMemo> {
                 )
               ],
             ),
-          ),
         ));
   }
 }

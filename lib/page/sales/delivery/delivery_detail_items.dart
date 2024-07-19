@@ -11,6 +11,7 @@ import 'package:qr_code/service/grpo_service.dart';
 
 import '../../../service/delivery_service.dart';
 import '../../../service/goodreturn_service.dart';
+import '../../../service/qr_service.dart';
 
 
 class DeliveryDetailItems extends StatefulWidget {
@@ -72,7 +73,8 @@ class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
     //print("data ${widget.qrData}");
     if (widget.qrData.isNotEmpty) {
       // If QR data is provided, fetch data
-      String id = extractIdFromQRData(widget.qrData);
+      final extractedValues  = extractValuesFromQRData(widget.qrData);
+      String id = extractedValues['id'] ?? '';
       fetchQRDeliveryItemsDetailData(widget.docEntry, widget.lineNum, id).then((data) {
         if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
           final itemData = data['data'][0];
@@ -108,14 +110,6 @@ class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
         isConfirmEnabled = false;
       });
     }
-  }
-
-  String extractIdFromQRData(String qrData) {
-    final prefix = "Item Code: ";
-    if (qrData.startsWith(prefix)) {
-      return qrData.substring(prefix.length);
-    }
-    return "";
   }
 
   @override

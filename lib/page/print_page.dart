@@ -68,6 +68,7 @@ class _PrintPageState extends State<PrintPage> {
       Map<String, dynamic> config = {};
       List<LineText> list = [];
       String jsonData = jsonEncode(widget.data);
+      print(jsonData);
 
       list.add(LineText(
         type: LineText.TYPE_TEXT,
@@ -124,7 +125,7 @@ class _PrintPageState extends State<PrintPage> {
 
       list.add(LineText(
         type: LineText.TYPE_QRCODE,
-        content: 'Item Code: ${widget.data['id']}',
+        content: 'ID: ${widget.data['id']}, DocEntry: ${widget.data['docEntry']}, LineNum: ${widget.data['lineNum']}',
         align: LineText.ALIGN_CENTER,
         linefeed: 1,
         size: 1,

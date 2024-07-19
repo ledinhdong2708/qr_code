@@ -1,15 +1,11 @@
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
-import 'package:qr_code/service/grpo_service.dart';
-
 import '../../../service/goodreturn_service.dart';
+import '../../../service/qr_service.dart';
 
 
 class GoodReturnDetailItems extends StatefulWidget {
@@ -71,7 +67,10 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
     //print("data ${widget.qrData}");
     if (widget.qrData.isNotEmpty) {
       // If QR data is provided, fetch data
-      String id = extractIdFromQRData(widget.qrData);
+      final extractedValues  = extractValuesFromQRData(widget.qrData);
+      String id = extractedValues['id'] ?? '';
+      // String docEntry = extractedValues['docEntry'];
+      // String lineNum = extractedValues['lineNum'];
       fetchQRGrrItemsDetailData(widget.docEntry, widget.lineNum, id).then((data) {
         if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
           final itemData = data['data'][0];
@@ -107,14 +106,6 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
         isConfirmEnabled = false;
       });
     }
-  }
-
-  String extractIdFromQRData(String qrData) {
-    final prefix = "Item Code: ";
-    if (qrData.startsWith(prefix)) {
-      return qrData.substring(prefix.length);
-    }
-    return "";
   }
 
   @override

@@ -74,7 +74,6 @@ class _GoodsReturnState extends State<GoodsReturn> {
           height: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
             child: Column(
               children: [
                 buildTextFieldRow(
@@ -161,6 +160,6 @@ class _GoodsReturnState extends State<GoodsReturn> {
               ],
             ),
           ),
-        ));
+        );
   }
 }

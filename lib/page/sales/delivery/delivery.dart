@@ -76,7 +76,6 @@ class _DeliveryState extends State<Delivery> {
           height: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
             child: Column(
               children: [
                 buildTextFieldRow(
@@ -162,7 +161,6 @@ class _DeliveryState extends State<Delivery> {
                 )
               ],
             ),
-          ),
         ));
   }
 }

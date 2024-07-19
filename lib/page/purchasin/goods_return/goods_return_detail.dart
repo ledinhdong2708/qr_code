@@ -1,16 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/header_app.dart';
-import 'package:qr_code/component/qr_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 
 import '../../../component/dialog.dart';
 import '../../../component/list_items.dart';
-import '../../../routes/routes.dart';
 import '../../../service/goodreturn_service.dart';
 import '../../qr_view_example.dart';
 import 'goods_return_detail_item.dart';
@@ -150,7 +146,6 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
           width: double.infinity,
           height: double.infinity,
           padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
             child: Column(
               children: [
                 buildTextFieldRow(
@@ -176,7 +171,6 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                   iconButton: IconButton(
                     icon: const Icon(Icons.qr_code_scanner),
                     onPressed: () {
-                      //_navigateAndDisplaySelection(context);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -238,7 +232,6 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                 )
               ],
             ),
-          ),
         ));
   }
 }
