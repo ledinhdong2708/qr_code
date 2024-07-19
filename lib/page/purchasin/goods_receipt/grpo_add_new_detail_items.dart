@@ -89,9 +89,12 @@ class _GrpoAddNewDetailItemsState extends State<GrpoAddNewDetailItems> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: const HeaderApp(title: "GRPO - Add - New - Detail - Items"),
       body: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
+          height: MediaQuery.of(context).size.height,
           width: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,

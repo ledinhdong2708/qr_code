@@ -141,7 +141,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
         body: Container(
           color: bgColor,
           width: double.infinity,
-          height: double.infinity,
+          height: MediaQuery.of(context).size.height,
           padding: AppStyles.paddingContainer,
           child: Column(
             children: [
