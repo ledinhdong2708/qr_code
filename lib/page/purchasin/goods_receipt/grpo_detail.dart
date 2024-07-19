@@ -137,6 +137,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: const HeaderApp(title: "GRPO - Detail"),
         body: Container(
           color: bgColor,

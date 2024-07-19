@@ -13,6 +13,7 @@ class HeaderApp extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: true,
+      scrolledUnderElevation: 0.0,
       title: Text(
         title.toUpperCase(),
         style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
