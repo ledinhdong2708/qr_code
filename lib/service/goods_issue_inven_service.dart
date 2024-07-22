@@ -100,16 +100,15 @@ Future<void> postGoodsIssueInvenItemsData(
   }
 }
 
-Future<Map<String, dynamic>?> fetchGoodsIssueItemsDetailData(
-    String docentry, String linenum) async {
-  final url = '$serverIp/api/v1/goodsissueinvenitemsdetail/Detail/$docentry/$linenum';
+Future<Map<String, dynamic>?> fetchGoodsIssueItemsDetailData() async {
+  final url = '$serverIp/api/v1/goodsissueinvenitemsdetail/';
   final uri = Uri.parse(url);
   try {
     final response = await http.get(uri);
     var decodedResponse = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
       final json = jsonDecode(decodedResponse);
-      print("Fetch grritemsdetail data successful");
+      print("Fetch goodsissueinvenitemsdetail data successful");
       print(json);
       return json;
     } else {
@@ -117,7 +116,7 @@ Future<Map<String, dynamic>?> fetchGoodsIssueItemsDetailData(
       return null;
     }
   } catch (e) {
-    print("Error fetching grritemsdetail data: $e");
+    print("Error fetching goodsissueinvenitemsdetail data: $e");
     return null;
   }
 }

@@ -73,13 +73,21 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
       if (data != null && data['data'] is List) {
         setState(() {
           grrItemsDetail = data['data'];
+          double totalSlThucTe = 0.0;
 
           if (grrItemsDetail.isNotEmpty) {
+            for (var item in grrItemsDetail) {
+              double slThucTe = 0.0;
+              if (item['SlThucTe'] != null) {
+                slThucTe += double.tryParse(item['SlThucTe'].toString()) ?? 0.0;
+              }
+              totalSlThucTe += slThucTe;
+            }
             itemCodeController.text = grrItemsDetail[0]['ItemCode'];
             descriptionController.text = grrItemsDetail[0]['ItemName'];
             batchController.text = grrItemsDetail[0]['Batch'];
             whseController.text = grrItemsDetail[0]['Whse'];
-            slThucTeController.text = grrItemsDetail[0]['SlThucTe'].toString();
+            slThucTeController.text = totalSlThucTe.toString();
             uoMCodeController.text = grrItemsDetail[0]['UoMCode'].toString();
             remakeController.text = grrItemsDetail[0]['Remake'].toString();
           }
@@ -208,8 +216,8 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                     labelName3: 'SlThucTe',
                     labelName4: 'Remake',
                     listChild1: 'ID',
-                    listChild3: 'Batch',
-                    listChild2: 'SlThucTe',
+                    listChild2: 'Batch',
+                    listChild3: 'SlThucTe',
                     listChild4: 'Remake',
                   ),
                 Container(
