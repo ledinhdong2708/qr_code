@@ -147,7 +147,6 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
           width: double.infinity,
           height: double.infinity,
           padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
             child: Column(
               children: [
                 buildTextFieldRow(
@@ -235,7 +234,6 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
                 )
               ],
             ),
-          ),
         ));
   }
 }

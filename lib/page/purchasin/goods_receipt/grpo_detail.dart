@@ -169,6 +169,8 @@ class _GrpoDetailState extends State<GrpoDetail> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => GrpoDetailItems(
+                          docEntry: widget.docEntry,
+                          lineNum: widget.lineNum,
                           id: grpoItemsDetail[index]['ID'].toString(),
                           itemCode: grpoItemsDetail[index]['ItemCode'],
                           itemName: grpoItemsDetail[index]['ItemName'],

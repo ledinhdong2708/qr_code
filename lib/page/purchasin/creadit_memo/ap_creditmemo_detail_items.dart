@@ -10,6 +10,7 @@ import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/service/grpo_service.dart';
 
 import '../../../service/ap_credit_memo_service.dart';
+import '../../../service/qr_service.dart';
 
 
 class ApCreditmemoDetailItems extends StatefulWidget {
@@ -71,7 +72,8 @@ class _ApCreditmemoDetailItemsState extends State<ApCreditmemoDetailItems> {
     //print("data ${widget.qrData}");
     if (widget.qrData.isNotEmpty) {
       // If QR data is provided, fetch data
-      String id = extractIdFromQRData(widget.qrData);
+      final extractedValues  = extractValuesFromQRData(widget.qrData);
+      String id = extractedValues['id'] ?? '';
       fetchQRApCreditMemoItemsDetailData(widget.docEntry, widget.lineNum, id).then((data) {
         if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
           final itemData = data['data'][0];

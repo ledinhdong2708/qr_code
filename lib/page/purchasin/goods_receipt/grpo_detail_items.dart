@@ -9,6 +9,8 @@ import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/print_page.dart';
 
 class GrpoDetailItems extends StatefulWidget {
+  final String docEntry;
+  final String lineNum;
   final String id;
   final String batch;
   final String slThucTe;
@@ -19,6 +21,8 @@ class GrpoDetailItems extends StatefulWidget {
   final String uoMCode;
   const GrpoDetailItems(
       {super.key,
+      this.docEntry = '',
+      this.lineNum = '',
       this.id = '',
       this.batch = '',
       this.slThucTe = '',
@@ -125,6 +129,8 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
                     text: 'PRINT',
                     onPressed: () {
                       final data = {
+                        'docEntry': widget.docEntry,
+                        'lineNum': widget.lineNum,
                         'id': idController.text,
                         'itemCode': itemCodeController.text,
                         'itemName': descriptionController.text,

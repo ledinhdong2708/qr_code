@@ -143,7 +143,6 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
           width: double.infinity,
           height: double.infinity,
           padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
             child: Column(
               children: [
                 buildTextFieldRow(
@@ -169,7 +168,6 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                   iconButton: IconButton(
                     icon: const Icon(Icons.qr_code_scanner),
                     onPressed: () {
-                      //_navigateAndDisplaySelection(context);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -233,7 +231,6 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                 )
               ],
             ),
-          ),
         ));
   }
 }

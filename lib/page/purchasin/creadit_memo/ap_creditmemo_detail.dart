@@ -151,7 +151,6 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
           width: double.infinity,
           height: double.infinity,
           padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
             child: Column(
               children: [
                 buildTextFieldRow(
@@ -239,7 +238,6 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
                 )
               ],
             ),
-          ),
         ));
   }
 }

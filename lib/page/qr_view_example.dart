@@ -16,6 +16,8 @@ import 'package:qr_code/page/sales/delivery/delivery_detail_items.dart';
 import 'package:qr_code/page/sales/returns/sales_return.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import 'inventory/goodsissue/goods_issue_detail_item.dart';
+
 class QRViewExample extends StatefulWidget {
   // tạo mã định danh cho trang
   final String pageIdentifier;
@@ -127,7 +129,14 @@ class _QRViewExampleState extends State<QRViewExample> {
         context,
         MaterialPageRoute(builder: (context) => Rfp(qrData: qrData)),
       );
-    } else if (pageIdentifier == 'IventoryCounting') {
+    }
+    else if (pageIdentifier == 'GoodsIssueDetailItem') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => GoodsIssueDetailItem(qrData: qrData, isEditable: false)),
+      );
+    }
+    else if (pageIdentifier == 'IventoryCounting') {
       Navigator.push(
         context,
         MaterialPageRoute(

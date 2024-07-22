@@ -73,7 +73,6 @@ class _ARCreditMemoState extends State<ARCreditMemo> {
           height: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
             child: Column(
               children: [
                 buildTextFieldRow(
@@ -158,7 +157,6 @@ class _ARCreditMemoState extends State<ARCreditMemo> {
                 )
               ],
             ),
-          ),
         ));
   }
 

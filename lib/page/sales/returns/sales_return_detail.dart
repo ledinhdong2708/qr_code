@@ -146,7 +146,6 @@ class _SalesReturnDetailState extends State<SalesReturnDetail> {
           width: double.infinity,
           height: double.infinity,
           padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
             child: Column(
               children: [
                 buildTextFieldRow(
@@ -231,7 +230,6 @@ class _SalesReturnDetailState extends State<SalesReturnDetail> {
                 )
               ],
             ),
-          ),
         ));
   }
 }
