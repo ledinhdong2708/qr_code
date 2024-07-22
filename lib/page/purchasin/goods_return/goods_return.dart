@@ -74,92 +74,89 @@ class _GoodsReturnState extends State<GoodsReturn> {
           height: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                buildTextFieldRow(
-                  labelText: 'Doc No.',
-                  hintText: 'Doc No.',
-                  valueQR: docNum,
-                ),
-                DateInput(
-                  postDay: docDate,
-                  controller: _dateController,
-                ),
-                buildTextFieldRow(
-                  labelText: 'Vendor Code',
-                  hintText: 'Vendor Code',
-                  valueQR: cardCode,
-                ),
-                buildTextFieldRow(
-                  labelText: 'Vendor Name',
-                  hintText: 'Vendor Name',
-                  valueQR: cardName,
-                ),
-                buildTextFieldRow(
+          child: Column(
+            children: [
+              buildTextFieldRow(
+                labelText: 'Doc No.',
+                hintText: 'Doc No.',
+                valueQR: docNum,
+              ),
+              DateInput(
+                postDay: docDate,
+                controller: _dateController,
+              ),
+              buildTextFieldRow(
+                labelText: 'Vendor Code',
+                hintText: 'Vendor Code',
+                valueQR: cardCode,
+              ),
+              buildTextFieldRow(
+                labelText: 'Vendor Name',
+                hintText: 'Vendor Name',
+                valueQR: cardName,
+              ),
+              buildTextFieldRow(
                   labelText: 'Remake',
                   isEnable: true,
                   hintText: 'Remake here',
                   icon: Icons.edit,
                   valueQR: remark,
-                  controller: _remakeController
-                ),
+                  controller: _remakeController),
               if (prr1.isNotEmpty)
                 ListItems(
-                  listItems: prr1,
-                  onTapItem: (index) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GoodsReturnDetail(
-                          docEntry: prr1[index]['DocEntry'],
-                          lineNum: prr1[index]['LineNum'],
-                          itemCode: prr1[index]['ItemCode'],
-                          description: prr1[index]['Dscription'],
-                          whse: prr1[index]['WhsCode'],
-                          slYeuCau: prr1[index]['OpenQty'].toString(),
-                          slThucTe: prr1[index]['SlThucTe'].toString(),
-                          batch: prr1[index]['Batch'].toString(),
-                          uoMCode: prr1[index]['UomCode'].toString(),
-                          remake: prr1[index]['remake'].toString(),
+                    listItems: prr1,
+                    onTapItem: (index) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GoodsReturnDetail(
+                            docEntry: prr1[index]['DocEntry'],
+                            lineNum: prr1[index]['LineNum'],
+                            itemCode: prr1[index]['ItemCode'],
+                            description: prr1[index]['Dscription'],
+                            whse: prr1[index]['WhsCode'],
+                            slYeuCau: prr1[index]['OpenQty'].toString(),
+                            slThucTe: prr1[index]['SlThucTe'].toString(),
+                            batch: prr1[index]['Batch'].toString(),
+                            uoMCode: prr1[index]['UomCode'].toString(),
+                            remake: prr1[index]['remake'].toString(),
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  labelName1: 'DocNo',
-                  labelName2: 'Code',
-                  labelName3: 'Name',
-                  labelName4: 'SlYeuCau',
-                  listChild1: 'DocEntry',
-                  listChild2: 'ItemCode',
-                  listChild3: 'Dscription',
-                  listChild4: 'OpenQty'),
-                Container(
-                  width: double.infinity,
-                  margin: AppStyles.marginButton,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CustomButton(
-                        text: 'Delete',
-                        onPressed: () {},
-                      ),
-                      CustomButton(
-                        text: 'POST',
-                        onPressed: () async {
-                          await updateGrrDatabase(
-                          widget.qrData,
-                              _remakeController.text,
-                              _dateController.text,
-                              context);
-                          },
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                      );
+                    },
+                    labelName1: 'DocNo',
+                    labelName2: 'Code',
+                    labelName3: 'Name',
+                    labelName4: 'SlYeuCau',
+                    listChild1: 'DocEntry',
+                    listChild2: 'ItemCode',
+                    listChild3: 'Dscription',
+                    listChild4: 'OpenQty'),
+              Container(
+                width: double.infinity,
+                margin: AppStyles.marginButton,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CustomButton(
+                      text: 'Delete',
+                      onPressed: () {},
+                    ),
+                    CustomButton(
+                      text: 'POST',
+                      onPressed: () async {
+                        await updateGrrDatabase(
+                            widget.qrData,
+                            _remakeController.text,
+                            _dateController.text,
+                            context);
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ));
   }
