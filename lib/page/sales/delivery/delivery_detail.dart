@@ -76,12 +76,20 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
         setState(() {
           deliveryItemsDetail = data['data'];
 
+          double totalSlThucTe = 0.0;
           if (deliveryItemsDetail.isNotEmpty) {
+            for (var item in deliveryItemsDetail) {
+              double slThucTe = 0.0;
+              if (item['SlThucTe'] != null) {
+                slThucTe += double.tryParse(item['SlThucTe'].toString()) ?? 0.0;
+              }
+              totalSlThucTe += slThucTe;
+            }
             itemCodeController.text = deliveryItemsDetail[0]['ItemCode'];
             descriptionController.text = deliveryItemsDetail[0]['ItemName'];
             batchController.text = deliveryItemsDetail[0]['Batch'];
             whseController.text = deliveryItemsDetail[0]['Whse'];
-            slThucTeController.text = deliveryItemsDetail[0]['SlThucTe'].toString();
+            slThucTeController.text = totalSlThucTe.toString();
             uoMCodeController.text = deliveryItemsDetail[0]['UoMCode'].toString();
             remakeController.text = deliveryItemsDetail[0]['Remake'].toString();
           }
@@ -211,8 +219,8 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
                     labelName3: 'SlThucTe',
                     labelName4: 'Remake',
                     listChild1: 'ID',
-                    listChild3: 'Batch',
-                    listChild2: 'SlThucTe',
+                    listChild2: 'Batch',
+                    listChild3: 'SlThucTe',
                     listChild4: 'Remake',
                   ),
                 Container(

@@ -78,13 +78,20 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
       if (data != null && data['data'] is List) {
         setState(() {
           apcreditmemoItemsDetail = data['data'];
-
+          double totalSlThucTe = 0.0;
           if (apcreditmemoItemsDetail.isNotEmpty) {
+            for (var item in apcreditmemoItemsDetail) {
+              double slThucTe = 0.0;
+              if (item['SlThucTe'] != null) {
+                slThucTe += double.tryParse(item['SlThucTe'].toString()) ?? 0.0;
+              }
+              totalSlThucTe += slThucTe;
+            }
             itemCodeController.text = apcreditmemoItemsDetail[0]['ItemCode'];
             descriptionController.text = apcreditmemoItemsDetail[0]['ItemName'];
             batchController.text = apcreditmemoItemsDetail[0]['Batch'];
             whseController.text = apcreditmemoItemsDetail[0]['Whse'];
-            slThucTeController.text = apcreditmemoItemsDetail[0]['SlThucTe'].toString();
+            slThucTeController.text = apcreditmemoItemsDetail.toString();
             uoMCodeController.text = apcreditmemoItemsDetail[0]['UoMCode'].toString();
             remakeController.text = apcreditmemoItemsDetail[0]['Remake'].toString();
           }
@@ -215,8 +222,8 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
                     labelName3: 'SlThucTe',
                     labelName4: 'Remake',
                     listChild1: 'ID',
-                    listChild3: 'Batch',
-                    listChild2: 'SlThucTe',
+                    listChild2: 'Batch',
+                    listChild3: 'SlThucTe',
                     listChild4: 'Remake',
                   ),
                 Container(

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
-import 'package:qr_code/component/dropdownbutton.dart';
 import 'package:qr_code/component/header_app.dart';
-import 'package:qr_code/component/qr_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/inventory/goodsissue/goods_issue_detail_item.dart';
-import 'package:qr_code/routes/routes.dart';
 
 import '../../../component/dialog.dart';
 import '../../../component/list_items.dart';
@@ -74,7 +71,7 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
   }
 
   Future<void> _fetchData() async {
-    fetchGoodsIssueItemsData().then((data) {
+    fetchGoodsIssueItemsDetailData().then((data) {
       if (data != null && data['data'] is List) {
         setState(() {
           goodsIssueInvenItemsDetail = data['data'];

@@ -168,8 +168,8 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
     };
 
     try {
-      await postGoodsIssueInvenItemsData(
-          data, context);
+      await postGoodsIssueInvenItemsDetailData(
+          data, context, docEntry, lineNum);
     } catch (e) {
       print('Error submitting data: $e');
     }
