@@ -96,7 +96,6 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
     });
   }
 
-
   @override
   void dispose() {
     itemCodeController.dispose();
@@ -109,7 +108,6 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
     remakeController.dispose();
     super.dispose();
   }
-
 
   Future<void> _submitData() async {
     int successfulCount = 0;
@@ -143,7 +141,6 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
       print('Error submitting data: $e');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -183,10 +180,10 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => QRViewExample(
-                              pageIdentifier: 'GoodReturnDetailItems',
-                              docEntry: widget.docEntry,
-                              lineNum: widget.lineNum,
-                            )),
+                                  pageIdentifier: 'GoodReturnDetailItems',
+                                  docEntry: widget.docEntry,
+                                  lineNum: widget.lineNum,
+                                )),
                       ).then((_) => _fetchData());
                     },
                   ),
@@ -204,9 +201,11 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                             itemCode: grrItemsDetail[index]['ItemCode'],
                             itemName: grrItemsDetail[index]['ItemName'],
                             whse: grrItemsDetail[index]['Whse'],
-                            slThucTe: grrItemsDetail[index]['SlThucTe'].toString(),
+                            slThucTe:
+                                grrItemsDetail[index]['SlThucTe'].toString(),
                             batch: grrItemsDetail[index]['Batch'].toString(),
-                            uoMCode: grrItemsDetail[index]['UoMCode'].toString(),
+                            uoMCode:
+                                grrItemsDetail[index]['UoMCode'].toString(),
                             remake: grrItemsDetail[index]['Remake'].toString(),
                           ),
                         ),

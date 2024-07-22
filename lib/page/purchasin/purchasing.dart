@@ -22,35 +22,31 @@ class Purchasing extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  //MaterialPageRoute(builder: (context) => Grpo(qrData: "1")),
                   MaterialPageRoute(
-                      builder: (context) => const QRViewExample(
-                            pageIdentifier: 'GRPO',
-                          )),
+                      builder: (context) => const Grpo(qrData: "36")),
+                  // MaterialPageRoute(
+                  //     builder: (context) => const QRViewExample(
+                  //           pageIdentifier: 'GRPO',
+                  //         )),
                 );
-                // To testing api
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => Grpo(qrData: "36")),
-                // );
               },
               child: card("assets/receipt.png", "Goods Receipt PO"),
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const QRViewExample(
-                            pageIdentifier: 'GoodsReturn',
-                          )),
-                );
-                //Test api
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(
-                //       builder: (context) => const GoodsReturn(qrData: "1")),
+                //       builder: (context) => const QRViewExample(
+                //             pageIdentifier: 'GoodsReturn',
+                //           )),
                 // );
+                //Test api
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const GoodsReturn(qrData: "1")),
+                );
               },
               child: card("assets/return.png", "Goods Return"),
             ),

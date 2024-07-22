@@ -68,43 +68,42 @@ class _GoodsReturnState extends State<GoodsReturn> {
     var remark = data != null ? data['remake'] : '';
 
     return Scaffold(
-        appBar: const HeaderApp(title: "Goods Return"),
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: bgColor,
-          padding: AppStyles.paddingContainer,
-            child: Column(
-              children: [
-                buildTextFieldRow(
-                  labelText: 'Doc No.',
-                  hintText: 'Doc No.',
-                  valueQR: docNum,
-                ),
-                DateInput(
-                  postDay: docDate,
-                  controller: _dateController,
-                ),
-                buildTextFieldRow(
-                  labelText: 'Vendor Code',
-                  hintText: 'Vendor Code',
-                  valueQR: cardCode,
-                ),
-                buildTextFieldRow(
-                  labelText: 'Vendor Name',
-                  hintText: 'Vendor Name',
-                  valueQR: cardName,
-                ),
-                buildTextFieldRow(
-                  labelText: 'Remake',
-                  isEnable: true,
-                  hintText: 'Remake here',
-                  icon: Icons.edit,
-                  valueQR: remark,
-                  controller: _remakeController
-                ),
-              if (prr1.isNotEmpty)
-                ListItems(
+      appBar: const HeaderApp(title: "Goods Return"),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: bgColor,
+        padding: AppStyles.paddingContainer,
+        child: Column(
+          children: [
+            buildTextFieldRow(
+              labelText: 'Doc No.',
+              hintText: 'Doc No.',
+              valueQR: docNum,
+            ),
+            DateInput(
+              postDay: docDate,
+              controller: _dateController,
+            ),
+            buildTextFieldRow(
+              labelText: 'Vendor Code',
+              hintText: 'Vendor Code',
+              valueQR: cardCode,
+            ),
+            buildTextFieldRow(
+              labelText: 'Vendor Name',
+              hintText: 'Vendor Name',
+              valueQR: cardName,
+            ),
+            buildTextFieldRow(
+                labelText: 'Remake',
+                isEnable: true,
+                hintText: 'Remake here',
+                icon: Icons.edit,
+                valueQR: remark,
+                controller: _remakeController),
+            if (prr1.isNotEmpty)
+              ListItems(
                   listItems: prr1,
                   onTapItem: (index) {
                     Navigator.push(
@@ -133,33 +132,33 @@ class _GoodsReturnState extends State<GoodsReturn> {
                   listChild2: 'ItemCode',
                   listChild3: 'Dscription',
                   listChild4: 'OpenQty'),
-                Container(
-                  width: double.infinity,
-                  margin: AppStyles.marginButton,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CustomButton(
-                        text: 'Delete',
-                        onPressed: () {},
-                      ),
-                      CustomButton(
-                        text: 'POST',
-                        onPressed: () async {
-                          await updateGrrDatabase(
-                          widget.qrData,
-                              _remakeController.text,
-                              _dateController.text,
-                              context);
-                          },
-                      ),
-                    ],
+            Container(
+              width: double.infinity,
+              margin: AppStyles.marginButton,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomButton(
+                    text: 'Delete',
+                    onPressed: () {},
                   ),
-                )
-              ],
-            ),
-          ),
-        );
+                  CustomButton(
+                    text: 'POST',
+                    onPressed: () async {
+                      await updateGrrDatabase(
+                          widget.qrData,
+                          _remakeController.text,
+                          _dateController.text,
+                          context);
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
+import 'package:qr_code/component/dialog.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/list_items.dart';
 import 'package:qr_code/component/textfield_method.dart';
@@ -13,7 +14,8 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class Grpo extends StatefulWidget {
   final String qrData;
-  const Grpo({super.key, required this.qrData});
+  final String docEntry;
+  const Grpo({super.key, required this.qrData, this.docEntry = ""});
 
   @override
   State<Grpo> createState() => _GrpoState();
@@ -26,6 +28,14 @@ class _GrpoState extends State<Grpo> {
   List<dynamic> grpo = [];
   Map<String, dynamic>? opor;
   List<dynamic> por1 = [];
+
+  late TextEditingController vendorCodeController;
+  late TextEditingController vendorNameController;
+  late TextEditingController postDayController;
+  late TextEditingController docNoController;
+  late TextEditingController docEntryController;
+  late TextEditingController baseEntryController;
+  late TextEditingController remakeController;
   @override
   void initState() {
     super.initState();
@@ -44,13 +54,94 @@ class _GrpoState extends State<Grpo> {
         });
       }
     });
+
+    _fetchGrpoData();
+    _fetchPor1Data();
+  }
+
+  Future<void> _fetchPor1Data() async {
     fetchPor1Data(widget.qrData).then((data) {
       if (data != null && data['data'] is List) {
         setState(() {
           por1 = data['data'];
+          print("hello:  $por1");
         });
       }
     });
+  }
+
+  Future<void> _fetchGrpoData() async {
+    fetchGrpoData(widget.qrData).then((data) {
+      if (data != null && data['data'] is List) {
+        setState(() {
+          grpo = data['data'];
+          print('aaaaaaaaaaaaaaaaaaaaaaaaaa $grpo');
+          if (grpo.isNotEmpty) {
+            vendorCodeController.text = grpo[0]['vendorcode'];
+            vendorNameController.text = grpo[0]['vendorname'];
+            postDayController.text = grpo[0]['postday'];
+            remakeController.text = grpo[0]['remake'];
+            docEntryController.text = grpo[0]['BaseEntry'];
+          }
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    vendorCodeController.dispose();
+    vendorNameController.dispose();
+    postDayController.dispose();
+    docNoController.dispose();
+    docEntryController.dispose();
+    remakeController.dispose();
+    baseEntryController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submitData() async {
+    try {
+      for (var item in por1) {
+        final data = {
+          'ItemCode': item['ItemCode'],
+          'Dscription': item['Dscription'],
+          'Quantity': item['OpenQty'],
+          'WhsCode': item['WhsCode'],
+          'LineNum': item['LineNum'],
+          'BaseEntry': item['DocEntry'],
+          'BaseLine': item['LineNum'],
+          'DocEntry': item['DocEntry'],
+          'BaseType': item['ObjType']
+        };
+        await postPdn1Data(data, context);
+      }
+    } catch (e) {
+      print('Error submitting data: $e');
+    }
+  }
+
+  Future<void> _submitData2() async {
+    try {
+      for (var item in grpo) {
+        final data = {
+          'DocEntry': item['DocEntry'],
+          'DocNum': item['docno'],
+          'DocDate': item['postday'],
+          'CardCode': item['vendorcode'],
+          'CardName': item['vendorname'],
+          'BaseEntry': item['DocEntry'],
+        };
+        await postOpdnData(data, context);
+      }
+    } catch (e) {
+      print('Error submitting data: $e');
+    }
+  }
+
+  void addToSap() {
+    _submitData();
+    _submitData2();
   }
 
   @override
@@ -135,8 +226,8 @@ class _GrpoState extends State<Grpo> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CustomButton(
-                      text: 'Delete',
-                      onPressed: () {},
+                      text: 'Add to Sap',
+                      onPressed: addToSap,
                     ),
                     CustomButton(
                       text: 'POST',
