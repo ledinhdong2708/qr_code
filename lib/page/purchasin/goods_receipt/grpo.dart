@@ -89,7 +89,7 @@ class _GrpoState extends State<Grpo> {
       if (data != null && data['data'] is List) {
         setState(() {
           grpo = data['data'];
-          print('aaaaaaaaaaaaaaaaaaaaaaaaaa $grpo');
+          //print('aaaaaaaaaaaaaaaaaaaaaaaaaa $grpo');
           if (grpo.isNotEmpty) {
             vendorCodeController.text = grpo[0]['vendorcode'];
             vendorNameController.text = grpo[0]['vendorname'];

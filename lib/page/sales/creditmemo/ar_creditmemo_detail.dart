@@ -192,8 +192,8 @@ class _ArCreditmemoDetailState extends State<ArCreditmemoDetail> {
                     labelName3: 'SlThucTe',
                     labelName4: 'Remake',
                     listChild1: 'ID',
-                    listChild3: 'Batch',
-                    listChild2: 'SlThucTe',
+                    listChild2: 'Batch',
+                    listChild3: 'SlThucTe',
                     listChild4: 'Remake',
                   ),
                 Container(

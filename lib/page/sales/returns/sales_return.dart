@@ -131,7 +131,8 @@ class _SalesReturnState extends State<SalesReturn> {
                       listChild1: 'DocEntry',
                       listChild2: 'ItemCode',
                       listChild3: 'Dscription',
-                      listChild4: 'OpenQty'),
+                      listChild4: 'OpenQty'
+                  ),
                 Container(
                   width: double.infinity,
                   margin: AppStyles.marginButton,
