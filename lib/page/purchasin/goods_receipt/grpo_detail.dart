@@ -124,7 +124,6 @@ class _GrpoDetailState extends State<GrpoDetail> {
         successfulCount++;
       }
 
-      // Check if all items were successfully submitted
       if (successfulCount == totalItems) {
         print('All data successfully sent to server');
         CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');

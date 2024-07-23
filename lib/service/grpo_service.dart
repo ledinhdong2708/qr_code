@@ -228,10 +228,29 @@ Future<void> postOpdnData(
     } else {
       print('Failed to send data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
-      CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
+      // CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
     }
   } catch (e) {
     print('Error during POST request: $e');
+  }
+}
+
+Future<Map<String, dynamic>?> fetchOpdnData(String resultCode) async {
+  final url = '$serverIp/api/v1/opdn/$resultCode';
+  final uri = Uri.parse(url);
+  try {
+    final response = await http.get(uri);
+    var decodedResponse = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(decodedResponse);
+      return json;
+    } else {
+      print("Failed to load data with status code: ${response.statusCode}");
+      return null;
+    }
+  } catch (e) {
+    print("Error fetching Opdn data: $e");
+    return null;
   }
 }
 
@@ -252,7 +271,7 @@ Future<void> postPdn1Data(
     } else {
       print('Failed to send data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
-      CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
+      // CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
     }
   } catch (e) {
     print('Error during POST request: $e');
