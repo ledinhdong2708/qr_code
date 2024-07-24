@@ -139,7 +139,7 @@ class _ARCreditMemoState extends State<ARCreditMemo> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CustomButton(
-                        text: 'Delete',
+                        text: 'DELETE',
                         onPressed: () {},
                       ),
                       CustomButton(

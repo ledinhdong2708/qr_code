@@ -9,10 +9,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: bgColor,
-      flexibleSpace: Image.asset("assets/logofti.png", height: 200, width: 200),
-      toolbarHeight: 100,
+    return Container(
+      margin: const EdgeInsets.only(top: 30), // Thay đổi giá trị top để thêm khoảng cách
+      child: AppBar(
+        backgroundColor: bgColor,
+        flexibleSpace: Center(
+          child: Image.asset(
+            "assets/logofti.png",
+            height: 200,
+            width: 200,
+          ),
+        ),
+        toolbarHeight: 100,
+      ),
     );
 
 

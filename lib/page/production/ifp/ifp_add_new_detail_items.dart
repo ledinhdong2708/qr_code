@@ -1,19 +1,15 @@
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
-import 'package:qr_code/service/grpo_service.dart';
-
-import '../../../service/ap_credit_memo_service.dart';
+import '../../../service/goodreturn_service.dart';
+import '../../../service/ifp_service.dart';
 import '../../../service/qr_service.dart';
 
 
-class ApCreditmemoDetailItems extends StatefulWidget {
+class IfpAddNewDetailItems extends StatefulWidget {
   final String qrData;
   final String id;
   final String docEntry;
@@ -26,7 +22,7 @@ class ApCreditmemoDetailItems extends StatefulWidget {
   final String whse;
   final String uoMCode;
   final bool isEditable;
-  const ApCreditmemoDetailItems(
+  const IfpAddNewDetailItems(
       {super.key,
         this.qrData = '',
         this.id = '',
@@ -43,10 +39,10 @@ class ApCreditmemoDetailItems extends StatefulWidget {
       });
 
   @override
-  _ApCreditmemoDetailItemsState createState() => _ApCreditmemoDetailItemsState();
+  _IfpAddNewDetailItemsState createState() => _IfpAddNewDetailItemsState();
 }
 
-class _ApCreditmemoDetailItemsState extends State<ApCreditmemoDetailItems> {
+class _IfpAddNewDetailItemsState extends State<IfpAddNewDetailItems> {
   Map<String, dynamic>? GRPO_QR;
   late TextEditingController idController;
   late TextEditingController batchController;
@@ -76,8 +72,11 @@ class _ApCreditmemoDetailItemsState extends State<ApCreditmemoDetailItems> {
       String id = extractedValues['id'] ?? '';
       String docEntry = extractedValues['docEntry'] ?? '';
       String lineNum = extractedValues['lineNum'] ?? '';
+      print(id);
+      print(widget.docEntry);
+      print(lineNum);
       if (docEntry == widget.docEntry && lineNum == widget.lineNum) {
-        fetchQRApCreditMemoItemsDetailData(docEntry, lineNum, id).then((data) {
+        fetchQRGrrItemsDetailData(docEntry, lineNum, id).then((data) {
           if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
             final itemData = data['data'][0];
             setState(() {
@@ -141,7 +140,7 @@ class _ApCreditmemoDetailItemsState extends State<ApCreditmemoDetailItems> {
     };
 
     try {
-      await postApCreditMemoItemsDetailData(
+      await postIfpItemsDetailTempData(
           data, context, widget.docEntry, widget.lineNum);
     } catch (e) {
       print('Error submitting data: $e');
@@ -152,7 +151,7 @@ class _ApCreditmemoDetailItemsState extends State<ApCreditmemoDetailItems> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: const HeaderApp(title: "A/P Credit Memo - Detail - Items"),
+      appBar: const HeaderApp(title: "IFP - QR - Items"),
       body: Container(
         width: double.infinity,
         height: double.infinity,

@@ -141,7 +141,7 @@ class _SalesReturnState extends State<SalesReturn> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CustomButton(
-                        text: 'Delete',
+                        text: 'DELETE',
                         onPressed: () {},
                       ),
                       CustomButton(

@@ -3,6 +3,8 @@ import 'package:qr_code/page/inventory/goodsreceipt/goods_receipt.dart';
 import 'package:qr_code/page/inventory/inventorycounting/inventory_counting.dart';
 import 'package:qr_code/page/inventory/inventorytransfer/inventory_transfer.dart';
 import 'package:qr_code/page/production/ifp/ifp.dart';
+import 'package:qr_code/page/production/ifp/ifp_add_new_detail_items.dart';
+import 'package:qr_code/page/production/ifp/ifp_detail.dart';
 import 'package:qr_code/page/production/rfp/rfp.dart';
 import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo.dart';
 import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo_detail_items.dart';
@@ -119,12 +121,18 @@ class _QRViewExampleState extends State<QRViewExample> {
         context,
         MaterialPageRoute(builder: (context) => ARCreditMemo(qrData: qrData)),
       );
-    } else if (pageIdentifier == 'ifp') {
+    } else if (pageIdentifier == 'IfpDetail') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Ifp(qrData: qrData)),
+        MaterialPageRoute(builder: (context) => IfpDetail(qrData: qrData)),
       );
-    } else if (pageIdentifier == 'rfp') {
+    }
+    else if (pageIdentifier == 'IfpAddNewDetailItems') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => IfpAddNewDetailItems(qrData: qrData, docEntry: widget.docEntry, lineNum: widget.lineNum)),
+      );
+    }else if (pageIdentifier == 'rfp') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Rfp(qrData: qrData)),

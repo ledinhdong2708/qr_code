@@ -48,7 +48,7 @@ class DeliveryDetailItems extends StatefulWidget {
 }
 
 class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
-  Map<String, dynamic>? Delivery_QR;
+  Map<String, dynamic>? GRPO_QR;
   late TextEditingController idController;
   late TextEditingController batchController;
   late TextEditingController slThucTeController;
@@ -75,27 +75,31 @@ class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
       // If QR data is provided, fetch data
       final extractedValues  = extractValuesFromQRData(widget.qrData);
       String id = extractedValues['id'] ?? '';
-      fetchQRDeliveryItemsDetailData(widget.docEntry, widget.lineNum, id).then((data) {
-        if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
-          final itemData = data['data'][0];
-          setState(() {
-            Delivery_QR = itemData;
-            itemCodeController.text = itemData['ItemCode']?.toString() ?? '';
-            descriptionController.text = itemData['ItemName']?.toString() ?? '';
-            batchController.text = itemData['Batch']?.toString() ?? '';
-            whseController.text = itemData['Whse']?.toString() ?? '';
-            slThucTeController.text = itemData['SlThucTe']?.toString() ?? '';
-            uoMCodeController.text = itemData['UoMCode']?.toString() ?? '';
-            remakeController.text = itemData['Remake']?.toString() ?? '';
-            isLoading = false;
-            isConfirmEnabled = true;
-          });
-        } else {
-          setState(() {
-            isLoading = false;
-          });
-        }
-      });
+      String docEntry = extractedValues['docEntry'] ?? '';
+      String lineNum = extractedValues['lineNum'] ?? '';
+      if (docEntry == widget.docEntry && lineNum == widget.lineNum) {
+        fetchQRDeliveryItemsDetailData(docEntry, lineNum, id).then((data) {
+          if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
+            final itemData = data['data'][0];
+            setState(() {
+              GRPO_QR = itemData;
+              itemCodeController.text = itemData['ItemCode']?.toString() ?? '';
+              descriptionController.text = itemData['ItemName']?.toString() ?? '';
+              batchController.text = itemData['Batch']?.toString() ?? '';
+              whseController.text = itemData['Whse']?.toString() ?? '';
+              slThucTeController.text = itemData['SlThucTe']?.toString() ?? '';
+              uoMCodeController.text = itemData['UoMCode']?.toString() ?? '';
+              remakeController.text = itemData['Remake']?.toString() ?? '';
+              isLoading = false;
+              isConfirmEnabled = true;
+            });
+          } else {
+            setState(() {
+              isLoading = false;
+            });
+          }
+        });
+      }
     } else {
       setState(() {
         isLoading = false;

@@ -143,7 +143,7 @@ class _DeliveryState extends State<Delivery> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CustomButton(
-                        text: 'Delete',
+                        text: 'DELETE',
                         onPressed: () {},
                       ),
                       CustomButton(

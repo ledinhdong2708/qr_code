@@ -95,9 +95,12 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
 
     try {
       for (var item in goodsIssueInvenItemsDetail) {
+        String docEntry = item['DocEntry'].toString();
+        String lineNum = item['LineNum'].toString();
         final data = {
-          'docEntry': widget.docEntry,
-          'lineNum': widget.lineNum,
+          'docEntry': docEntry,
+          'lineNum': lineNum,
+          'postDay': _dateController.text,
           'itemCode': item['ItemCode'],
           'itemName': item['ItemName'],
           'batch': item['Batch'],
@@ -108,7 +111,9 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
           'remake': item['Remake'].toString(),
         };
 
-        await postGoodsIssueInvenItemsData(data, context);
+        await postGoodsIssueInvenItemsData(data, context, docEntry, lineNum);
+        String id = item['ID'].toString();
+        await deleteGoodsIssueInvenItemsDetailData(id, context);
         successfulCount++;
       }
 
@@ -116,6 +121,7 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
       if (successfulCount == totalItems) {
         print('All data successfully sent to server');
         CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+        _fetchData();
       }
     } catch (e) {
       print('Error submitting data: $e');
@@ -158,6 +164,11 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
               if (goodsIssueInvenItemsDetail.isNotEmpty)
                 ListItems(
                   listItems: goodsIssueInvenItemsDetail,
+                  enableDismiss: true,
+                  onDeleteItem: (index) async {
+                    String id = goodsIssueInvenItemsDetail[index]['ID'].toString();
+                    await deleteGoodsIssueInvenItemsDetailData(id, context);
+                  },
                   onTapItem: (index) {
                     Navigator.push(
                       context,
@@ -181,8 +192,8 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                   labelName3: 'SlThucTe',
                   labelName4: 'Remake',
                   listChild1: 'ItemCode',
-                  listChild3: 'Batch',
-                  listChild2: 'SlThucTe',
+                  listChild2: 'Batch',
+                  listChild3: 'SlThucTe',
                   listChild4: 'Remake',
                 ),
               Container(

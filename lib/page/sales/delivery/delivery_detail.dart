@@ -196,6 +196,11 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
                 if (deliveryItemsDetail.isNotEmpty)
                   ListItems(
                     listItems: deliveryItemsDetail,
+                    enableDismiss: true,
+                    onDeleteItem: (index) async {
+                      String id = deliveryItemsDetail[index]['ID'].toString();
+                      await deleteDeliveryItemsDetailData(id, context);
+                    },
                     onTapItem: (index) {
                       Navigator.push(
                         context,

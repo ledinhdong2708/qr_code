@@ -4,6 +4,7 @@ import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/page/inventory/goodsissue/goods_issue.dart';
 import 'package:qr_code/service/goods_issue_inven_service.dart';
 import '../../../service/qr_service.dart';
 
@@ -170,6 +171,15 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
     try {
       await postGoodsIssueInvenItemsDetailData(
           data, context, docEntry, lineNum);
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => GoodsIssueInven(
+      //       docEntry: docEntry,
+      //       lineNum: lineNum,
+      //     ),
+      //   ),
+      // );
     } catch (e) {
       print('Error submitting data: $e');
     }

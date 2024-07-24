@@ -142,7 +142,7 @@ class _ApCreditMemoState extends State<ApCreditMemo> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CustomButton(
-                        text: 'Delete',
+                        text: 'DELETE',
                         onPressed: () {},
                       ),
                       CustomButton(

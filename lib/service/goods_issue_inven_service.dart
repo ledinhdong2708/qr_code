@@ -65,8 +65,8 @@ Future<Map<String, dynamic>?> fetchGoodsIssueItemsData() async {
 }
 
 Future<void> postGoodsIssueInvenItemsData(
-    Map<String, dynamic> data, BuildContext context) async {
-  const String url = '$serverIp/api/v1/goodsissueinvenitems';
+    Map<String, dynamic> data, BuildContext context, String docentry, String linenum) async {
+  final String url = '$serverIp/api/v1/goodsissueinvenitems/$docentry/$linenum';
   try {
     var response = await http.post(
       Uri.parse(url),
@@ -78,22 +78,22 @@ Future<void> postGoodsIssueInvenItemsData(
 
     if (response.statusCode == 200) {
       print('Data successfully sent to server');
-      CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success',
-        onOkPressed: () {
-          int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 2);
-        },
-      );
+      // CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success',
+      //   onOkPressed: () {
+      //     int count = 0;
+      //     Navigator.of(context).popUntil((_) => count++ >= 0);
+      //   },
+      // );
 
     } else {
       print('Failed to send data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
-      CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error',
-        onOkPressed: () {
-          int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 2);
-        },
-      );
+      // CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error',
+      //   onOkPressed: () {
+      //     int count = 0;
+      //     Navigator.of(context).popUntil((_) => count++ >= 0);
+      //   },
+      // );
     }
   } catch (e) {
     print('Error during POST request: $e');
@@ -141,5 +141,41 @@ Future<Map<String, dynamic>?> fetchQRGoodsIssueItemsDetailData(
   } catch (e) {
     print("Error fetching QR goodsissueitemsdetail data: $e");
     return null;
+  }
+}
+
+
+Future<void> deleteGoodsIssueInvenItemsDetailData(String id, BuildContext context) async {
+  final String url = '$serverIp/api/v1/goodsissueinvenitemsdetail/$id';
+  try {
+    var response = await http.delete(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print('Data successfully deleted');
+      // CustomDialog.showDialog(context, 'Xóa thành công!', 'success',
+      //   onOkPressed: () {
+      //     int count = 0;
+      //     Navigator.of(context).popUntil((_) => count++ >= 0);
+      //   },
+      // );
+
+    } else {
+      print('Failed to delete data. Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      // CustomDialog.showDialog(context, 'Xóa thất bại!', 'error',
+      //   onOkPressed: () {
+      //     int count = 0;
+      //     Navigator.of(context).popUntil((_) => count++ >= 2);
+      //   },
+      // );
+    }
+  } catch (e) {
+    print('Error during DELETE request: $e');
+    CustomDialog.showDialog(context, 'Có lỗi xảy ra!', 'error');
   }
 }

@@ -91,7 +91,7 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
             descriptionController.text = apcreditmemoItemsDetail[0]['ItemName'];
             batchController.text = apcreditmemoItemsDetail[0]['Batch'];
             whseController.text = apcreditmemoItemsDetail[0]['Whse'];
-            slThucTeController.text = apcreditmemoItemsDetail.toString();
+            slThucTeController.text = totalSlThucTe.toString();
             uoMCodeController.text = apcreditmemoItemsDetail[0]['UoMCode'].toString();
             remakeController.text = apcreditmemoItemsDetail[0]['Remake'].toString();
           }
@@ -199,6 +199,11 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
                 if (apcreditmemoItemsDetail.isNotEmpty)
                   ListItems(
                     listItems: apcreditmemoItemsDetail,
+                    enableDismiss: true,
+                    onDeleteItem: (index) async {
+                      String id = apcreditmemoItemsDetail[index]['ID'].toString();
+                      await deleteApCreditMemoItemsDetailData(id, context);
+                    },
                     onTapItem: (index) {
                       Navigator.push(
                         context,

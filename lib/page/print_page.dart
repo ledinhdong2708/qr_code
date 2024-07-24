@@ -63,62 +63,77 @@ class _PrintPageState extends State<PrintPage> {
     }
   }
 
+  String _removeDiacritics(String str) {
+    const withDia = 'áàảãạăắằẳẵặâấầẩẫậđéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬĐÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴ';
+    const withoutDia = 'aaaaaăăăăăâââââdeeeeeeeeeeeiiiiiioooooôôôôôơơơơơuuuuuưưưưưyyyyyAAAAAĂĂĂĂĂÂÂÂÂÂDEEEEEEEEEEEIIIIIIOOOOOÔÔÔÔÔƠƠƠƠƠUUUUƯƯƯƯƯYYYYY';
+
+    for (int i = 0; i < str.length; i++) {
+      int index = withDia.indexOf(str[i]);
+      if (index != -1) {
+        str = str.replaceAll(str[i], withoutDia[index]);
+      }
+    }
+    return str;
+  }
+
   void _print() async {
     if (_selectedDevice != null) {
       Map<String, dynamic> config = {};
       List<LineText> list = [];
-      String jsonData = jsonEncode(widget.data);
-      print(jsonData);
+
+      String itemCode = _removeDiacritics(widget.data['itemCode'] ?? '');
+      String itemName = _removeDiacritics(widget.data['itemName'] ?? '');
+      String whse = _removeDiacritics(widget.data['whse'] ?? '');
+      String uoMCode = _removeDiacritics(widget.data['uoMCode'] ?? '');
+      String batch = _removeDiacritics(widget.data['batch'] ?? '');
+      String slThucTe = _removeDiacritics(widget.data['slThucTe'] ?? '');
+      String remake = _removeDiacritics(widget.data['remake'] ?? '');
 
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content:
-            utf8.decode(utf8.encode('Item Code: ${widget.data['itemCode']}')),
+        content: 'Item Code: $itemCode',
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
 
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content:
-            utf8.decode(utf8.encode('Item Name: ${widget.data['itemName']}')),
+        content: 'Item Name: $itemName',
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
 
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: utf8.decode(utf8.encode('Warehouse: ${widget.data['whse']}')),
+        content: 'Warehouse: $whse',
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
 
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content:
-            utf8.decode(utf8.encode('UoM Code: ${widget.data['uoMCode']}')),
+        content: 'UoM Code: $uoMCode',
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
 
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: utf8.decode(utf8.encode('Batch: ${widget.data['batch']}')),
+        content: 'Batch: $batch',
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
 
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content:
-            utf8.decode(utf8.encode('SL Thuc Te: ${widget.data['slThucTe']}')),
+        content: 'SL Thuc Te: $slThucTe',
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));
 
       list.add(LineText(
         type: LineText.TYPE_TEXT,
-        content: utf8.decode(utf8.encode('Remake: ${widget.data['remake']}')),
+        content: 'Remake: $remake',
         align: LineText.ALIGN_LEFT,
         linefeed: 1,
       ));

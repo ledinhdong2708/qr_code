@@ -191,6 +191,11 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                 if (grrItemsDetail.isNotEmpty)
                   ListItems(
                     listItems: grrItemsDetail,
+                    enableDismiss: true,
+                    onDeleteItem: (index) async {
+                      String id = grrItemsDetail[index]['ID'].toString();
+                      await deleteGrrItemsDetailData(id, context);
+                    },
                     onTapItem: (index) {
                       Navigator.push(
                         context,
