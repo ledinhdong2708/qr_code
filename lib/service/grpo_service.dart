@@ -277,3 +277,27 @@ Future<void> postPdn1Data(
     print('Error during POST request: $e');
   }
 }
+
+Future<void> updatePor1Data(
+    Map<String, dynamic> data, BuildContext context, String docentry) async {
+  final String url = '$serverIp/api/v1/por1/$docentry';
+  try {
+    var response = await http.put(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      print('Data successfully sent to server');
+    } else {
+      print('Failed to send data. Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      // CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
+    }
+  } catch (e) {
+    print('Error during PUT request: $e');
+  }
+}

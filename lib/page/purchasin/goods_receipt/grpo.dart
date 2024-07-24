@@ -89,7 +89,6 @@ class _GrpoState extends State<Grpo> {
       if (data != null && data['data'] is List) {
         setState(() {
           grpo = data['data'];
-          //print('aaaaaaaaaaaaaaaaaaaaaaaaaa $grpo');
           if (grpo.isNotEmpty) {
             vendorCodeController.text = grpo[0]['vendorcode'];
             vendorNameController.text = grpo[0]['vendorname'];
@@ -115,10 +114,12 @@ class _GrpoState extends State<Grpo> {
   }
 
   Future<void> _submitPor1GrpoData() async {
-    int totalItems1 = por1.length;
-    int totalItems2 = grpo.length;
+    int totalItems1 = grpo.length;
+    int totalItems2 = opdn.length;
+    int totalItems3 = opdn.length;
     int successfulCount1 = 0;
     int successfulCount2 = 0;
+    int successfulCount3 = 0;
 
     try {
       for (var item in grpo) {
@@ -129,11 +130,18 @@ class _GrpoState extends State<Grpo> {
           'BaseEntry': item['DocEntry'],
         };
         await postOpdnData(data, context);
-        successfulCount2++;
+        successfulCount1++;
       }
       await _fetchOpdnData();
 
       if (opdn.isNotEmpty) {
+        for (var item in opdn) {
+          final data = {
+            'TrgetEntry': item['DocEntry'],
+          };
+          await updatePor1Data(data, context, widget.qrData);
+          successfulCount2++;
+        }
         for (var item2 in opdn) {
           for (var item in por1) {
             final data = {
@@ -145,16 +153,19 @@ class _GrpoState extends State<Grpo> {
               'LineNum': item['LineNum'],
               'BaseEntry': item['DocEntry'],
               'BaseLine': item['LineNum'],
-              'BaseType': item['ObjType']
+              'BaseType': item['ObjType'],
+              'BaseRef': item['DocEntry'],
             };
             await postPdn1Data(data, context);
-            successfulCount1++;
+            successfulCount3++;
           }
         }
       } else {
         print('opdn data is not available');
       }
-      if (successfulCount1 == totalItems1 && successfulCount2 == totalItems2) {
+      if (successfulCount1 == totalItems1 &&
+          successfulCount2 == totalItems2 &&
+          successfulCount3 == totalItems3) {
         print('All data successfully sent to server');
         CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
       }

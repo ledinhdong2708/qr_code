@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
-import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
 import 'package:qr_code/page/qr_view_example.dart';
 
 class Purchasing extends StatelessWidget {
@@ -22,12 +21,12 @@ class Purchasing extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  // MaterialPageRoute(
-                  //     builder: (context) => const Grpo(qrData: "36")),
                   MaterialPageRoute(
-                      builder: (context) => const QRViewExample(
-                            pageIdentifier: 'GRPO',
-                          )),
+                      builder: (context) => const Grpo(qrData: "36")),
+                  // MaterialPageRoute(
+                  //     builder: (context) => const QRViewExample(
+                  //           pageIdentifier: 'GRPO',
+                  //         )),
                 );
               },
               child: card("assets/receipt.png", "Goods Receipt PO"),
