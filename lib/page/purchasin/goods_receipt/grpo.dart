@@ -28,6 +28,7 @@ class _GrpoState extends State<Grpo> {
   List<dynamic> grpo = [];
   Map<String, dynamic>? opor;
   List<dynamic> por1 = [];
+  List<dynamic> opdn = [];
 
   late TextEditingController vendorCodeController;
   late TextEditingController vendorNameController;
@@ -36,6 +37,7 @@ class _GrpoState extends State<Grpo> {
   late TextEditingController docEntryController;
   late TextEditingController baseEntryController;
   late TextEditingController remakeController;
+
   @override
   void initState() {
     super.initState();
@@ -70,12 +72,23 @@ class _GrpoState extends State<Grpo> {
     });
   }
 
+  Future<void> _fetchOpdnData() async {
+    var data = await fetchOpdnData(widget.qrData);
+    if (data != null && data['data'] is List) {
+      setState(() {
+        opdn = data['data'];
+        print("Fetched opdn data: $opdn");
+      });
+    } else {
+      print("No data or data is not in the expected format");
+    }
+  }
+
   Future<void> _fetchGrpoData() async {
     fetchGrpoData(widget.qrData).then((data) {
       if (data != null && data['data'] is List) {
         setState(() {
           grpo = data['data'];
-          //print('aaaaaaaaaaaaaaaaaaaaaaaaaa $grpo');
           if (grpo.isNotEmpty) {
             vendorCodeController.text = grpo[0]['vendorcode'];
             vendorNameController.text = grpo[0]['vendorname'];
@@ -100,48 +113,65 @@ class _GrpoState extends State<Grpo> {
     super.dispose();
   }
 
-  Future<void> _submitData() async {
-    try {
-      for (var item in por1) {
-        final data = {
-          'ItemCode': item['ItemCode'],
-          'Dscription': item['Dscription'],
-          'Quantity': item['OpenQty'],
-          'WhsCode': item['WhsCode'],
-          'LineNum': item['LineNum'],
-          'BaseEntry': item['DocEntry'],
-          'BaseLine': item['LineNum'],
-          'DocEntry': item['DocEntry'],
-          'BaseType': item['ObjType']
-        };
-        await postPdn1Data(data, context);
-      }
-    } catch (e) {
-      print('Error submitting data: $e');
-    }
-  }
+  Future<void> _submitPor1GrpoData() async {
+    int totalItems1 = grpo.length;
+    int totalItems2 = opdn.length;
+    int totalItems3 = opdn.length;
+    int successfulCount1 = 0;
+    int successfulCount2 = 0;
+    int successfulCount3 = 0;
 
-  Future<void> _submitData2() async {
     try {
       for (var item in grpo) {
         final data = {
-          'DocEntry': item['DocEntry'],
-          'DocNum': item['docno'],
           'DocDate': item['postday'],
           'CardCode': item['vendorcode'],
           'CardName': item['vendorname'],
           'BaseEntry': item['DocEntry'],
         };
         await postOpdnData(data, context);
+        successfulCount1++;
+      }
+      await _fetchOpdnData();
+
+      if (opdn.isNotEmpty) {
+        for (var item in opdn) {
+          final data = {
+            'TrgetEntry': item['DocEntry'],
+          };
+          await updatePor1Data(data, context, widget.qrData);
+          successfulCount2++;
+        }
+        for (var item2 in opdn) {
+          for (var item in por1) {
+            final data = {
+              'DocEntry': item2['DocEntry'],
+              'ItemCode': item['ItemCode'],
+              'Dscription': item['Dscription'],
+              'Quantity': item['OpenQty'],
+              'WhsCode': item['WhsCode'],
+              'LineNum': item['LineNum'],
+              'BaseEntry': item['DocEntry'],
+              'BaseLine': item['LineNum'],
+              'BaseType': item['ObjType'],
+              'BaseRef': item['DocEntry'],
+            };
+            await postPdn1Data(data, context);
+            successfulCount3++;
+          }
+        }
+      } else {
+        print('opdn data is not available');
+      }
+      if (successfulCount1 == totalItems1 &&
+          successfulCount2 == totalItems2 &&
+          successfulCount3 == totalItems3) {
+        print('All data successfully sent to server');
+        CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
       }
     } catch (e) {
       print('Error submitting data: $e');
     }
-  }
-
-  void addToSap() {
-    _submitData();
-    _submitData2();
   }
 
   @override
@@ -227,7 +257,7 @@ class _GrpoState extends State<Grpo> {
                   children: [
                     CustomButton(
                       text: 'Add to Sap',
-                      onPressed: addToSap,
+                      onPressed: _submitPor1GrpoData,
                     ),
                     CustomButton(
                       text: 'POST',
