@@ -182,7 +182,7 @@ Future<void> postIfpHeaderData(
       CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success',
         onOkPressed: () {
           int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 0);
+          Navigator.of(context).popUntil((_) => count++ >= 2);
         },
       );
     } else {

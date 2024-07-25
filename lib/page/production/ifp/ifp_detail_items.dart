@@ -135,7 +135,12 @@ class _IfpDetailItemsState extends State<IfpDetailItems> {
       // Check if all items were successfully submitted
       if (successfulCount == totalItems) {
         print('All data successfully sent to server');
-        CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+        CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success',
+          onOkPressed: () {
+            int count = 0;
+            Navigator.of(context).popUntil((_) => count++ >= 1);
+          },
+        );
       }
     } catch (e) {
       print('Error submitting data: $e');
@@ -216,14 +221,21 @@ class _IfpDetailItemsState extends State<IfpDetailItems> {
                       ),
                     );
                   },
-                  labelName1: 'Whse',
-                  labelName2: 'Batch',
-                  labelName3: 'SlThucTe',
-                  labelName4: 'Remake',
-                  listChild1: 'Whse',
-                  listChild2: 'Batch',
-                  listChild3: 'SlThucTe',
-                  listChild4: 'Remake',
+                  labelsAndChildren: const [
+                    {'label': 'Whse', 'child': 'Whse'},
+                    {'label': 'Batch', 'child': 'Batch'},
+                    {'label': 'SlThucTe', 'child': 'SlThucTe'},
+                    {'label': 'Remake', 'child': 'Remake'},
+                    // Add more as needed
+                  ],
+                  // labelName1: 'Whse',
+                  // labelName2: 'Batch',
+                  // labelName3: 'SlThucTe',
+                  // labelName4: 'Remake',
+                  // listChild1: 'Whse',
+                  // listChild2: 'Batch',
+                  // listChild3: 'SlThucTe',
+                  // listChild4: 'Remake',
                 ),
               Container(
                 width: double.infinity,

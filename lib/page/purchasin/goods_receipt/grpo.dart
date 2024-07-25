@@ -240,14 +240,22 @@ class _GrpoState extends State<Grpo> {
                         ),
                       );
                     },
-                    labelName1: 'DocNo',
-                    labelName2: 'Code',
-                    labelName3: 'Name',
-                    labelName4: 'SlYeuCau',
-                    listChild1: 'DocEntry',
-                    listChild2: 'ItemCode',
-                    listChild3: 'Dscription',
-                    listChild4: 'OpenQty'),
+                    labelsAndChildren: const [
+                      {'label': 'DocNo', 'child': 'DocEntry'},
+                      {'label': 'Code', 'child': 'ItemCode'},
+                      {'label': 'Name', 'child': 'Dscription'},
+                      {'label': 'SlYeuCau', 'child': 'OpenQty'},
+                      // Add more as needed
+                    ],
+                    // labelName1: 'DocNo',
+                    // labelName2: 'Code',
+                    // labelName3: 'Name',
+                    // labelName4: 'SlYeuCau',
+                    // listChild1: 'DocEntry',
+                    // listChild2: 'ItemCode',
+                    // listChild3: 'Dscription',
+                    // listChild4: 'OpenQty'
+                ),
               Container(
                 width: double.infinity,
                 margin: AppStyles.marginButton,

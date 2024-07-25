@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/dropdownbutton.dart';
@@ -7,13 +8,30 @@ import 'package:qr_code/component/qr_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/page/inventory/goodsreceipt/goods_receipt_add_new.dart';
+import 'package:qr_code/page/inventory/goodsreceipt/list_itemcode.dart';
 import 'package:qr_code/routes/routes.dart';
 
-class GoodsReceiptIven extends StatelessWidget {
-  const GoodsReceiptIven({super.key});
+class GoodsReceiptInven extends StatefulWidget {
+  const GoodsReceiptInven({super.key});
+
+  @override
+  _GoodsReceiptInvenState createState() => _GoodsReceiptInvenState();
+
+}
+
+class _GoodsReceiptInvenState extends State<GoodsReceiptInven> {
+  final TextEditingController _remarkCodeController = TextEditingController();
+  //final TextEditingController _itemNameController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    var now = DateTime.now();
+    var formatter = DateFormat('yyyy-MM-dd');
+    String docDate = formatter.format(now);
+
+
     final TextEditingController _controller = TextEditingController();
     return Scaffold(
         appBar: const HeaderApp(title: "Goods Receipt"),
@@ -25,44 +43,20 @@ class GoodsReceiptIven extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const DateInput(),
-                buildTextFieldRow(
-                  labelText: 'Item Code',
-                  hintText: 'Item Code',
-                  isEnable: true,
+                DateInput(
+                  postDay: docDate,
+                  controller: _dateController,
                 ),
                 buildTextFieldRow(
-                    labelText: 'Item Name', hintText: 'Item Name'),
-                buildTextFieldRow(
-                    labelText: 'Whse', hintText: 'Whse', isEnable: true),
-                buildTextFieldRow(
-                    labelText: 'Quantity',
-                    hintText: 'Quantity',
-                    isEnable: true),
-                buildTextFieldRow(
-                    labelText: 'Batch', hintText: 'Batch', isEnable: true),
-                buildTextFieldRow(labelText: 'UoM Code', hintText: 'UoM Code'),
-                buildTextFieldRow(
-                    labelText: 'Price', hintText: 'Price', isEnable: true),
-                buildTextFieldRow(labelText: 'Total', hintText: 'Total'),
-                Dropdownbutton(
-                  items: ['Lý do a', 'Lý do b', 'Lý do c'],
-                  labelText: 'Lý do nhập kho',
-                  hintText: 'Lý do nhập kho',
+                  labelText: 'Remark',
+                  hintText: 'Remark',
+                  controller: _remarkCodeController,
                 ),
-                buildTextFieldRow(
-                  labelText: 'Remake',
-                  isEnable: true,
-                  hintText: 'Remake here',
-                  icon: Icons.edit,
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                        context, Routes.goodsReceiptLabelsInven);
-                  },
-                  child: const Text('Tạo Nhãn'),
-                ),
+                // buildTextFieldRow(
+                //     labelText: 'Item Name',
+                //     hintText: 'Item Name',
+                //     controller: _itemNameController,
+                // ),
                 Container(
                   width: double.infinity,
                   margin: AppStyles.marginButton,
@@ -75,8 +69,15 @@ class GoodsReceiptIven extends StatelessWidget {
                         onPressed: () {},
                       ),
                       CustomButton(
-                        text: 'New',
-                        onPressed: () {},
+                        text: 'NEW',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const GoodsReceiptInvenAddNew(),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),

@@ -6,6 +6,7 @@ import 'package:qr_code/page/production/ifp/ifp.dart';
 import 'package:qr_code/page/production/ifp/ifp_add_new_detail_items.dart';
 import 'package:qr_code/page/production/ifp/ifp_detail.dart';
 import 'package:qr_code/page/production/rfp/rfp.dart';
+import 'package:qr_code/page/production/rfp/rfp_detail.dart';
 import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo.dart';
 import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo_detail_items.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
@@ -125,6 +126,12 @@ class _QRViewExampleState extends State<QRViewExample> {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => IfpDetail(qrData: qrData)),
+      );
+    }
+    else if (pageIdentifier == 'RfpDetail') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => RfpDetail(qrData: qrData)),
       );
     }
     else if (pageIdentifier == 'IfpAddNewDetailItems') {
