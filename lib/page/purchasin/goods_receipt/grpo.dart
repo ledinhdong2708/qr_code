@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
-import 'package:qr_code/component/dialog.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/list_items.dart';
 import 'package:qr_code/component/textfield_method.dart';
@@ -43,24 +42,8 @@ class _GrpoState extends State<Grpo> {
   void initState() {
     super.initState();
 
-    fetchOporData(widget.qrData).then((data) {
-      if (data != null) {
-        if (data['data'] != null && data['data']['DocDate'] != null) {
-          DateTime parsedDate = DateTime.parse(data['data']['DocDate']);
-          String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-          data['data']['DocDate'] = formattedDate;
-        }
-        setState(() {
-          opor = data;
-          _remakeController.text = opor?['data']['remake'] ?? '';
-          _dateController.text = opor?['data']['DocDate'] ?? '';
-        });
-      }
-    });
-
     _fetchGrpoData();
     _loginSap();
-    // _fetchPor1Data();
   }
 
   Future<void> _fetchOpdnData() async {
@@ -104,64 +87,41 @@ class _GrpoState extends State<Grpo> {
     super.dispose();
   }
 
-  Future<void> _submitPor1GrpoData() async {
-    int totalItems1 = grpo.length;
-    int totalItems2 = opdn.length;
-    int totalItems3 = opdn.length;
-    int successfulCount1 = 0;
-    int successfulCount2 = 0;
-    int successfulCount3 = 0;
-
+  Future<void> _postPoToGrpo() async {
     try {
-      for (var item in grpo) {
-        final data = {
-          'DocDate': item['postday'],
-          'CardCode': item['vendorcode'],
-          'CardName': item['vendorname'],
-          'BaseEntry': item['DocEntry'],
+      if (po != null) {
+        final grpoData = {
+          'DocDate': po?['DocDate'],
+          'CardCode': po?['CardCode'],
+          'CardName': po?['CardName'],
+          'Comments': po?['Comments'],
+          'DocumentLines': []
         };
-        await postOpdnData(data, context);
-        successfulCount1++;
-      }
-      await _fetchOpdnData();
 
-      if (opdn.isNotEmpty) {
-        for (var item in opdn) {
-          final data = {
-            'TrgetEntry': item['DocEntry'],
-          };
-          await updatePor1Data(data, context, widget.qrData);
-          successfulCount2++;
+        if (DocumentLines.isNotEmpty) {
+          for (var item in DocumentLines) {
+            final lineData = {
+              'ItemCode': item['ItemCode'],
+              'ItemDescription': item['ItemDescription'],
+              'Quantity': item['Quantity'],
+              'BaseEntry': item['DocEntry'],
+              'BaseLine': item['LineNum'],
+              'BaseType': 22
+            };
+            grpoData['DocumentLines'].add(lineData);
+          }
+
+          print('Dữ liệu gửi đi: $grpoData');
+
+          await postPoToGrpo(grpoData, context);
+        } else {
+          print('DocumentLines là null');
         }
-        // for (var item2 in opdn) {
-        //   for (var item in po) {
-        //     final data = {
-        //       'DocEntry': item2['DocEntry'],
-        //       'ItemCode': item['ItemCode'],
-        //       'Dscription': item['Dscription'],
-        //       'Quantity': item['OpenQty'],
-        //       'WhsCode': item['WhsCode'],
-        //       'LineNum': item['LineNum'],
-        //       'BaseEntry': item['DocEntry'],
-        //       'BaseLine': item['LineNum'],
-        //       'BaseType': item['ObjType'],
-        //       'BaseRef': item['DocEntry'],
-        //     };
-        //     await postPdn1Data(data, context);
-        //     successfulCount3++;
-        //   }
-        // }
       } else {
-        print('opdn data is not available');
-      }
-      if (successfulCount1 == totalItems1 &&
-          successfulCount2 == totalItems2 &&
-          successfulCount3 == totalItems3) {
-        print('All data successfully sent to server');
-        CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+        print('Dữ liệu đơn hàng (po) là null');
       }
     } catch (e) {
-      print('Error submitting data: $e');
+      print('Lỗi khi gửi dữ liệu: $e');
     }
   }
 
@@ -172,7 +132,6 @@ class _GrpoState extends State<Grpo> {
       setState(() {
         po = data;
         DocumentLines = po?["DocumentLines"];
-        print("Thành công: $DocumentLines");
       });
     } else {
       print("Sai");
@@ -278,16 +237,7 @@ class _GrpoState extends State<Grpo> {
                     {'label': 'Code', 'child': 'ItemCode'},
                     {'label': 'Name', 'child': 'Dscription'},
                     {'label': 'SlYeuCau', 'child': 'OpenQty'},
-                    // Add more as needed
                   ],
-                  // labelName1: 'DocNo',
-                  // labelName2: 'Code',
-                  // labelName3: 'Name',
-                  // labelName4: 'SlYeuCau',
-                  // listChild1: 'DocEntry',
-                  // listChild2: 'ItemCode',
-                  // listChild3: 'Dscription',
-                  // listChild4: 'OpenQty'
                 ),
               Container(
                 width: double.infinity,
@@ -298,17 +248,11 @@ class _GrpoState extends State<Grpo> {
                   children: [
                     CustomButton(
                       text: 'Add to Sap',
-                      onPressed: _submitPor1GrpoData,
+                      onPressed: _postPoToGrpo,
                     ),
                     CustomButton(
                       text: 'POST',
-                      onPressed: () async {
-                        await updateGrpoDatabase(
-                            widget.qrData,
-                            _remakeController.text,
-                            _dateController.text,
-                            context);
-                      },
+                      onPressed: () async {},
                     ),
                   ],
                 ),

@@ -22,7 +22,7 @@ class Purchasing extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const Grpo(qrData: "30")),
+                      builder: (context) => const Grpo(qrData: "31")),
                   // MaterialPageRoute(
                   //     builder: (context) => const Grpo(qrData: "36")),
                   // MaterialPageRoute(
