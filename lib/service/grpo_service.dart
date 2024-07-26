@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_code/component/dialog.dart';
 import 'package:qr_code/constants/urlApi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<Map<String, dynamic>?> fetchOporData(String resultCode) async {
   final url = '$serverIp/api/v1/opor/$resultCode';
@@ -22,27 +23,6 @@ Future<Map<String, dynamic>?> fetchOporData(String resultCode) async {
     }
   } catch (e) {
     print("Error fetching OPOR data: $e");
-    return null;
-  }
-}
-
-Future<Map<String, dynamic>?> fetchPor1Data(String resultCode) async {
-  final url = '$serverIp/api/v1/por1/$resultCode';
-  final uri = Uri.parse(url);
-  try {
-    final response = await http.get(uri);
-    var decodedResponse = utf8.decode(response.bodyBytes);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(decodedResponse);
-      print("Fetch POR1 data successful");
-      // print(json);
-      return json;
-    } else {
-      print("Failed to load data with status code: ${response.statusCode}");
-      return null;
-    }
-  } catch (e) {
-    print("Error fetching POR1 data: $e");
     return null;
   }
 }
@@ -299,5 +279,85 @@ Future<void> updatePor1Data(
     }
   } catch (e) {
     print('Error during PUT request: $e');
+  }
+}
+
+// Save SessionID to SharedPreferences
+Future<void> saveSessionId(String sessionId) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('sessionId', sessionId);
+}
+
+// // Save SessionID to SharedPreferences
+Future<String?> getSessionId() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('sessionId');
+}
+
+// Login to Sap
+Future<void> loginSap(Map<String, dynamic> data, BuildContext context) async {
+  const String url = '$serverIpSap/Login';
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      final sessionId = responseData['SessionId'];
+
+      print('Session ID: $sessionId');
+
+      await saveSessionId(sessionId);
+
+      CustomDialog.showDialog(context, 'Đăng nhập thành công', 'success');
+    } else {
+      print('Failed to log in. Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      CustomDialog.showDialog(context, 'Đăng nhập thất bại', 'error');
+    }
+  } catch (e) {
+    print('Error during login: $e');
+  }
+}
+
+// fetch data of purchase order
+Future<Map<String, dynamic>?> fetchPoData(
+    String resultCode, BuildContext context) async {
+  String? sessionId = await getSessionId();
+  if (sessionId == null) {
+    print("Session ID is not available. Attempting to login again.");
+
+    sessionId = await getSessionId();
+    if (sessionId == null) {
+      print("Failed to acquire new session ID.");
+      return null;
+    }
+  }
+  final url = '$serverIpSap/PurchaseOrders($resultCode)';
+  try {
+    final response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Cookie': "B1SESSION=$sessionId",
+      },
+    );
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      print("Fetch POR1 data successful");
+      return json;
+    } else {
+      print("Failed to load data with status code: ${response.statusCode}");
+      print('Response body: ${response.body}');
+      return null;
+    }
+  } catch (e) {
+    print("Error fetching POR1 data: $e");
+    return null;
   }
 }
