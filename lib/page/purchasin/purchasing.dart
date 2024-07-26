@@ -24,6 +24,8 @@ class Purchasing extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => const Grpo(qrData: "30")),
                   // MaterialPageRoute(
+                  //     builder: (context) => const Grpo(qrData: "36")),
+                  // MaterialPageRoute(
                   //     builder: (context) => const QRViewExample(
                   //           pageIdentifier: 'GRPO',
                   //         )),

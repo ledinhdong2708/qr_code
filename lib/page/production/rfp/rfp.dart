@@ -1,118 +1,152 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
-import 'package:qr_code/component/dropdownbutton.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
-import 'package:qr_code/routes/routes.dart';
+import 'package:qr_code/page/production/rfp/rfp_detail.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-class Rfp extends StatelessWidget {
+import '../../../component/list_items.dart';
+import '../../../service/rfp_service.dart';
+import '../../qr_view_example.dart';
+
+class Rfp extends StatefulWidget {
   final String qrData;
+
   const Rfp({super.key, required this.qrData});
 
   @override
-  Widget build(BuildContext context) {
-    final Map<String, dynamic> qrDataMap = parseQrData(qrData);
-    return Scaffold(
-        appBar: const HeaderApp(title: "Receipt from Production"),
-        body: Container(
-          color: bgColor,
-          width: double.infinity,
-          height: double.infinity,
-          padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                buildTextFieldRow(labelText: 'Doc No.', hintText: 'Doc No.'),
-                const DateInput(),
-                buildTextFieldRow(
-                    labelText: 'Trans. Type', hintText: 'Trans. Type'),
-                buildTextFieldRow(
-                    labelText: 'Item Code', hintText: 'Item Code'),
-                buildTextFieldRow(
-                    labelText: 'Item Name', hintText: 'Item Name'),
-                buildTextFieldRow(labelText: 'Whse', hintText: 'Whse'),
-                buildTextFieldRow(labelText: 'Quantity', hintText: 'Quantity'),
-                buildTextFieldRow(labelText: 'Batch', hintText: 'Batch'),
-                buildTextFieldRow(labelText: 'UoM Code', hintText: 'UoM Code'),
-                buildTextFieldRow(
-                  labelText: 'Remake',
-                  isEnable: true,
-                  hintText: 'Remake here',
-                  icon: Icons.edit,
-                ),
-                Dropdownbutton(
-                  items: ['nhà máy a', 'nhà máy b', 'nhà máy c'],
-                  labelText: 'Nhà Máy',
-                  hintText: 'Nhà Máy',
-                ),
-                Dropdownbutton(
-                  items: ['Loại hinh a', 'Loại hinh b', 'Loại hinh c'],
-                  labelText: 'Loại hinh',
-                  hintText: 'Loại hinh',
-                ),
-                Dropdownbutton(
-                  items: ['Công đoạn a', 'Công đoạn b', 'Công đoạn c'],
-                  labelText: 'Công đoạn',
-                  hintText: 'Công đoạn',
-                ),
-                Dropdownbutton(
-                  items: ['Loại chi phí a', 'Loại chi phí b', 'Loại chi phí c'],
-                  labelText: 'Loại chi phí',
-                  hintText: 'Loại chi phí',
-                ),
-                Dropdownbutton(
-                  items: ['Chi tiết NVL a', 'Chi tiết NVL b', 'Chi tiết NVL c'],
-                  labelText: 'Chi tiết NVL',
-                  hintText: 'Chi tiết NVL',
-                ),
-                Dropdownbutton(
-                  items: ['Tài khoản a', 'Tài khoản b', 'Tài khoản c'],
-                  labelText: 'Tài khoản',
-                  hintText: 'Tài khoản',
-                ),
-                //list item ở đây
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, Routes.rfpLabels);
-                  },
-                  child: const Text('Tạo Nhãn'),
-                ),
-                Container(
-                  width: double.infinity,
-                  margin: AppStyles.marginButton,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CustomButton(
-                        text: 'New',
-                        onPressed: () {},
-                      ),
-                      CustomButton(
-                        text: 'POST',
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ));
+  State<Rfp> createState() => _RfpState();
+}
+class _RfpState extends State<Rfp> {
+  final TextEditingController _remakeController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  List<dynamic> rfp = [];
+  Map<String, dynamic>? oprr; // chua doi ten
+  List<dynamic> prr1 = [];    // chua doi ten
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
   }
 
-  Map<String, dynamic> parseQrData(String qrData) {
-    try {
-      return jsonDecode(qrData);
-    } catch (e) {
-      // Xử lý lỗi nếu qrData không phải là chuỗi JSON hợp lệ
-      print('Lỗi khi phân tích cú pháp qrData: $e');
-      return {};
-    }
+  Future<void> _fetchData() async {
+    fetchRfpHeaderData().then((data) {
+      if (data != null && data['data'] is List) {
+        setState(() {
+          rfp = data['data'];
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var data = oprr?['data'];
+    var docDate = data != null ? data['DocDate'].toString() : '';
+    var remark = data != null ? data['remake'] : '';
+
+    return Scaffold(
+      appBar: const HeaderApp(title: "RECEIPT FROM PRODUCTION"),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: bgColor,
+        padding: AppStyles.paddingContainer,
+        child: Column(
+          children: [
+            buildTextFieldRow(
+              labelText: 'Production Order',
+              hintText: 'Production Order',
+              iconButton: IconButton(
+                icon: const Icon(Icons.qr_code_scanner),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const QRViewExample(
+                          pageIdentifier: 'RfpDetail',
+                        )),
+                  );
+                },
+              ),
+              //valueQR: docNum,
+            ),
+            DateInput(
+              postDay: docDate,
+              controller: _dateController,
+            ),
+
+            buildTextFieldRow(
+                labelText: 'Remake',
+                isEnable: true,
+                hintText: 'Remake here',
+                icon: Icons.edit,
+                valueQR: remark,
+                controller: _remakeController),
+            if (rfp.isNotEmpty)
+              ListItems(
+                  listItems: rfp,
+                  onTapItem: (index) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RfpDetail(
+                          qrData: rfp[index]['DocEntry'],
+                        ),
+                      ),
+                    );
+                  },
+                  labelsAndChildren: const [
+                    {'label': 'Product Order No', 'child': 'DocNum'},
+                    {'label': 'ItemCode', 'child': 'ItemCode'},
+                    {'label': 'ProdName', 'child': 'ProdName'},
+                    {'label': 'Warehouse', 'child': 'Warehouse'},
+                    // Add more as needed
+                  ],
+                  // labelName1: 'Product Order No',
+                  // labelName2: 'ItemCode',
+                  // labelName3: 'ProdName',
+                  // labelName4: 'Warehouse',
+                  // listChild1: 'DocNum',
+                  // listChild2: 'ItemCode',
+                  // listChild3: 'ProdName',
+                  // listChild4: 'Warehouse'
+              ),
+            Container(
+              width: double.infinity,
+              margin: AppStyles.marginButton,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // CustomButton(
+                  //   text: 'DELETE',
+                  //   onPressed: () {
+                  //
+                  //   },
+                  // ),
+                  CustomButton(
+                    text: 'POST',
+                    onPressed: () async {
+                      // await updateGrrDatabase(
+                      //     widget.qrData,
+                      //     _remakeController.text,
+                      //     _dateController.text,
+                      //     context);
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

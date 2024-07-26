@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/page/production/ifp/ifp.dart';
+import 'package:qr_code/page/production/rfp/rfp.dart';
 import 'package:qr_code/page/qr_view_example.dart';
 import 'package:qr_code/routes/routes.dart';
 
@@ -39,12 +40,17 @@ class Production extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => const QRViewExample(
+                //             pageIdentifier: 'rfp',
+                //           )),
+                // );
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const QRViewExample(
-                            pageIdentifier: 'rfp',
-                          )),
+                      builder: (context) => const Rfp(qrData: "1")),
                 );
               },
               // thay đổi lại hình ảnh

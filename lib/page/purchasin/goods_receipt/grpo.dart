@@ -238,52 +238,57 @@ class _GrpoState extends State<Grpo> {
                   controller: _remakeController),
               if (DocumentLines.isNotEmpty)
                 ListItems(
-                    listItems: DocumentLines,
-                    onTapItem: (index) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => GrpoDetail(
-                            docEntry:
-                                DocumentLines[index]['DocEntry']?.toString() ??
-                                    '',
-                            lineNum:
-                                DocumentLines[index]['LineNum']?.toString() ??
-                                    '',
-                            itemCode:
-                                DocumentLines[index]['ItemCode']?.toString() ??
-                                    '',
-                            description: DocumentLines[index]['ItemDescription']
-                                    ?.toString() ??
-                                '',
-                            whse: DocumentLines[index]['WhsCode']?.toString() ??
-                                '',
-                            slYeuCau:
-                                DocumentLines[index]['Quantity']?.toString() ??
-                                    '',
-                            slThucTe:
-                                DocumentLines[index]['SlThucTe']?.toString() ??
-                                    '',
-                            batch:
-                                DocumentLines[index]['Batch']?.toString() ?? '',
-                            uoMCode:
-                                DocumentLines[index]['UomCode']?.toString() ??
-                                    '',
-                            remake:
-                                DocumentLines[index]['remake']?.toString() ??
-                                    '',
-                          ),
+                  listItems: DocumentLines,
+                  onTapItem: (index) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GrpoDetail(
+                          docEntry:
+                              DocumentLines[index]['DocEntry']?.toString() ??
+                                  '',
+                          lineNum:
+                              DocumentLines[index]['LineNum']?.toString() ?? '',
+                          itemCode:
+                              DocumentLines[index]['ItemCode']?.toString() ??
+                                  '',
+                          description: DocumentLines[index]['ItemDescription']
+                                  ?.toString() ??
+                              '',
+                          whse:
+                              DocumentLines[index]['WhsCode']?.toString() ?? '',
+                          slYeuCau:
+                              DocumentLines[index]['Quantity']?.toString() ??
+                                  '',
+                          slThucTe:
+                              DocumentLines[index]['SlThucTe']?.toString() ??
+                                  '',
+                          batch:
+                              DocumentLines[index]['Batch']?.toString() ?? '',
+                          uoMCode:
+                              DocumentLines[index]['UomCode']?.toString() ?? '',
+                          remake:
+                              DocumentLines[index]['remake']?.toString() ?? '',
                         ),
-                      );
-                    },
-                    labelName1: 'DocNo',
-                    labelName2: 'Code',
-                    labelName3: 'Name',
-                    labelName4: 'SlYeuCau',
-                    listChild1: 'DocEntry',
-                    listChild2: 'ItemCode',
-                    listChild3: 'ItemDescription',
-                    listChild4: 'Quantity'),
+                      ),
+                    );
+                  },
+                  labelsAndChildren: const [
+                    {'label': 'DocNo', 'child': 'DocEntry'},
+                    {'label': 'Code', 'child': 'ItemCode'},
+                    {'label': 'Name', 'child': 'Dscription'},
+                    {'label': 'SlYeuCau', 'child': 'OpenQty'},
+                    // Add more as needed
+                  ],
+                  // labelName1: 'DocNo',
+                  // labelName2: 'Code',
+                  // labelName3: 'Name',
+                  // labelName4: 'SlYeuCau',
+                  // listChild1: 'DocEntry',
+                  // listChild2: 'ItemCode',
+                  // listChild3: 'Dscription',
+                  // listChild4: 'OpenQty'
+                ),
               Container(
                 width: double.infinity,
                 margin: AppStyles.marginButton,

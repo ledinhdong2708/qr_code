@@ -154,8 +154,8 @@ class _IfpDetailState extends State<IfpDetail> {
           child: Column(
             children: [
               buildTextFieldRow(
-                labelText: 'Product Order No.',
-                hintText: 'Product Order No.',
+                labelText: 'Order No.',
+                hintText: 'Order No.',
                 valueQR: docNum,
                 //controller: _docNoController
               ),
@@ -204,14 +204,22 @@ class _IfpDetailState extends State<IfpDetail> {
                         ),
                       );
                     },
-                    labelName1: 'DocNo',
-                    labelName2: 'Code',
-                    labelName3: 'Name',
-                    labelName4: 'SlYeuCau',
-                    listChild1: 'DocEntry',
-                    listChild2: 'ItemCode',
-                    listChild3: 'ItemName',
-                    listChild4: 'PlannedQty'),
+                    labelsAndChildren: const [
+                      {'label': 'DocNo', 'child': 'DocEntry'},
+                      {'label': 'Code', 'child': 'ItemCode'},
+                      {'label': 'Name', 'child': 'ItemName'},
+                      {'label': 'SlYeuCau', 'child': 'PlannedQty'},
+                      // Add more as needed
+                    ],
+                    // labelName1: 'DocNo',
+                    // labelName2: 'Code',
+                    // labelName3: 'Name',
+                    // labelName4: 'SlYeuCau',
+                    // listChild1: 'DocEntry',
+                    // listChild2: 'ItemCode',
+                    // listChild3: 'ItemName',
+                    // listChild4: 'PlannedQty'
+                ),
               Container(
                 width: double.infinity,
                 margin: AppStyles.marginButton,

@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:qr_code/component/loading.dart';
 import 'package:qr_code/page/inventory/goodsissue/goods_issue.dart';
 import 'package:qr_code/page/inventory/goodsreceipt/goods_receipt.dart';
-import 'package:qr_code/page/inventory/goodsreceipt/goods_receipt_labels.dart';
 import 'package:qr_code/page/inventory/inventory.dart';
 import 'package:qr_code/page/inventory/inventorycounting/inventory_counting_labels.dart';
 import 'package:qr_code/page/production/goodsissue/goods_issue.dart';
 import 'package:qr_code/page/production/goodsreceipt/goods_receipt.dart';
 import 'package:qr_code/page/production/production.dart';
-import 'package:qr_code/page/production/rfp/rfp_labels.dart';
 import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo_detail.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo_detail.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo_add_new_detail_items.dart';
@@ -94,15 +92,13 @@ class _MyAppState extends State<MyApp> {
                   const ArCreditmemoDetail(),
               //inventory
               Routes.inventory: (context) => const Inventory(),
-              Routes.goodsReceiptInven: (context) => const GoodsReceiptIven(),
-              Routes.goodsReceiptLabelsInven: (context) =>
-                  const GoodsReceiptLabelsIven(),
+              Routes.goodsReceiptInven: (context) => const GoodsReceiptInven(),
+
               Routes.goodsIssueInven: (context) => const GoodsIssueInven(),
               Routes.inventoryTransferLabels: (context) =>
                   const InventoryTransferLabels(),
               //production
               Routes.production: (context) => const Production(),
-              Routes.rfpLabels: (context) => const RfpLabel(),
               Routes.goodsIssue: (context) => const GoodsIssue(),
               Routes.goodsReceipt: (context) => const GoodsReceipt(),
             },
