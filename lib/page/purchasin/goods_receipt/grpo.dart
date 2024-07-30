@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
-import 'package:qr_code/component/dialog.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/list_items.dart';
 import 'package:qr_code/component/textfield_method.dart';
@@ -27,8 +26,9 @@ class _GrpoState extends State<Grpo> {
   Barcode? result;
   List<dynamic> grpo = [];
   Map<String, dynamic>? opor;
-  List<dynamic> por1 = [];
+  Map<String, dynamic>? po;
   List<dynamic> opdn = [];
+  List<dynamic> DocumentLines = [];
 
   late TextEditingController vendorCodeController;
   late TextEditingController vendorNameController;
@@ -42,34 +42,8 @@ class _GrpoState extends State<Grpo> {
   void initState() {
     super.initState();
 
-    fetchOporData(widget.qrData).then((data) {
-      if (data != null) {
-        if (data['data'] != null && data['data']['DocDate'] != null) {
-          DateTime parsedDate = DateTime.parse(data['data']['DocDate']);
-          String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-          data['data']['DocDate'] = formattedDate;
-        }
-        setState(() {
-          opor = data;
-          _remarksController.text = opor?['data']['remake'] ?? '';
-          _dateController.text = opor?['data']['DocDate'] ?? '';
-        });
-      }
-    });
-
     _fetchGrpoData();
-    _fetchPor1Data();
-  }
-
-  Future<void> _fetchPor1Data() async {
-    fetchPor1Data(widget.qrData).then((data) {
-      if (data != null && data['data'] is List) {
-        setState(() {
-          por1 = data['data'];
-          print("hello:  $por1");
-        });
-      }
-    });
+    _loginSap();
   }
 
   Future<void> _fetchOpdnData() async {
@@ -113,76 +87,79 @@ class _GrpoState extends State<Grpo> {
     super.dispose();
   }
 
-  Future<void> _submitPor1GrpoData() async {
-    int totalItems1 = grpo.length;
-    int totalItems2 = opdn.length;
-    int totalItems3 = opdn.length;
-    int successfulCount1 = 0;
-    int successfulCount2 = 0;
-    int successfulCount3 = 0;
-
+  Future<void> _postPoToGrpo() async {
     try {
-      for (var item in grpo) {
-        final data = {
-          'DocDate': item['postday'],
-          'CardCode': item['vendorcode'],
-          'CardName': item['vendorname'],
-          'BaseEntry': item['DocEntry'],
+      if (po != null) {
+        final grpoData = {
+          'DocDate': po?['DocDate'],
+          'CardCode': po?['CardCode'],
+          'CardName': po?['CardName'],
+          'Comments': po?['Comments'],
+          'DocumentLines': []
         };
-        await postOpdnData(data, context);
-        successfulCount1++;
-      }
-      await _fetchOpdnData();
 
-      if (opdn.isNotEmpty) {
-        for (var item in opdn) {
-          final data = {
-            'TrgetEntry': item['DocEntry'],
-          };
-          await updatePor1Data(data, context, widget.qrData);
-          successfulCount2++;
-        }
-        for (var item2 in opdn) {
-          for (var item in por1) {
-            final data = {
-              'DocEntry': item2['DocEntry'],
+        if (DocumentLines.isNotEmpty) {
+          for (var item in DocumentLines) {
+            final lineData = {
               'ItemCode': item['ItemCode'],
-              'Dscription': item['Dscription'],
-              'Quantity': item['OpenQty'],
-              'WhsCode': item['WhsCode'],
-              'LineNum': item['LineNum'],
+              'ItemDescription': item['ItemDescription'],
+              'Quantity': item['Quantity'],
               'BaseEntry': item['DocEntry'],
               'BaseLine': item['LineNum'],
-              'BaseType': item['ObjType'],
-              'BaseRef': item['DocEntry'],
+              'BaseType': 22
             };
-            await postPdn1Data(data, context);
-            successfulCount3++;
+            grpoData['DocumentLines'].add(lineData);
           }
+
+          print('Dữ liệu gửi đi: $grpoData');
+
+          await postPoToGrpo(grpoData, context);
+        } else {
+          print('DocumentLines là null');
         }
       } else {
-        print('opdn data is not available');
-      }
-      if (successfulCount1 == totalItems1 &&
-          successfulCount2 == totalItems2 &&
-          successfulCount3 == totalItems3) {
-        print('All data successfully sent to server');
-        CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success');
+        print('Dữ liệu đơn hàng (po) là null');
       }
     } catch (e) {
-      print('Error submitting data: $e');
+      print('Lỗi khi gửi dữ liệu: $e');
+    }
+  }
+
+// Fetch Po Data
+  Future<void> _fetchPoData() async {
+    final data = await fetchPoData(widget.qrData, context);
+    if (data != null) {
+      setState(() {
+        po = data;
+        DocumentLines = po?["DocumentLines"];
+      });
+    } else {
+      print("Sai");
+    }
+  }
+
+// Login to sap
+  Future<void> _loginSap() async {
+    try {
+      final data = {
+        'CompanyDB': "DB_DEMO",
+        'UserName': "manager",
+        'Password': "manager",
+      };
+      await loginSap(data, context);
+      await _fetchPoData();
+    } catch (e) {
+      print('Error during login and data fetch: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var data = opor?['data'];
-    var docNum = data != null ? data['DocNum'].toString() : '';
-    var docDate = data != null ? data['DocDate'].toString() : '';
-    var cardCode = data != null ? data['CardCode'] : '';
-    var cardName = data != null ? data['CardName'] : '';
-    var remark = data != null ? data['remake'] : '';
-
+    // Header PO in Sap
+    var docNum = po?['DocNum']?.toString() ?? '';
+    var docDate = po?['DocDate']?.toString() ?? '';
+    var cardCode = po?['CardCode'] ?? '';
+    var cardName = po?['CardName'] ?? '';
     return Scaffold(
         appBar: const HeaderApp(title: "GRPO"),
         body: Container(
@@ -216,38 +193,52 @@ class _GrpoState extends State<Grpo> {
                   isEnable: true,
                   hintText: 'Remarks here',
                   icon: Icons.edit,
-                  valueQR: remark,
-                  controller: _remarksController),
-              if (por1.isNotEmpty)
-                  ListItems(
-                    listItems: por1,
-                    onTapItem: (index) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => GrpoDetail(
-                            docEntry: por1[index]['DocEntry'],
-                            lineNum: por1[index]['LineNum'],
-                            itemCode: por1[index]['ItemCode'],
-                            description: por1[index]['Dscription'],
-                            whse: por1[index]['WhsCode'],
-                            slYeuCau: por1[index]['OpenQty'].toString(),
-                            slThucTe: por1[index]['SlThucTe'].toString(),
-                            batch: por1[index]['Batch'].toString(),
-                            uoMCode: por1[index]['UomCode'].toString(),
-                            remake: por1[index]['remake'].toString(),
-                          ),
+                  // valueQR: remark,
+                  controller: remakeController),
+              if (DocumentLines.isNotEmpty)
+                ListItems(
+                  listItems: DocumentLines,
+                  onTapItem: (index) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GrpoDetail(
+                          docEntry:
+                              DocumentLines[index]['DocEntry']?.toString() ??
+                                  '',
+                          lineNum:
+                              DocumentLines[index]['LineNum']?.toString() ?? '',
+                          itemCode:
+                              DocumentLines[index]['ItemCode']?.toString() ??
+                                  '',
+                          description: DocumentLines[index]['ItemDescription']
+                                  ?.toString() ??
+                              '',
+                          whse:
+                              DocumentLines[index]['WhsCode']?.toString() ?? '',
+                          slYeuCau:
+                              DocumentLines[index]['Quantity']?.toString() ??
+                                  '',
+                          slThucTe:
+                              DocumentLines[index]['SlThucTe']?.toString() ??
+                                  '',
+                          batch:
+                              DocumentLines[index]['Batch']?.toString() ?? '',
+                          uoMCode:
+                              DocumentLines[index]['UomCode']?.toString() ?? '',
+                          remake:
+                              DocumentLines[index]['remake']?.toString() ?? '',
                         ),
-                      );
-                    },
-                    labelsAndChildren: const [
-                      {'label': 'ItemCode', 'child': 'ItemCode'},
-                      {'label': 'Name', 'child': 'Dscription'},
-                      {'label': 'Whse', 'child': 'WhsCode'},
-                      {'label': 'Quantity', 'child': 'OpenQty'},
-                      {'label': 'UoM Code', 'child': 'UomCode'},
-                    ],
-                  ),
+                      ),
+                    );
+                  },
+                  labelsAndChildren: const [
+                    {'label': 'DocNo', 'child': 'DocEntry'},
+                    {'label': 'Code', 'child': 'ItemCode'},
+                    {'label': 'Name', 'child': 'Dscription'},
+                    {'label': 'SlYeuCau', 'child': 'OpenQty'},
+                  ],
+                ),
               Container(
                 width: double.infinity,
                 margin: AppStyles.marginButton,
@@ -257,24 +248,17 @@ class _GrpoState extends State<Grpo> {
                   children: [
                     CustomButton(
                       text: 'Add to Sap',
-                      onPressed: _submitPor1GrpoData,
+                      onPressed: _postPoToGrpo,
                     ),
                     CustomButton(
                       text: 'POST',
-                      onPressed: () async {
-                        await updateGrpoDatabase(
-                            widget.qrData,
-                            _remarksController.text,
-                            _dateController.text,
-                            context);
-                      },
+                      onPressed: () async {},
                     ),
                   ],
                 ),
               )
             ],
           ),
-        )
-    );
+        ));
   }
 }
