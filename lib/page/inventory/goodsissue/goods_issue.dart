@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/header_app.dart';
@@ -130,7 +131,9 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
 
   @override
   Widget build(BuildContext context) {
-    var docDate = '';
+    var now = DateTime.now();
+    var formatter = DateFormat('yyyy-MM-dd');
+    String docDate = formatter.format(now);
     return Scaffold(
         appBar: const HeaderApp(title: "Goods Issue"),
         body: Container(
@@ -182,16 +185,17 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                           slThucTe: goodsIssueInvenItemsDetail[index]['SlThucTe'].toString(),
                           batch: goodsIssueInvenItemsDetail[index]['Batch'].toString(),
                           uoMCode: goodsIssueInvenItemsDetail[index]['UoMCode'].toString(),
-                          remake: goodsIssueInvenItemsDetail[index]['Remake'].toString(),
+                          remarks: goodsIssueInvenItemsDetail[index]['Remake'].toString(),
                         ),
                       ),
                     );
                   },
                   labelsAndChildren: const [
                     {'label': 'Item Code', 'child': 'ItemCode'},
+                    {'label': 'Item Name', 'child': 'ItemName'},
                     {'label': 'Batch', 'child': 'Batch'},
-                    {'label': 'SlThucTe', 'child': 'SlThucTe'},
-                    {'label': 'Remake', 'child': 'Remake'},
+                    {'label': 'Quantity', 'child': 'SlThucTe'},
+                    {'label': 'Remarks', 'child': 'Remake'},
                     // Add more as needed
                   ],
                   // labelName1: 'ItemCode',

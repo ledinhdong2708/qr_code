@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/qr_input.dart';
@@ -67,7 +68,7 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
     batchController = TextEditingController(text: widget.batch);
     slYeuCauController = TextEditingController(text: widget.slYeuCau);
     whseController = TextEditingController(text: widget.whse);
-    slThucTeController = TextEditingController(text: widget.slThucTe);
+    slThucTeController = TextEditingController(text: '0');
     uoMCodeController = TextEditingController(text: widget.uoMCode);
     remakeController = TextEditingController(text: widget.remake);
     _fetchData();
@@ -87,8 +88,8 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
               }
               totalSlThucTe += slThucTe;
             }
-            itemCodeController.text = apcreditmemoItemsDetail[0]['ItemCode'];
-            descriptionController.text = apcreditmemoItemsDetail[0]['ItemName'];
+            //itemCodeController.text = apcreditmemoItemsDetail[0]['ItemCode'];
+            //descriptionController.text = apcreditmemoItemsDetail[0]['ItemName'];
             batchController.text = apcreditmemoItemsDetail[0]['Batch'];
             whseController.text = apcreditmemoItemsDetail[0]['Whse'];
             slThucTeController.text = totalSlThucTe.toString();
@@ -148,17 +149,16 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const HeaderApp(title: "A/P Credit Memo - Detail"),
+        appBar: const HeaderApp(title: "AP Credit Memo - Details"),
         body: Container(
           color: bgColor,
           width: double.infinity,
           height: double.infinity,
           padding: AppStyles.paddingContainer,
-            child: Column(
+            child: ListView(
               children: [
                 buildTextFieldRow(
                   controller: itemCodeController,
@@ -172,14 +172,13 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
                 ),
                 buildTextFieldRow(
                   controller: slYeuCauController,
-                  labelText: 'SL Yêu Cầu',
-                  hintText: 'SL Yêu Cầu',
+                  labelText: 'Số lượng yêu cầu:',
+                  hintText: 'Số lượng yêu cầu',
                 ),
                 buildTextFieldRow(
                   controller: slThucTeController,
-                  labelText: 'SL Thực Tế',
-                  hintText: 'SL Thực Tế',
-                  isEnable: true,
+                  labelText: 'Số lượng thực tế:',
+                  hintText: 'Số lượng thực tế',
                   iconButton: IconButton(
                     icon: const Icon(Icons.qr_code_scanner),
                     onPressed: () {
@@ -223,20 +222,13 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
                       );
                     },
                     labelsAndChildren: const [
-                      {'label': 'ID', 'child': 'ID'},
+                      {'label': 'ItemCode', 'child': 'ItemCode'},
+                      {'label': 'Name', 'child': 'ItemName'},
+                      {'label': 'Whse', 'child': 'Whse'},
+                      {'label': 'Quantity', 'child': 'SlThucTe'},
+                      {'label': 'UoM Code', 'child': 'UoMCode'},
                       {'label': 'Batch', 'child': 'Batch'},
-                      {'label': 'SlThucTe', 'child': 'SlThucTe'},
-                      {'label': 'Remake', 'child': 'Remake'},
-                      // Add more as needed
                     ],
-                    // labelName1: 'ID',
-                    // labelName2: 'Batch',
-                    // labelName3: 'SlThucTe',
-                    // labelName4: 'Remake',
-                    // listChild1: 'ID',
-                    // listChild2: 'Batch',
-                    // listChild3: 'SlThucTe',
-                    // listChild4: 'Remake',
                   ),
                 Container(
                   width: double.infinity,
@@ -249,7 +241,7 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
                         width: 20,
                       ),
                       CustomButton(
-                        text: 'ADD',
+                        text: 'OK',
                         onPressed: _submitData,
                       ),
                     ],

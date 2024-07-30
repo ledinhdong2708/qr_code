@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/page/qr_view_example.dart';
+import 'package:qr_code/page/sales/creditmemo/ar_creditmemo.dart';
 import 'package:qr_code/page/sales/delivery/delivery.dart';
 import 'package:qr_code/page/sales/returns/sales_return.dart';
 import 'package:qr_code/routes/routes.dart';
@@ -63,6 +64,11 @@ class Sales extends StatelessWidget {
                             pageIdentifier: 'ARCreditMemo',
                           )),
                 );
+                // To testing api
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => const ARCreditMemo(qrData: "1")),
+                // );
               },
               child: card("assets/credit-memo.png", "A/R Credit Memo"),
             ),

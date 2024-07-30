@@ -68,17 +68,17 @@ class _GoodsReturnState extends State<GoodsReturn> {
     var remark = data != null ? data['remake'] : '';
 
     return Scaffold(
-      appBar: const HeaderApp(title: "Goods Return"),
+      appBar: const HeaderApp(title: "Good Return"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         color: bgColor,
         padding: AppStyles.paddingContainer,
-        child: Column(
+        child: ListView(
           children: [
             buildTextFieldRow(
-              labelText: 'Doc No.',
-              hintText: 'Doc No.',
+              labelText: 'Doc No:',
+              hintText: 'Doc No',
               valueQR: docNum,
             ),
             DateInput(
@@ -86,19 +86,19 @@ class _GoodsReturnState extends State<GoodsReturn> {
               controller: _dateController,
             ),
             buildTextFieldRow(
-              labelText: 'Vendor Code',
+              labelText: 'Vendor:',
               hintText: 'Vendor Code',
               valueQR: cardCode,
             ),
             buildTextFieldRow(
-              labelText: 'Vendor Name',
+              labelText: 'Name:',
               hintText: 'Vendor Name',
               valueQR: cardName,
             ),
             buildTextFieldRow(
-                labelText: 'Remake',
+                labelText: 'Remarks:',
                 isEnable: true,
-                hintText: 'Remake here',
+                hintText: 'Remarks here',
                 icon: Icons.edit,
                 valueQR: remark,
                 controller: _remakeController),
@@ -125,21 +125,13 @@ class _GoodsReturnState extends State<GoodsReturn> {
                     );
                   },
                   labelsAndChildren: const [
-                    {'label': 'DocNo', 'child': 'DocEntry'},
-                    {'label': 'Code', 'child': 'ItemCode'},
+                    {'label': 'ItemCode', 'child': 'ItemCode'},
                     {'label': 'Name', 'child': 'Dscription'},
-                    {'label': 'SlYeuCau', 'child': 'OpenQty'},
+                    {'label': 'Whse', 'child': 'WhsCode'},
+                    {'label': 'Quantity', 'child': 'OpenQty'},
+                    {'label': 'UoM Code', 'child': 'UomCode'},
                     // Add more as needed
                   ],
-                  // labelName1: 'DocNo',
-                  // labelName2: 'Code',
-                  // labelName3: 'Name',
-                  // labelName4: 'SlYeuCau',
-                  // listChild1: 'DocEntry',
-                  // listChild2: 'ItemCode',
-                  // listChild3: 'Dscription',
-                  // listChild4: 'OpenQty'
-
               ),
             Container(
               width: double.infinity,

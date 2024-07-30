@@ -50,7 +50,7 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
   late TextEditingController itemCodeController;
   late TextEditingController descriptionController;
   late TextEditingController batchController;
-  late TextEditingController openQtyController;
+  late TextEditingController slYeuCauController;
   late TextEditingController whseController;
   late TextEditingController slThucTeController;
   late TextEditingController uoMCodeController;
@@ -62,9 +62,9 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
     itemCodeController = TextEditingController(text: widget.itemCode);
     descriptionController = TextEditingController(text: widget.description);
     batchController = TextEditingController(text: widget.batch);
-    openQtyController = TextEditingController(text: widget.slYeuCau);
+    slYeuCauController = TextEditingController(text: widget.slYeuCau);
     whseController = TextEditingController(text: widget.whse);
-    slThucTeController = TextEditingController(text: widget.slThucTe);
+    slThucTeController = TextEditingController(text:'0');
     uoMCodeController = TextEditingController(text: widget.uoMCode);
     remakeController = TextEditingController(text: widget.remake);
     _fetchData();
@@ -85,8 +85,8 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
               }
               totalSlThucTe += slThucTe;
             }
-            itemCodeController.text = deliveryItemsDetail[0]['ItemCode'];
-            descriptionController.text = deliveryItemsDetail[0]['ItemName'];
+            //itemCodeController.text = deliveryItemsDetail[0]['ItemCode'];
+            //descriptionController.text = deliveryItemsDetail[0]['ItemName'];
             batchController.text = deliveryItemsDetail[0]['Batch'];
             whseController.text = deliveryItemsDetail[0]['Whse'];
             slThucTeController.text = totalSlThucTe.toString();
@@ -104,7 +104,7 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
     itemCodeController.dispose();
     descriptionController.dispose();
     batchController.dispose();
-    openQtyController.dispose();
+    slYeuCauController.dispose();
     whseController.dispose();
     slThucTeController.dispose();
     uoMCodeController.dispose();
@@ -155,28 +155,27 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
           width: double.infinity,
           height: double.infinity,
           padding: AppStyles.paddingContainer,
-            child: Column(
+            child: ListView(
               children: [
                 buildTextFieldRow(
                   controller: itemCodeController,
-                  labelText: 'Item Code',
+                  labelText: 'Item Code:',
                   hintText: 'Item Code',
                 ),
                 buildTextFieldRow(
                   controller: descriptionController,
-                  labelText: 'Item Name',
+                  labelText: 'Item Name:',
                   hintText: 'Item Name',
                 ),
                 buildTextFieldRow(
-                  controller: openQtyController,
-                  labelText: 'SL Yêu Cầu',
-                  hintText: 'SL Yêu Cầu',
+                  controller: slYeuCauController,
+                  labelText: 'Số lượng yêu cầu:',
+                  hintText: 'Số lượng yêu cầu',
                 ),
                 buildTextFieldRow(
                   controller: slThucTeController,
-                  labelText: 'SL Thực Tế',
-                  hintText: 'SL Thực Tế',
-                  isEnable: true,
+                  labelText: 'Số lượng yêu cầu:',
+                  hintText: 'Số lượng yêu cầu',
                   iconButton: IconButton(
                     icon: const Icon(Icons.qr_code_scanner),
                     onPressed: () {
@@ -220,20 +219,13 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
                       );
                     },
                     labelsAndChildren: const [
-                      {'label': 'ID', 'child': 'ID'},
+                      {'label': 'ItemCode', 'child': 'ItemCode'},
+                      {'label': 'Name', 'child': 'ItemName'},
+                      {'label': 'Whse', 'child': 'Whse'},
+                      {'label': 'Quantity', 'child': 'SlThucTe'},
+                      {'label': 'UoM Code', 'child': 'UoMCode'},
                       {'label': 'Batch', 'child': 'Batch'},
-                      {'label': 'SlThucTe', 'child': 'SlThucTe'},
-                      {'label': 'Remake', 'child': 'Remake'},
-                      // Add more as needed
                     ],
-                    // labelName1: 'ID',
-                    // labelName2: 'Batch',
-                    // labelName3: 'SlThucTe',
-                    // labelName4: 'Remake',
-                    // listChild1: 'ID',
-                    // listChild2: 'Batch',
-                    // listChild3: 'SlThucTe',
-                    // listChild4: 'Remake',
                   ),
                 Container(
                   width: double.infinity,
@@ -246,7 +238,7 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
                         width: 20,
                       ),
                       CustomButton(
-                        text: 'ADD',
+                        text: 'OK',
                         onPressed: _submitData,
                       ),
                     ],

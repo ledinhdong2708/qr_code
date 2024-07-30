@@ -90,49 +90,51 @@ class _ArCreditmemoAddNewDetailItemsState extends State<ArCreditmemoAddNewDetail
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderApp(title: "AR/CreditMemo - Add - New - Detail - Items"),
+      appBar: const HeaderApp(title: "AR Credit Memo - Detail"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         color: bgColor,
         padding: AppStyles.paddingContainer,
-        child: Column(
+        child: ListView(
           children: [
             buildTextFieldRow(
               controller: itemCodeController,
-              labelText: 'Item Code',
+              labelText: 'Item Code:',
               hintText: 'Item Code',
             ),
             buildTextFieldRow(
               controller: descriptionController,
-              labelText: 'Item Name',
+              labelText: 'Item Name:',
               hintText: 'Item Name',
             ),
             buildTextFieldRow(
+                controller: slThucTeController,
+                labelText: 'Quantity:',
+                hintText: 'Quantity',
+                isEnable: true
+            ),
+            buildTextFieldRow(
               controller: whseController,
-              labelText: 'Whse',
+              labelText: 'Whse:',
               hintText: 'Whse',
             ),
             buildTextFieldRow(
               controller: uoMCodeController,
-              labelText: 'UoMCode',
+              labelText: 'UoM Code:',
               hintText: 'UoMCode',
             ),
             buildTextFieldRow(
-                controller: slThucTeController,
-                labelText: 'Sl Thực tế',
-                hintText: 'Sl Thực tế',
-                isEnable: true),
-            buildTextFieldRow(
                 controller: batchController,
-                labelText: 'Batch',
-                hintText: 'Batch',
-                isEnable: true),
+                labelText: 'Số Batch:',
+                hintText: 'Batch'
+            ),
             buildTextFieldRow(
                 controller: remakeController,
-                labelText: 'Remake',
-                hintText: 'Remake',
-                isEnable: true),
+                labelText: 'Số kiện:',
+                hintText: 'Số kiện',
+                isEnable: true
+            ),
             Flexible(
               child: Container(),
             ),
@@ -143,7 +145,7 @@ class _ArCreditmemoAddNewDetailItemsState extends State<ArCreditmemoAddNewDetail
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CustomButton(
-                    text: 'CONFIRM',
+                    text: 'OK',
                     onPressed: _submitData,
                   ),
                 ],

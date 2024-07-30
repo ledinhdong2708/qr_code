@@ -171,46 +171,59 @@ class _RfpDetailState extends State<RfpDetail> {
     }
   }
 
+  String _generateBatchCode() {
+    final now = DateTime.now();
+    final dateFormat = DateFormat('ddMMyyyy');
+    final dateStr = dateFormat.format(now);
+
+    int maxIndex = 1;
+    int index = rfpItemsDetail.length;
+    if (rfpItemsDetail.isNotEmpty) {
+      maxIndex = index + 1;
+    }
+    return '${dateStr}_${maxIndex}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: const HeaderApp(title: "RFP - Detail"),
+        appBar: const HeaderApp(title: "RFP - Details"),
         body: Container(
           color: bgColor,
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
           padding: AppStyles.paddingContainer,
-          child: Column(
+          child: ListView(
             children: [
               buildTextFieldRow(
                 controller: _docNoController,
-                labelText: 'Order No.',
+                labelText: 'Order No:',
                 hintText: 'Order No.',
               ),
               buildTextFieldRow(
                 controller: _itemCodeController,
-                labelText: 'Item Code',
+                labelText: 'Item Code:',
                 hintText: 'Item Code',
               ),
               buildTextFieldRow(
                 controller: _prodNameController,
-                labelText: 'Product Name',
+                labelText: 'Product Name:',
                 hintText: 'Product Name',
               ),
               buildTextFieldRow(
                 controller: _plannedQtyController,
-                labelText: 'Planned Qty',
+                labelText: 'Planned Qty:',
                 hintText: 'Planned Qty',
               ),
               buildTextFieldRow(
                 controller: _uomController,
-                labelText: 'UoM',
+                labelText: 'UoM:',
                 hintText: 'UoM',
               ),
               buildTextFieldRow(
                 controller: _warehouseController,
-                labelText: 'Warehouse',
+                labelText: 'Warehouse:',
                 hintText: 'Warehouse',
               ),
               // buildTextFieldRow(
@@ -242,20 +255,11 @@ class _RfpDetailState extends State<RfpDetail> {
                     );
                   },
                   labelsAndChildren: const [
-                    {'label': 'ID', 'child': 'ID'},
                     {'label': 'Batch', 'child': 'Batch'},
-                    {'label': 'SlThucTe', 'child': 'SlThucTe'},
-                    {'label': 'Remake', 'child': 'Remake'},
+                    {'label': 'Quantity', 'child': 'SlThucTe'},
+                    {'label': 'Remarks', 'child': 'Remake'},
                     // Add more as needed
                   ],
-                  // labelName1: 'ID',
-                  // labelName2: 'Batch',
-                  // labelName3: 'SlThucTe',
-                  // labelName4: 'Remake',
-                  // listChild1: 'ID',
-                  // listChild2: 'Batch',
-                  // listChild3: 'SlThucTe',
-                  // listChild4: 'Remake',
                 ),
               Container(
                 width: double.infinity,
@@ -267,6 +271,7 @@ class _RfpDetailState extends State<RfpDetail> {
                     CustomButton(
                       text: 'New',
                       onPressed: () {
+                        final batchCode = _generateBatchCode();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -276,6 +281,7 @@ class _RfpDetailState extends State<RfpDetail> {
                               itemName: _prodNameController.text,
                               whse: _warehouseController.text,
                               uoMCode: _uomController.text,
+                              batch: batchCode,
                             ),
                           ),
                         ).then((_) => _fetchData());
@@ -285,7 +291,7 @@ class _RfpDetailState extends State<RfpDetail> {
                       width: 20,
                     ),
                     CustomButton(
-                      text: 'ADD',
+                      text: 'OK',
                       onPressed: _submitData,
                     ),
                   ],

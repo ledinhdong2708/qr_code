@@ -89,53 +89,52 @@ class _GrpoAddNewDetailItemsState extends State<GrpoAddNewDetailItems> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: const HeaderApp(title: "GRPO - Add - New - Detail - Items"),
-      body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Container(
-          height: MediaQuery.of(context).size.height,
+      appBar: const HeaderApp(title: "GRPO - Detail"),
+      body:
+         Container(
+          height: double.infinity,
           width: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
               buildTextFieldRow(
                 controller: itemCodeController,
-                labelText: 'Item Code',
+                labelText: 'Item Code:',
                 hintText: 'Item Code',
               ),
               buildTextFieldRow(
                 controller: descriptionController,
-                labelText: 'Item Name',
+                labelText: 'Item Name:',
                 hintText: 'Item Name',
               ),
               buildTextFieldRow(
+                  controller: slThucTeController,
+                  labelText: 'Quantity:',
+                  hintText: 'Quantity',
+                  isEnable: true
+              ),
+              buildTextFieldRow(
                 controller: whseController,
-                labelText: 'Whse',
+                labelText: 'Whse:',
                 hintText: 'Whse',
               ),
               buildTextFieldRow(
                 controller: uoMCodeController,
-                labelText: 'UoMCode',
+                labelText: 'UoM Code:',
                 hintText: 'UoMCode',
               ),
               buildTextFieldRow(
-                  controller: slThucTeController,
-                  labelText: 'Sl Thực tế',
-                  hintText: 'Sl Thực tế',
-                  isEnable: true),
-              buildTextFieldRow(
                   controller: batchController,
-                  labelText: 'Batch',
-                  hintText: 'Batch',
-                  isEnable: true),
+                  labelText: 'Số Batch:',
+                  hintText: 'Batch'
+              ),
               buildTextFieldRow(
                   controller: remakeController,
-                  labelText: 'Remake',
-                  hintText: 'Remake',
-                  isEnable: true),
+                  labelText: 'Số kiện:',
+                  hintText: 'Số kiện',
+                  isEnable: true
+              ),
               const SizedBox(height: 20),
               Align(
                 alignment: Alignment.bottomCenter,
@@ -144,7 +143,7 @@ class _GrpoAddNewDetailItemsState extends State<GrpoAddNewDetailItems> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CustomButton(
-                      text: 'CONFIRM',
+                      text: 'OK',
                       onPressed: _submitData,
                     ),
                   ],
@@ -153,7 +152,6 @@ class _GrpoAddNewDetailItemsState extends State<GrpoAddNewDetailItems> {
             ],
           ),
         ),
-      ),
     );
   }
 }

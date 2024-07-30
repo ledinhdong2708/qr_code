@@ -20,6 +20,7 @@ import 'package:qr_code/page/sales/returns/sales_return.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import 'inventory/goodsissue/goods_issue_detail_item.dart';
+import 'inventory/inventorytransfer/inventory_transfer_item.dart';
 
 class QRViewExample extends StatefulWidget {
   // tạo mã định danh cho trang
@@ -157,10 +158,10 @@ class _QRViewExampleState extends State<QRViewExample> {
         MaterialPageRoute(
             builder: (context) => InventoryCounting(qrData: qrData)),
       );
-    } else if (pageIdentifier == 'IventoryTrans') {
+    } else if (pageIdentifier == 'InventoryTransferDetail') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => InventoryTrans(qrData: qrData)),
+        MaterialPageRoute(builder: (context) => InventoryTransferItem(qrData: qrData, docEntry: widget.docEntry, lineNum: widget.lineNum)),
       );
     }
   }

@@ -15,7 +15,7 @@ class HeaderApp extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       scrolledUnderElevation: 0.0,
       title: Text(
-        title.toUpperCase(),
+        title.toString(),
         style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
       ),
       backgroundColor: bgColor,

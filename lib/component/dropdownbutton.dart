@@ -7,13 +7,16 @@ class Dropdownbutton extends StatefulWidget {
   final String? labelText;
   final String? databaseText;
   final FormFieldSetter<String>? onSaved;
+  final TextEditingController? controller;
   Dropdownbutton(
-      {super.key,
-      required this.items,
-      required this.hintText,
-      required this.labelText,
-      this.databaseText,
-      this.onSaved});
+      {
+        super.key,
+        required this.items,
+        required this.hintText,
+        required this.labelText,
+        this.databaseText,
+        this.onSaved,
+        this.controller,});
 
   @override
   State<Dropdownbutton> createState() => _DropdownbuttonState();
@@ -21,6 +24,20 @@ class Dropdownbutton extends StatefulWidget {
 
 class _DropdownbuttonState extends State<Dropdownbutton> {
   String? valueChoose;
+  @override
+  void initState() {
+    super.initState();
+    // Kiểm tra và đặt giá trị ban đầu cho valueChoose và controller
+    if (widget.controller != null && widget.items.contains(widget.controller!.text)) {
+      valueChoose = widget.controller!.text;
+    } else {
+      valueChoose = widget.items.isNotEmpty ? widget.items[0] : null;
+      if (widget.controller != null) {
+        widget.controller!.text = valueChoose!;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -63,6 +80,9 @@ class _DropdownbuttonState extends State<Dropdownbutton> {
               onChanged: (newValue) {
                 setState(() {
                   valueChoose = newValue;
+                  if (widget.controller != null) {
+                    widget.controller!.text = newValue!;
+                  }
                 });
               },
               onSaved: widget.onSaved,

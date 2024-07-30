@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/constants/colors.dart';
+import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
 import 'package:qr_code/page/qr_view_example.dart';
+
+import 'goods_return/goods_return.dart';
 
 class Purchasing extends StatelessWidget {
   const Purchasing({super.key});
@@ -22,11 +25,13 @@ class Purchasing extends StatelessWidget {
                 Navigator.push(
                   context,
                   // MaterialPageRoute(
-                  //     builder: (context) => const Grpo(qrData: "36")),
+                  //     builder: (context) => const Grpo(qrData: "1")
+                  // ),
                   MaterialPageRoute(
                       builder: (context) => const QRViewExample(
                             pageIdentifier: 'GRPO',
-                          )),
+                          )
+                  ),
                 );
               },
               child: card("assets/receipt.png", "Goods Receipt PO"),
@@ -58,6 +63,12 @@ class Purchasing extends StatelessWidget {
                             pageIdentifier: 'APCreditMemo',
                           )),
                 );
+                //Test api
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => const ApCreditMemo(qrData: "1")),
+                // );
               },
               child: card("assets/credit-memo.png", "A/P Credit Memo"),
             ),

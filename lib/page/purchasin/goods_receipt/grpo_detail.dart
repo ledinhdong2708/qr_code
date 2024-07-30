@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/dialog.dart';
 import 'package:qr_code/component/header_app.dart';
@@ -61,7 +62,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
     batchController = TextEditingController(text: widget.batch);
     slYeuCauController = TextEditingController(text: widget.slYeuCau);
     whseController = TextEditingController(text: widget.whse);
-    slThucTeController = TextEditingController(text: widget.slThucTe);
+    slThucTeController = TextEditingController(text: '0');
     uoMCodeController = TextEditingController(text: widget.uoMCode);
     remakeController = TextEditingController(text: widget.remake);
 
@@ -73,13 +74,23 @@ class _GrpoDetailState extends State<GrpoDetail> {
       if (data != null && data['data'] is List) {
         setState(() {
           grpoItemsDetail = data['data'];
+          double totalSlThucTe = 0.0;
 
           if (grpoItemsDetail.isNotEmpty) {
+            for (var item in grpoItemsDetail) {
+              double slThucTe = 0.0;
+              if (item['SlThucTe'] != null) {
+                slThucTe += double.tryParse(item['SlThucTe'].toString()) ?? 0.0;
+              } else {
+                slThucTe = 0;
+              }
+              totalSlThucTe += slThucTe;
+            }
             itemCodeController.text = grpoItemsDetail[0]['ItemCode'];
             descriptionController.text = grpoItemsDetail[0]['ItemName'];
             batchController.text = grpoItemsDetail[0]['Batch'];
             whseController.text = grpoItemsDetail[0]['Whse'];
-            slThucTeController.text = grpoItemsDetail[0]['SlThucTe'].toString();
+            slThucTeController.text = totalSlThucTe.toString();
             uoMCodeController.text = grpoItemsDetail[0]['UoMCode'].toString();
             remakeController.text = grpoItemsDetail[0]['Remake'].toString();
           }
@@ -133,32 +144,50 @@ class _GrpoDetailState extends State<GrpoDetail> {
     }
   }
 
+  String _generateBatchCode() {
+    final now = DateTime.now();
+    final dateFormat = DateFormat('ddMMyyyy');
+    final dateStr = dateFormat.format(now);
+
+    int maxIndex = 1;
+    int index = grpoItemsDetail.length;
+    if (grpoItemsDetail.isNotEmpty) {
+      maxIndex = index + 1;
+    }
+    return '${dateStr}_${maxIndex}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: const HeaderApp(title: "GRPO - Detail"),
+        appBar: const HeaderApp(title: "GRPO - Details"),
         body: Container(
           color: bgColor,
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
           padding: AppStyles.paddingContainer,
-          child: Column(
+          child: ListView(
             children: [
               buildTextFieldRow(
                 controller: itemCodeController,
-                labelText: 'Item Code',
+                labelText: 'Item Code:',
                 hintText: 'Item Code',
               ),
               buildTextFieldRow(
                 controller: descriptionController,
-                labelText: 'Item Name',
+                labelText: 'Item Name:',
                 hintText: 'Item Name',
               ),
               buildTextFieldRow(
                 controller: slYeuCauController,
-                labelText: 'SL Yêu Cầu',
-                hintText: 'SL Yêu Cầu',
+                labelText: 'Số lượng yêu cầu:',
+                hintText: 'Số lượng yêu cầu',
+              ),
+              buildTextFieldRow(
+                controller: slThucTeController,
+                labelText: 'Số lượng thực tế:',
+                hintText: 'Số lượng thực tế',
               ),
               if (grpoItemsDetail.isNotEmpty)
                 ListItems(
@@ -184,20 +213,13 @@ class _GrpoDetailState extends State<GrpoDetail> {
                     );
                   },
                   labelsAndChildren: const [
-                    {'label': 'ID', 'child': 'ID'},
+                    {'label': 'ItemCode', 'child': 'ItemCode'},
+                    {'label': 'Name', 'child': 'ItemName'},
+                    {'label': 'Whse', 'child': 'Whse'},
+                    {'label': 'Quantity', 'child': 'SlThucTe'},
+                    {'label': 'UoM Code', 'child': 'UoMCode'},
                     {'label': 'Batch', 'child': 'Batch'},
-                    {'label': 'SlThucTe', 'child': 'SlThucTe'},
-                    {'label': 'Remake', 'child': 'Remake'},
-                    // Add more as needed
                   ],
-                  // labelName1: 'ID',
-                  // labelName2: 'Batch',
-                  // labelName3: 'SlThucTe',
-                  // labelName4: 'Remake',
-                  // listChild1: 'ID',
-                  // listChild2: 'Batch',
-                  // listChild3: 'SlThucTe',
-                  // listChild4: 'Remake',
                 ),
               Container(
                 width: double.infinity,
@@ -209,6 +231,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
                     CustomButton(
                       text: 'New',
                       onPressed: () {
+                        final batchCode = _generateBatchCode();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -219,6 +242,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
                               itemName: widget.description,
                               whse: widget.whse,
                               uoMCode: widget.uoMCode,
+                              batch: batchCode,
                             ),
                           ),
                         ).then((_) => _fetchData());
@@ -228,7 +252,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
                       width: 20,
                     ),
                     CustomButton(
-                      text: 'ADD',
+                      text: 'OK',
                       onPressed: _submitData,
                     ),
                   ],

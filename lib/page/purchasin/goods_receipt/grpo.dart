@@ -22,7 +22,7 @@ class Grpo extends StatefulWidget {
 }
 
 class _GrpoState extends State<Grpo> {
-  final TextEditingController _remakeController = TextEditingController();
+  final TextEditingController _remarksController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   Barcode? result;
   List<dynamic> grpo = [];
@@ -51,7 +51,7 @@ class _GrpoState extends State<Grpo> {
         }
         setState(() {
           opor = data;
-          _remakeController.text = opor?['data']['remake'] ?? '';
+          _remarksController.text = opor?['data']['remake'] ?? '';
           _dateController.text = opor?['data']['DocDate'] ?? '';
         });
       }
@@ -93,7 +93,7 @@ class _GrpoState extends State<Grpo> {
             vendorCodeController.text = grpo[0]['vendorcode'];
             vendorNameController.text = grpo[0]['vendorname'];
             postDayController.text = grpo[0]['postday'];
-            remakeController.text = grpo[0]['remake'];
+            _remarksController.text = grpo[0]['remake'];
             docEntryController.text = grpo[0]['BaseEntry'];
           }
         });
@@ -190,11 +190,11 @@ class _GrpoState extends State<Grpo> {
           height: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,
-          child: Column(
+          child: ListView(
             children: [
               buildTextFieldRow(
-                labelText: 'Doc No.',
-                hintText: 'Doc No.',
+                labelText: 'Doc No:',
+                hintText: 'Doc No',
                 valueQR: docNum,
               ),
               DateInput(
@@ -202,24 +202,24 @@ class _GrpoState extends State<Grpo> {
                 controller: _dateController,
               ),
               buildTextFieldRow(
-                labelText: 'Vendor Code',
+                labelText: 'Vendor:',
                 hintText: 'Vendor Code',
                 valueQR: cardCode,
               ),
               buildTextFieldRow(
-                labelText: 'Vendor Name',
+                labelText: 'Name:',
                 hintText: 'Vendor Name',
                 valueQR: cardName,
               ),
               buildTextFieldRow(
-                  labelText: 'Remake',
+                  labelText: 'Remarks:',
                   isEnable: true,
-                  hintText: 'Remake here',
+                  hintText: 'Remarks here',
                   icon: Icons.edit,
                   valueQR: remark,
-                  controller: _remakeController),
+                  controller: _remarksController),
               if (por1.isNotEmpty)
-                ListItems(
+                  ListItems(
                     listItems: por1,
                     onTapItem: (index) {
                       Navigator.push(
@@ -241,21 +241,13 @@ class _GrpoState extends State<Grpo> {
                       );
                     },
                     labelsAndChildren: const [
-                      {'label': 'DocNo', 'child': 'DocEntry'},
-                      {'label': 'Code', 'child': 'ItemCode'},
+                      {'label': 'ItemCode', 'child': 'ItemCode'},
                       {'label': 'Name', 'child': 'Dscription'},
-                      {'label': 'SlYeuCau', 'child': 'OpenQty'},
-                      // Add more as needed
+                      {'label': 'Whse', 'child': 'WhsCode'},
+                      {'label': 'Quantity', 'child': 'OpenQty'},
+                      {'label': 'UoM Code', 'child': 'UomCode'},
                     ],
-                    // labelName1: 'DocNo',
-                    // labelName2: 'Code',
-                    // labelName3: 'Name',
-                    // labelName4: 'SlYeuCau',
-                    // listChild1: 'DocEntry',
-                    // listChild2: 'ItemCode',
-                    // listChild3: 'Dscription',
-                    // listChild4: 'OpenQty'
-                ),
+                  ),
               Container(
                 width: double.infinity,
                 margin: AppStyles.marginButton,
@@ -272,7 +264,7 @@ class _GrpoState extends State<Grpo> {
                       onPressed: () async {
                         await updateGrpoDatabase(
                             widget.qrData,
-                            _remakeController.text,
+                            _remarksController.text,
                             _dateController.text,
                             context);
                       },
@@ -282,6 +274,7 @@ class _GrpoState extends State<Grpo> {
               )
             ],
           ),
-        ));
+        )
+    );
   }
 }

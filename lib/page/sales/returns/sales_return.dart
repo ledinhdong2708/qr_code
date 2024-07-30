@@ -26,7 +26,7 @@ class SalesReturn extends StatefulWidget {
 }
 
 class _SalesReturnState extends State<SalesReturn> {
-  final TextEditingController _remakeController = TextEditingController();
+  final TextEditingController _remarksController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   Barcode? result;
   List<dynamic> sales_return = [];
@@ -44,7 +44,7 @@ class _SalesReturnState extends State<SalesReturn> {
         }
         setState(() {
           orrr = data;
-          _remakeController.text = orrr?['data']['remake'] ?? '';
+          _remarksController.text = orrr?['data']['remake'] ?? '';
           _dateController.text = orrr?['data']['DocDate'] ?? '';
         });
       }
@@ -68,17 +68,17 @@ class _SalesReturnState extends State<SalesReturn> {
     var remark = data != null ? data['remake'] : '';
 
     return Scaffold(
-        appBar: const HeaderApp(title: "Sales Return"),
+        appBar: const HeaderApp(title: "Return"),
         body: Container(
           width: double.infinity,
           height: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,
-            child: Column(
+            child: ListView(
               children: [
                 buildTextFieldRow(
-                  labelText: 'Doc No.',
-                  hintText: 'Doc No.',
+                  labelText: 'Doc No:',
+                  hintText: 'Doc No',
                   valueQR: docNum,
                 ),
                 DateInput(
@@ -86,22 +86,22 @@ class _SalesReturnState extends State<SalesReturn> {
                   controller: _dateController,
                 ),
                 buildTextFieldRow(
-                  labelText: 'Vendor Code',
+                  labelText: 'Vendor:',
                   hintText: 'Vendor Code',
                   valueQR: cardCode,
                 ),
                 buildTextFieldRow(
-                  labelText: 'Vendor Name',
+                  labelText: 'Name:',
                   hintText: 'Vendor Name',
                   valueQR: cardName,
                 ),
                 buildTextFieldRow(
-                    labelText: 'Remake',
+                    labelText: 'Remarks:',
                     isEnable: true,
-                    hintText: 'Remake here',
+                    hintText: 'Remarks here',
                     icon: Icons.edit,
                     valueQR: remark,
-                    controller: _remakeController),
+                    controller: _remarksController),
                 if (rrr1.isNotEmpty)
                   ListItems(
                       listItems: rrr1,
@@ -125,21 +125,13 @@ class _SalesReturnState extends State<SalesReturn> {
                         );
                       },
 
-                      labelsAndChildren: const [
-                        {'label': 'DocNo', 'child': 'DocEntry'},
-                        {'label': 'Code', 'child': 'ItemCode'},
-                        {'label': 'Name', 'child': 'Dscription'},
-                        {'label': 'SlYeuCau', 'child': 'OpenQty'},
-                        // Add more as needed
-                      ],
-                      // labelName1: 'DocNo',
-                      // labelName2: 'Code',
-                      // labelName3: 'Name',
-                      // labelName4: 'SlYeuCau',
-                      // listChild1: 'DocEntry',
-                      // listChild2: 'ItemCode',
-                      // listChild3: 'Dscription',
-                      // listChild4: 'OpenQty'
+                    labelsAndChildren: const [
+                      {'label': 'ItemCode', 'child': 'ItemCode'},
+                      {'label': 'Name', 'child': 'Dscription'},
+                      {'label': 'Whse', 'child': 'WhsCode'},
+                      {'label': 'Quantity', 'child': 'OpenQty'},
+                      {'label': 'UoM Code', 'child': 'UomCode'},
+                    ]
                   ),
                 Container(
                   width: double.infinity,
@@ -157,7 +149,7 @@ class _SalesReturnState extends State<SalesReturn> {
                         onPressed: () async {
                           await updateSrrDatabase(
                               widget.qrData,
-                              _remakeController.text,
+                              _remarksController.text,
                               _dateController.text,
                               context);
                         },
