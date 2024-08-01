@@ -24,7 +24,7 @@ class Ifp extends StatefulWidget {
   State<Ifp> createState() => _IfpState();
 }
 class _IfpState extends State<Ifp> {
-  final TextEditingController _remakeController = TextEditingController();
+  final TextEditingController _remarksController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   List<dynamic> ifp = [];
   Map<String, dynamic>? oprr; // chua doi ten
@@ -58,7 +58,7 @@ class _IfpState extends State<Ifp> {
         height: double.infinity,
         color: bgColor,
         padding: AppStyles.paddingContainer,
-        child: Column(
+        child: ListView(
           children: [
             buildTextFieldRow(
               labelText: 'Production Order',
@@ -81,14 +81,13 @@ class _IfpState extends State<Ifp> {
               postDay: docDate,
               controller: _dateController,
             ),
-
             buildTextFieldRow(
-                labelText: 'Remake',
+                labelText: 'Remarks:',
                 isEnable: true,
-                hintText: 'Remake here',
+                hintText: 'Remarks here',
                 icon: Icons.edit,
                 valueQR: remark,
-                controller: _remakeController),
+                controller: _remarksController),
             if (ifp.isNotEmpty)
               ListItems(
                   listItems: ifp,
@@ -106,17 +105,8 @@ class _IfpState extends State<Ifp> {
                     {'label': 'Product Order No', 'child': 'DocNum'},
                     {'label': 'ItemCode', 'child': 'ItemCode'},
                     {'label': 'ProdName', 'child': 'ProdName'},
-                    {'label': 'Warehouse', 'child': 'Warehouse'},
                     // Add more as needed
                   ],
-                  // labelName1: 'Product Order No',
-                  // labelName2: 'ItemCode',
-                  // labelName3: 'ProdName',
-                  // labelName4: 'PostDate',
-                  // listChild1: 'DocNum',
-                  // listChild2: 'ItemCode',
-                  // listChild3: 'ProdName',
-                  // listChild4: 'PostDate'
               ),
             Container(
               width: double.infinity,

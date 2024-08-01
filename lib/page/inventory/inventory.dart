@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/constants/colors.dart';
+import 'package:qr_code/page/inventory/inventorytransfer/inventory_transfer.dart';
 import 'package:qr_code/page/qr_view_example.dart';
 import 'package:qr_code/routes/routes.dart';
 
@@ -47,12 +48,18 @@ class Inventory extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => const QRViewExample(
+                //             pageIdentifier: 'IventoryTrans',
+                //           )),
+                // );
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const QRViewExample(
-                            pageIdentifier: 'IventoryTrans',
-                          )),
+                      builder: (context) => const InventoryTransfer()
+                  ),
                 );
               },
               // thay đổi lại hình ảnh

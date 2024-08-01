@@ -83,8 +83,8 @@ class _IfpDetailItemsState extends State<IfpDetailItems> {
               }
               totalSlThucTe += slThucTe;
             }
-            itemCodeController.text = ifpItemsDetail[0]['ItemCode'];
-            descriptionController.text = ifpItemsDetail[0]['ItemName'];
+            // itemCodeController.text = ifpItemsDetail[0]['ItemCode'];
+            // descriptionController.text = ifpItemsDetail[0]['ItemName'];
             batchController.text = ifpItemsDetail[0]['Batch'];
             whseController.text = ifpItemsDetail[0]['Whse'];
             slThucTeController.text = totalSlThucTe.toString();
@@ -150,34 +150,33 @@ class _IfpDetailItemsState extends State<IfpDetailItems> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const HeaderApp(title: "IFP - Detail - Items"),
+        appBar: const HeaderApp(title: "IFP - Details"),
         body: Container(
           color: bgColor,
           width: double.infinity,
           height: double.infinity,
           padding: AppStyles.paddingContainer,
-          child: Column(
+          child: ListView(
             children: [
               buildTextFieldRow(
                 controller: itemCodeController,
-                labelText: 'Item Code',
+                labelText: 'Item Code:',
                 hintText: 'Item Code',
               ),
               buildTextFieldRow(
                 controller: descriptionController,
-                labelText: 'Item Name',
+                labelText: 'Item Name:',
                 hintText: 'Item Name',
               ),
               buildTextFieldRow(
                 controller: slYeuCauController,
-                labelText: 'SL Yêu Cầu',
-                hintText: 'SL Yêu Cầu',
+                labelText: 'Số lượng yêu cầu:',
+                hintText: 'Số lượng yêu cầu',
               ),
               buildTextFieldRow(
                 controller: slThucTeController,
-                labelText: 'SL Thực Tế',
-                hintText: 'SL Thực Tế',
-                isEnable: true,
+                labelText: 'Số lượng thực tế:',
+                hintText: 'Số lượng thực tế',
                 iconButton: IconButton(
                   icon: const Icon(Icons.qr_code_scanner),
                   onPressed: () {
@@ -208,8 +207,10 @@ class _IfpDetailItemsState extends State<IfpDetailItems> {
                         builder: (context) => IfpAddNewDetailItems(
                           isEditable: false,
                           id: ifpItemsDetail[index]['ID'].toString(),
-                          itemCode: ifpItemsDetail[index]['ItemCode'],
-                          itemName: ifpItemsDetail[index]['ItemName'],
+                          // itemCode: ifpItemsDetail[index]['ItemCode'],
+                          // itemName: ifpItemsDetail[index]['ItemName'],
+                          itemCode: widget.itemCode,
+                          itemName: widget.description,
                           whse: ifpItemsDetail[index]['Whse'],
                           slThucTe:
                           ifpItemsDetail[index]['SlThucTe'].toString(),
@@ -225,17 +226,9 @@ class _IfpDetailItemsState extends State<IfpDetailItems> {
                     {'label': 'Whse', 'child': 'Whse'},
                     {'label': 'Batch', 'child': 'Batch'},
                     {'label': 'SlThucTe', 'child': 'SlThucTe'},
-                    {'label': 'Remake', 'child': 'Remake'},
+                    {'label': 'Remarks', 'child': 'Remake'},
                     // Add more as needed
                   ],
-                  // labelName1: 'Whse',
-                  // labelName2: 'Batch',
-                  // labelName3: 'SlThucTe',
-                  // labelName4: 'Remake',
-                  // listChild1: 'Whse',
-                  // listChild2: 'Batch',
-                  // listChild3: 'SlThucTe',
-                  // listChild4: 'Remake',
                 ),
               Container(
                 width: double.infinity,
@@ -248,7 +241,7 @@ class _IfpDetailItemsState extends State<IfpDetailItems> {
                       width: 20,
                     ),
                     CustomButton(
-                      text: 'ADD',
+                      text: 'OK',
                       onPressed: _submitData,
                     ),
                   ],

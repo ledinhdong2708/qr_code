@@ -121,7 +121,7 @@ class Routes {
       case inventoryTransfer:
         final qrData = settings.arguments as String; // Lấy qrData từ arguments
         return MaterialPageRoute(
-          builder: (context) => InventoryTrans(qrData: qrData),
+          builder: (context) => InventoryTransfer(qrData: qrData),
         );
       // Định nghĩa các route khác tại đây
       default:

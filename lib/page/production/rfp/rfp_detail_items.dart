@@ -39,7 +39,7 @@ class _RfpDetailItemsState extends State<RfpDetailItems> {
   late TextEditingController idController;
   late TextEditingController batchController;
   late TextEditingController slThucTeController;
-  late TextEditingController remakeController;
+  late TextEditingController remarksController;
   late TextEditingController itemCodeController;
   late TextEditingController descriptionController;
   late TextEditingController whseController;
@@ -57,62 +57,62 @@ class _RfpDetailItemsState extends State<RfpDetailItems> {
     whseController = TextEditingController(text: widget.whse);
     slThucTeController = TextEditingController(text: widget.slThucTe);
     uoMCodeController = TextEditingController(text: widget.uoMCode);
-    remakeController = TextEditingController(text: widget.remake);
+    remarksController = TextEditingController(text: widget.remake);
   }
 
   @override
   void dispose() {
     batchController.dispose();
     slThucTeController.dispose();
-    remakeController.dispose();
+    remarksController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderApp(title: "RFP - Detail - Items"),
+      appBar: const HeaderApp(title: "RFP - Detail"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         color: bgColor,
         padding: AppStyles.paddingContainer,
-        child: Column(
+        child: ListView(
           children: [
             buildTextFieldRow(
               controller: itemCodeController,
-              labelText: 'Item Code',
+              labelText: 'Item Code:',
               hintText: 'Item Code',
             ),
             buildTextFieldRow(
               controller: descriptionController,
-              labelText: 'Item Name',
+              labelText: 'Item Name:',
               hintText: 'Item Name',
             ),
             buildTextFieldRow(
               controller: whseController,
-              labelText: 'Whse',
+              labelText: 'Whse:',
               hintText: 'Whse',
             ),
             buildTextFieldRow(
               controller: uoMCodeController,
-              labelText: 'UoMCode',
+              labelText: 'UoMCode:',
               hintText: 'UoMCode',
             ),
             buildTextFieldRow(
               controller: slThucTeController,
-              labelText: 'Sl Thực tế',
-              hintText: 'Sl Thực tế',
+              labelText: 'Số lượng thực tế:',
+              hintText: 'Số lượng thực tế',
             ),
             buildTextFieldRow(
               controller: batchController,
-              labelText: 'Batch',
+              labelText: 'Batch:',
               hintText: 'Batch',
             ),
             buildTextFieldRow(
-              controller: remakeController,
-              labelText: 'Remake',
-              hintText: 'Remake',
+              controller: remarksController,
+              labelText: 'Remarks:',
+              hintText: 'Remarks',
             ),
             Flexible(
               child: Container(),
@@ -136,7 +136,7 @@ class _RfpDetailItemsState extends State<RfpDetailItems> {
                         'uoMCode': uoMCodeController.text,
                         'batch': batchController.text,
                         'slThucTe': slThucTeController.text,
-                        'remake': remakeController.text,
+                        'remake': remarksController.text,
                       };
                       Navigator.push(
                         context,

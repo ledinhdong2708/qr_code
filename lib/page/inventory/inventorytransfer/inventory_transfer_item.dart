@@ -1,20 +1,16 @@
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
-import 'package:qr_code/service/grpo_service.dart';
-
-import '../../../service/delivery_service.dart';
+import 'package:qr_code/page/inventory/inventorytransfer/list_warehouses.dart';
+import 'package:qr_code/service/inventory_transfer_service.dart';
 import '../../../service/goodreturn_service.dart';
 import '../../../service/qr_service.dart';
 
 
-class DeliveryDetailItems extends StatefulWidget {
+class InventoryTransferItem extends StatefulWidget {
   final String qrData;
   final String id;
   final String docEntry;
@@ -24,10 +20,11 @@ class DeliveryDetailItems extends StatefulWidget {
   final String remake;
   final String itemCode;
   final String itemName;
-  final String whse;
+  final String fromWhse;
+  final String toWhse;
   final String uoMCode;
   final bool isEditable;
-  const DeliveryDetailItems(
+  const InventoryTransferItem(
       {super.key,
         this.qrData = '',
         this.id = '',
@@ -37,59 +34,72 @@ class DeliveryDetailItems extends StatefulWidget {
         this.slThucTe = '',
         this.itemCode = '',
         this.itemName = '',
-        this.whse = '',
+        this.fromWhse = '',
+        this.toWhse = '',
         this.uoMCode = '',
         this.remake = '',
         this.isEditable = true,
       });
 
   @override
-  _DeliveryDetailItemsState createState() => _DeliveryDetailItemsState();
+  _InventoryTransferItemState createState() => _InventoryTransferItemState();
 }
 
-class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
+class _InventoryTransferItemState extends State<InventoryTransferItem> {
   Map<String, dynamic>? GRPO_QR;
+  late String id;
+  late String docEntry;
+  late String lineNum;
   late TextEditingController idController;
   late TextEditingController batchController;
   late TextEditingController slThucTeController;
-  late TextEditingController remakeController;
+  late TextEditingController remarkController;
   late TextEditingController itemCodeController;
-  late TextEditingController descriptionController;
-  late TextEditingController whseController;
+  late TextEditingController itemNameController;
+  late TextEditingController fromWhseController;
+  late TextEditingController toWhseController;
   late TextEditingController uoMCodeController;
   bool isLoading = true;
   bool isConfirmEnabled = false;
+
+  void _handleItemSelected(String whsCode) {
+    setState(() {
+      toWhseController.text = whsCode;
+      //widget.itemCode = itemCode;
+      //_fetchData();
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     batchController = TextEditingController();
     slThucTeController = TextEditingController();
-    remakeController = TextEditingController();
+    remarkController = TextEditingController();
     itemCodeController = TextEditingController();
-    descriptionController = TextEditingController();
-    whseController = TextEditingController();
+    itemNameController = TextEditingController();
+    fromWhseController = TextEditingController();
+    toWhseController = TextEditingController();
     uoMCodeController = TextEditingController();
     //print("data ${widget.qrData}");
     if (widget.qrData.isNotEmpty) {
       // If QR data is provided, fetch data
       final extractedValues  = extractValuesFromQRData(widget.qrData);
-      String id = extractedValues['id'] ?? '';
-      String docEntry = extractedValues['docEntry'] ?? '';
-      String lineNum = extractedValues['lineNum'] ?? '';
-      if (docEntry == widget.docEntry && lineNum == widget.lineNum) {
-        fetchQRDeliveryItemsDetailData(docEntry, lineNum, id).then((data) {
+      id = extractedValues['id'] ?? '';
+      docEntry = extractedValues['docEntry'] ?? '';
+      lineNum = extractedValues['lineNum'] ?? '';
+        fetchQRInventoryTransferData(docEntry, lineNum, id).then((data) {
           if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
             final itemData = data['data'][0];
             setState(() {
               GRPO_QR = itemData;
               itemCodeController.text = itemData['ItemCode']?.toString() ?? '';
-              descriptionController.text = itemData['ItemName']?.toString() ?? '';
+              itemNameController.text = itemData['ItemName']?.toString() ?? '';
               batchController.text = itemData['Batch']?.toString() ?? '';
-              whseController.text = itemData['Whse']?.toString() ?? '';
+              fromWhseController.text = itemData['Whse']?.toString() ?? '';
               slThucTeController.text = itemData['SlThucTe']?.toString() ?? '';
               uoMCodeController.text = itemData['UoMCode']?.toString() ?? '';
-              remakeController.text = itemData['Remake']?.toString() ?? '';
+              remarkController.text = itemData['Remake']?.toString() ?? '';
               isLoading = false;
               isConfirmEnabled = true;
             });
@@ -99,18 +109,18 @@ class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
             });
           }
         });
-      }
     } else {
       setState(() {
         isLoading = false;
         idController = TextEditingController(text: widget.id);
         itemCodeController = TextEditingController(text: widget.itemCode);
-        descriptionController = TextEditingController(text: widget.itemName);
+        itemNameController = TextEditingController(text: widget.itemName);
         batchController = TextEditingController(text: widget.batch);
-        whseController = TextEditingController(text: widget.whse);
+        fromWhseController = TextEditingController(text: widget.fromWhse);
+        toWhseController = TextEditingController(text: widget.toWhse);
         slThucTeController = TextEditingController(text: widget.slThucTe);
         uoMCodeController = TextEditingController(text: widget.uoMCode);
-        remakeController = TextEditingController(text: widget.remake);
+        remarkController = TextEditingController(text: widget.remake);
         isConfirmEnabled = false;
       });
     }
@@ -120,30 +130,39 @@ class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
   void dispose() {
     batchController.dispose();
     slThucTeController.dispose();
-    remakeController.dispose();
+    remarkController.dispose();
     itemCodeController.dispose();
-    descriptionController.dispose();
-    whseController.dispose();
+    itemNameController.dispose();
+    fromWhseController.dispose();
+    toWhseController.dispose();
     uoMCodeController.dispose();
     super.dispose();
   }
 
   Future<void> _submitData() async {
+    if (toWhseController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a To Warehouse.')),
+      );
+      return;
+    }
+
     final data = {
-      'itemCode': itemCodeController.text,
-      'itemName': descriptionController.text,
-      'whse': whseController.text,
-      'uoMCode': uoMCodeController.text,
-      'docEntry': widget.docEntry,
-      'lineNum': widget.lineNum,
-      'batch': batchController.text,
-      'slThucTe': slThucTeController.text,
-      'remake': remakeController.text,
+      'ItemCode': itemCodeController.text,
+      'ItemName': itemNameController.text,
+      'FromWhse': fromWhseController.text,
+      'ToWhse': toWhseController.text,
+      'Batch': batchController.text,
+      'SlThucTe': slThucTeController.text,
+      'UoMCode': uoMCodeController.text,
+      'Remark': remarkController.text,
+      'DocEntry': docEntry,
+      'LineNum': lineNum,
     };
 
     try {
-      await postDeliveryItemsDetailData(
-          data, context, widget.docEntry, widget.lineNum);
+      await postInventoryTransferItemsData(data, context, docEntry, lineNum);
+      print(data);
     } catch (e) {
       print('Error submitting data: $e');
     }
@@ -153,7 +172,7 @@ class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: const HeaderApp(title: "Delivery - Detail - Items"),
+      appBar: const HeaderApp(title: "Inventoty Transfer - Detail"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -167,35 +186,53 @@ class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
               hintText: 'Item Code',
             ),
             buildTextFieldRow(
-              controller: descriptionController,
+              controller: itemNameController,
               labelText: 'Item Name:',
               hintText: 'Item Name',
             ),
             buildTextFieldRow(
-              controller: slThucTeController,
-              labelText: 'Quantity:',
-              hintText: 'Quantity',
+              controller: fromWhseController,
+              labelText: 'From Whse:',
+              hintText: 'From Whse',
             ),
             buildTextFieldRow(
-              controller: whseController,
-              labelText: 'Whse:',
-              hintText: 'Whse',
+              labelText: 'To Whse:',
+              hintText: 'To Whse',
+              controller: toWhseController,
+              iconButton: IconButton(
+                icon: const Icon(Icons.more_horiz),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ListWarehouses(
+                        onItemSelected: _handleItemSelected,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            buildTextFieldRow(
+              controller: batchController,
+              labelText: 'Batch:',
+              hintText: 'Batch',
+            ),
+            buildTextFieldRow(
+              controller: slThucTeController,
+              labelText: 'Số lượng thực tế:',
+              hintText: 'Sl Thực tế',
             ),
             buildTextFieldRow(
               controller: uoMCodeController,
               labelText: 'UoM Code:',
               hintText: 'UoMCode',
             ),
-
             buildTextFieldRow(
-              controller: batchController,
-              labelText: 'Số Batch:',
-              hintText: 'Batch',
-            ),
-            buildTextFieldRow(
-              controller: remakeController,
-              labelText: 'Số kiện:',
-              hintText: 'Số kiện',
+              controller: remarkController,
+              labelText: 'Remarks',
+              hintText: 'Remarks',
+              isEnable: widget.isEditable,
             ),
             Flexible(
               child: Container(),

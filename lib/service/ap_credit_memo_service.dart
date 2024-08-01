@@ -207,7 +207,7 @@ Future<Map<String, dynamic>?> fetchApCreditMemoItemsDetailData(
     return null;
   }
 }
-// QR quet ma batch tu grpo sang grr
+// QR quet ma batch tu grpo sang Apcreditmemo
 Future<Map<String, dynamic>?> fetchQRApCreditMemoItemsDetailData(
     String docentry, String linenum, String id) async {
   final url = '$serverIp/api/v1/grpoitemsdetail/$docentry/$linenum/$id';

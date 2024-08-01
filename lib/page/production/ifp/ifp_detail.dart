@@ -24,7 +24,7 @@ class IfpDetail extends StatefulWidget {
 }
 
 class _IfpDetailState extends State<IfpDetail> {
-  final TextEditingController _remakeController = TextEditingController();
+  final TextEditingController _remarksController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _docNoController = TextEditingController();
   final TextEditingController _productCodeController = TextEditingController();
@@ -62,7 +62,7 @@ class _IfpDetailState extends State<IfpDetail> {
         }
         setState(() {
           owor = data;
-          _remakeController.text = owor?['data']['remake'] ?? '';
+          _remarksController.text = owor?['data']['remake'] ?? '';
           _dateController.text = owor?['data']['PostDate'] ?? '';
         });
       }
@@ -87,7 +87,7 @@ class _IfpDetailState extends State<IfpDetail> {
     postDayController.dispose();
     docNoController.dispose();
     docEntryController.dispose();
-    remakeController.dispose();
+    _remarksController.dispose();
     baseEntryController.dispose();
     super.dispose();
   }
@@ -125,7 +125,7 @@ class _IfpDetailState extends State<IfpDetail> {
           'PostDate': _dateController.text,
           'ItemCode': itemCode,
           'ProdName': prodName,
-          'remake': _remakeController.text,
+          'remake': _remarksController.text,
           'thongtinvattu': '',
         };
         await postIfpHeaderData(submitData, context);
@@ -151,11 +151,11 @@ class _IfpDetailState extends State<IfpDetail> {
           height: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,
-          child: Column(
+          child: ListView(
             children: [
               buildTextFieldRow(
-                labelText: 'Order No.',
-                hintText: 'Order No.',
+                labelText: 'Order No:',
+                hintText: 'Order No',
                 valueQR: docNum,
                 //controller: _docNoController
               ),
@@ -164,24 +164,24 @@ class _IfpDetailState extends State<IfpDetail> {
                 controller: _dateController,
               ),
               buildTextFieldRow(
-                labelText: 'Product Code',
+                labelText: 'Product Code:',
                 hintText: 'Product Code',
                 valueQR: itemCode,
                 //controller: _productCodeController
               ),
               buildTextFieldRow(
-                labelText: 'Product Name',
+                labelText: 'Product Name:',
                 hintText: 'Product Name',
                 valueQR: prodName,
                 //controller: _itemNameController
               ),
               buildTextFieldRow(
-                  labelText: 'Remake',
+                  labelText: 'Remarks:',
                   isEnable: true,
-                  hintText: 'Remake here',
+                  hintText: 'Remarks here',
                   icon: Icons.edit,
                   valueQR: remark,
-                  controller: _remakeController),
+                  controller: _remarksController),
               if (wor1.isNotEmpty)
                 ListItems(
                     listItems: wor1,
@@ -205,20 +205,12 @@ class _IfpDetailState extends State<IfpDetail> {
                       );
                     },
                     labelsAndChildren: const [
-                      {'label': 'DocNo', 'child': 'DocEntry'},
+                      // {'label': 'DocNo', 'child': 'DocEntry'},
                       {'label': 'Code', 'child': 'ItemCode'},
                       {'label': 'Name', 'child': 'ItemName'},
                       {'label': 'SlYeuCau', 'child': 'PlannedQty'},
                       // Add more as needed
                     ],
-                    // labelName1: 'DocNo',
-                    // labelName2: 'Code',
-                    // labelName3: 'Name',
-                    // labelName4: 'SlYeuCau',
-                    // listChild1: 'DocEntry',
-                    // listChild2: 'ItemCode',
-                    // listChild3: 'ItemName',
-                    // listChild4: 'PlannedQty'
                 ),
               Container(
                 width: double.infinity,

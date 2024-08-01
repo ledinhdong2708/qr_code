@@ -21,7 +21,7 @@ class GoodsIssueDetailItem extends StatefulWidget {
   final String slYeuCau;
   final String slThucTe;
   final String uoMCode;
-  final String remake;
+  final String remarks;
   final bool isEditable;
 
   GoodsIssueDetailItem({
@@ -35,7 +35,7 @@ class GoodsIssueDetailItem extends StatefulWidget {
     this.slYeuCau = "",
     this.slThucTe = "",
     this.uoMCode = "",
-    this.remake = "",
+    this.remarks = "",
     this.description = "",
     this.batch = "",
     this.openQty = "",
@@ -59,7 +59,7 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
   late TextEditingController whseController;
   late TextEditingController slThucTeController;
   late TextEditingController uoMCodeController;
-  late TextEditingController remakeController;
+  late TextEditingController remarksController;
   bool isLoading = true;
   bool isConfirmEnabled = false;
 
@@ -73,7 +73,7 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
     whseController = TextEditingController(text: widget.whse);
     slThucTeController = TextEditingController(text: widget.slThucTe);
     uoMCodeController = TextEditingController(text: widget.uoMCode);
-    remakeController = TextEditingController(text: widget.remake);
+    remarksController = TextEditingController(text: widget.remarks);
     //_fetchData();
 
     if (widget.qrData.isNotEmpty) {
@@ -93,7 +93,7 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
             whseController.text = itemData['Whse']?.toString() ?? '';
             slThucTeController.text = itemData['SlThucTe']?.toString() ?? '';
             uoMCodeController.text = itemData['UoMCode']?.toString() ?? '';
-            remakeController.text = itemData['Remake']?.toString() ?? '';
+            remarksController.text = itemData['Remake']?.toString() ?? '';
             isLoading = false;
             isConfirmEnabled = true;
           });
@@ -114,7 +114,7 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
         whseController = TextEditingController(text: widget.whse);
         slThucTeController = TextEditingController(text: widget.slThucTe);
         uoMCodeController = TextEditingController(text: widget.uoMCode);
-        remakeController = TextEditingController(text: widget.remake);
+        remarksController = TextEditingController(text: widget.remarks);
         isConfirmEnabled = false;
       });
     }
@@ -150,7 +150,7 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
     whseController.dispose();
     slThucTeController.dispose();
     uoMCodeController.dispose();
-    remakeController.dispose();
+    remarksController.dispose();
     super.dispose();
   }
 
@@ -165,7 +165,7 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
       'lineNum': lineNum,
       'batch': batchController.text,
       'slThucTe': slThucTeController.text,
-      'remake': remakeController.text,
+      'remake': remarksController.text,
     };
 
     try {
@@ -189,54 +189,54 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const HeaderApp(title: "Goods Issue - Detail - Item"),
+        appBar: const HeaderApp(title: "Goods Issue - Detail"),
         body: Container(
           color: bgColor,
           width: double.infinity,
           height: double.infinity,
           padding: AppStyles.paddingContainer,
-          child: Column(
+          child: ListView(
             children: [
               buildTextFieldRow(
                 controller: itemCodeController,
-                labelText: 'Item Code',
+                labelText: 'Item Code:',
                 hintText: 'Item Code',
                 isEnable: widget.isEditable
               ),
               buildTextFieldRow(
                 controller: descriptionController,
-                labelText: 'Item Name',
+                labelText: 'Item Name:',
                 hintText: 'Item Name',
                 isEnable: widget.isEditable
               ),
               buildTextFieldRow(
                 controller: whseController,
-                labelText: 'Whse',
+                labelText: 'Whse:',
                 hintText: 'Whse',
                 isEnable: widget.isEditable
               ),
               buildTextFieldRow(
                 controller: uoMCodeController,
-                labelText: 'UoMCode',
+                labelText: 'UoMCode:',
                 hintText: 'UoMCode',
                 isEnable: widget.isEditable
               ),
               buildTextFieldRow(
                 controller: slThucTeController,
-                labelText: 'Sl Thực tế',
-                hintText: 'Sl Thực tế',
+                labelText: 'Số lượng thực tế:',
+                hintText: 'Số lượng thực tế',
                   isEnable: widget.isEditable
               ),
               buildTextFieldRow(
                 controller: batchController,
-                labelText: 'Batch',
+                labelText: 'Batch:',
                 hintText: 'Batch',
                 isEnable: widget.isEditable
               ),
               buildTextFieldRow(
-                controller: remakeController,
-                labelText: 'Remake',
-                hintText: 'Remake',
+                controller: remarksController,
+                labelText: 'Remarks:',
+                hintText: 'Remarks',
                 isEnable: widget.isEditable,
               ),
               Container(
@@ -250,7 +250,7 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
                       width: 20,
                     ),
                     CustomButton(
-                      text: 'ADD',
+                      text: 'OK',
                       isEnabled: isConfirmEnabled,
                       onPressed: _submitData,
                     ),

@@ -9,7 +9,7 @@ class DateInput extends StatefulWidget {
 
   const DateInput({
     super.key,
-    this.labelText = 'Post.Date',
+    this.labelText = 'Posting Date:',
     this.postDay = "",
     this.controller,
   });

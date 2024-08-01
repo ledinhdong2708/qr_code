@@ -38,7 +38,7 @@ class RfpAddNewDetailItems extends StatefulWidget {
 class _RfpAddNewDetailItemsState extends State<RfpAddNewDetailItems> {
   late TextEditingController batchController;
   late TextEditingController slThucTeController;
-  late TextEditingController remakeController;
+  late TextEditingController remarksController;
   late TextEditingController itemCodeController;
   late TextEditingController descriptionController;
   late TextEditingController whseController;
@@ -55,14 +55,14 @@ class _RfpAddNewDetailItemsState extends State<RfpAddNewDetailItems> {
     whseController = TextEditingController(text: widget.whse);
     slThucTeController = TextEditingController(text: widget.slThucTe);
     uoMCodeController = TextEditingController(text: widget.uoMCode);
-    remakeController = TextEditingController(text: widget.remake);
+    remarksController = TextEditingController(text: widget.remake);
   }
 
   @override
   void dispose() {
     batchController.dispose();
     slThucTeController.dispose();
-    remakeController.dispose();
+    remarksController.dispose();
     super.dispose();
   }
 
@@ -76,7 +76,7 @@ class _RfpAddNewDetailItemsState extends State<RfpAddNewDetailItems> {
       'lineNum': widget.lineNum,
       'batch': batchController.text,
       'slThucTe': slThucTeController.text,
-      'remake': remakeController.text,
+      'remake': remarksController.text,
     };
     try {
       await postRfpItemsDetailData(
@@ -90,7 +90,7 @@ class _RfpAddNewDetailItemsState extends State<RfpAddNewDetailItems> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: const HeaderApp(title: "RFP - Add - New - Detail - Items"),
+      appBar: const HeaderApp(title: "RFP - Detail"),
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
@@ -98,47 +98,42 @@ class _RfpAddNewDetailItemsState extends State<RfpAddNewDetailItems> {
           width: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
               buildTextFieldRow(
-                labelText: 'Temp',
-                hintText: 'Temp',
-              ),
-              buildTextFieldRow(
                 controller: itemCodeController,
-                labelText: 'Item Code',
+                labelText: 'Item Code:',
                 hintText: 'Item Code',
               ),
               buildTextFieldRow(
                 controller: descriptionController,
-                labelText: 'Item Name',
+                labelText: 'Item Name:',
                 hintText: 'Item Name',
               ),
               buildTextFieldRow(
                 controller: whseController,
-                labelText: 'Whse',
+                labelText: 'Whse:',
                 hintText: 'Whse',
               ),
               buildTextFieldRow(
                 controller: uoMCodeController,
-                labelText: 'UoMCode',
+                labelText: 'UoM Code:',
                 hintText: 'UoMCode',
               ),
               buildTextFieldRow(
                   controller: slThucTeController,
-                  labelText: 'Sl Thực tế',
-                  hintText: 'Sl Thực tế',
+                  labelText: 'Số lượng thực tế:',
+                  hintText: 'Số lượng thực tế',
                   isEnable: true),
               buildTextFieldRow(
                   controller: batchController,
-                  labelText: 'Batch',
+                  labelText: 'Batch:',
                   hintText: 'Batch',
-                  isEnable: true),
+                  ),
               buildTextFieldRow(
-                  controller: remakeController,
-                  labelText: 'Remake',
-                  hintText: 'Remake',
+                  controller: remarksController,
+                  labelText: 'Remarks:',
+                  hintText: 'Remarks',
                   isEnable: true),
               const SizedBox(height: 20),
               Align(
@@ -148,7 +143,7 @@ class _RfpAddNewDetailItemsState extends State<RfpAddNewDetailItems> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CustomButton(
-                      text: 'CONFIRM',
+                      text: 'OK',
                       onPressed: _submitData,
                     ),
                   ],

@@ -47,7 +47,7 @@ class _IfpAddNewDetailItemsState extends State<IfpAddNewDetailItems> {
   late TextEditingController idController;
   late TextEditingController batchController;
   late TextEditingController slThucTeController;
-  late TextEditingController remakeController;
+  late TextEditingController remarksController;
   late TextEditingController itemCodeController;
   late TextEditingController descriptionController;
   late TextEditingController whseController;
@@ -60,7 +60,7 @@ class _IfpAddNewDetailItemsState extends State<IfpAddNewDetailItems> {
     super.initState();
     batchController = TextEditingController();
     slThucTeController = TextEditingController();
-    remakeController = TextEditingController();
+    remarksController = TextEditingController();
     itemCodeController = TextEditingController();
     descriptionController = TextEditingController();
     whseController = TextEditingController();
@@ -87,7 +87,7 @@ class _IfpAddNewDetailItemsState extends State<IfpAddNewDetailItems> {
               whseController.text = itemData['Whse']?.toString() ?? '';
               slThucTeController.text = itemData['SlThucTe']?.toString() ?? '';
               uoMCodeController.text = itemData['UoMCode']?.toString() ?? '';
-              remakeController.text = itemData['Remake']?.toString() ?? '';
+              remarksController.text = itemData['Remake']?.toString() ?? '';
               isLoading = false;
               isConfirmEnabled = true;
             });
@@ -108,7 +108,7 @@ class _IfpAddNewDetailItemsState extends State<IfpAddNewDetailItems> {
         whseController = TextEditingController(text: widget.whse);
         slThucTeController = TextEditingController(text: widget.slThucTe);
         uoMCodeController = TextEditingController(text: widget.uoMCode);
-        remakeController = TextEditingController(text: widget.remake);
+        remarksController = TextEditingController(text: widget.remake);
         isConfirmEnabled = false;
       });
     }
@@ -118,7 +118,7 @@ class _IfpAddNewDetailItemsState extends State<IfpAddNewDetailItems> {
   void dispose() {
     batchController.dispose();
     slThucTeController.dispose();
-    remakeController.dispose();
+    remarksController.dispose();
     itemCodeController.dispose();
     descriptionController.dispose();
     whseController.dispose();
@@ -136,7 +136,7 @@ class _IfpAddNewDetailItemsState extends State<IfpAddNewDetailItems> {
       'lineNum': widget.lineNum,
       'batch': batchController.text,
       'slThucTe': slThucTeController.text,
-      'remake': remakeController.text,
+      'remake': remarksController.text,
     };
 
     try {
@@ -151,48 +151,48 @@ class _IfpAddNewDetailItemsState extends State<IfpAddNewDetailItems> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: const HeaderApp(title: "IFP - QR - Items"),
+      appBar: const HeaderApp(title: "IFP - Detail"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         color: bgColor,
         padding: AppStyles.paddingContainer,
-        child: Column(
+        child: ListView(
           children: [
             buildTextFieldRow(
               controller: itemCodeController,
-              labelText: 'Item Code',
+              labelText: 'Item Code:',
               hintText: 'Item Code',
             ),
             buildTextFieldRow(
               controller: descriptionController,
-              labelText: 'Item Name',
+              labelText: 'Item Name:',
               hintText: 'Item Name',
             ),
             buildTextFieldRow(
               controller: whseController,
-              labelText: 'Whse',
+              labelText: 'Whse:',
               hintText: 'Whse',
             ),
             buildTextFieldRow(
               controller: uoMCodeController,
-              labelText: 'UoMCode',
+              labelText: 'UoMCode:',
               hintText: 'UoMCode',
             ),
             buildTextFieldRow(
               controller: slThucTeController,
-              labelText: 'Sl Thực tế',
-              hintText: 'Sl Thực tế',
+              labelText: 'Số lượng thực tế:',
+              hintText: 'Số lượng thực tế',
             ),
             buildTextFieldRow(
               controller: batchController,
-              labelText: 'Batch',
+              labelText: 'Batch:',
               hintText: 'Batch',
             ),
             buildTextFieldRow(
-              controller: remakeController,
-              labelText: 'Remake',
-              hintText: 'Remake',
+              controller: remarksController,
+              labelText: 'Remarks:',
+              hintText: 'Remarks',
               isEnable: widget.isEditable,
             ),
             Flexible(
@@ -205,7 +205,7 @@ class _IfpAddNewDetailItemsState extends State<IfpAddNewDetailItems> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CustomButton(
-                    text: 'Confirm',
+                    text: 'OK',
                     isEnabled: isConfirmEnabled,
                     // onPressed: _submitData,
                     onPressed: _submitData,

@@ -92,13 +92,24 @@ class _ListItemsState extends State<ListItems> {
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(10),
             ),
+            // child: Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: widget.labelsAndChildren.map((labelAndChild) {
+            //     final label = labelAndChild['label']!;
+            //     final child = labelAndChild['child']!;
+            //     return Text('$label: ${item[child]}');
+            //   }).toList(),
+            // ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: widget.labelsAndChildren.map((labelAndChild) {
-                final label = labelAndChild['label']!;
-                final child = labelAndChild['child']!;
-                return Text('$label: ${item[child]}');
-              }).toList(),
+              children: [
+                Text('#${index + 1}'),
+                ...widget.labelsAndChildren.map((labelAndChild) {
+                  final label = labelAndChild['label']!;
+                  final child = labelAndChild['child']!;
+                  return Text('$label: ${item[child]}');
+                }).toList(),
+              ],
             ),
           ),
         );

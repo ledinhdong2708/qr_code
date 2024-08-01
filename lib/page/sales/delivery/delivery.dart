@@ -76,11 +76,11 @@ class _DeliveryState extends State<Delivery> {
           height: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,
-            child: Column(
+            child: ListView(
               children: [
                 buildTextFieldRow(
-                  labelText: 'Doc No.',
-                  hintText: 'Doc No.',
+                  labelText: 'Doc No:',
+                  hintText: 'Doc No',
                   valueQR: docNum,
                 ),
                 DateInput(
@@ -88,19 +88,19 @@ class _DeliveryState extends State<Delivery> {
                   controller: _dateController,
                 ),
                 buildTextFieldRow(
-                  labelText: 'Vendor Code',
+                  labelText: 'Vendor:',
                   hintText: 'Vendor Code',
                   valueQR: cardCode,
                 ),
                 buildTextFieldRow(
-                  labelText: 'Vendor Name',
+                  labelText: 'Name:',
                   hintText: 'Vendor Name',
                   valueQR: cardName,
                 ),
                 buildTextFieldRow(
-                    labelText: 'Remake',
+                    labelText: 'Remarks:',
                     isEnable: true,
-                    hintText: 'Remake here',
+                    hintText: 'Remarks here',
                     icon: Icons.edit,
                     valueQR: remark,
                     controller: _remakeController
@@ -127,13 +127,14 @@ class _DeliveryState extends State<Delivery> {
                           ),
                         );
                       },
-                      labelsAndChildren: const [
-                        {'label': 'DocNo', 'child': 'DocEntry'},
-                        {'label': 'Code', 'child': 'ItemCode'},
-                        {'label': 'Name', 'child': 'Dscription'},
-                        {'label': 'SlYeuCau', 'child': 'OpenQty'},
-                        // Add more as needed
-                      ],
+                    labelsAndChildren: const [
+                      {'label': 'ItemCode', 'child': 'ItemCode'},
+                      {'label': 'Name', 'child': 'Dscription'},
+                      {'label': 'Whse', 'child': 'WhsCode'},
+                      {'label': 'Quantity', 'child': 'OpenQty'},
+                      {'label': 'UoM Code', 'child': 'UomCode'},
+                      // Add more as needed
+                    ],
                       // labelName1: 'DocNo',
                       // labelName2: 'Code',
                       // labelName3: 'Name',

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/dropdownbutton.dart';
@@ -11,13 +12,51 @@ import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/routes/routes.dart';
 
-class InventoryTrans extends StatelessWidget {
+import '../../../component/list_items.dart';
+import '../../../service/inventory_transfer_service.dart';
+import '../../qr_view_example.dart';
+
+class InventoryTransfer extends StatefulWidget {
   final String qrData;
-  const InventoryTrans({super.key, required this.qrData});
+  const InventoryTransfer({super.key, this.qrData=''});
+  @override
+  _InventoryTransferState createState() => _InventoryTransferState();
+
+}
+class _InventoryTransferState extends State<InventoryTransfer> {
+  final TextEditingController _dateController = TextEditingController();
+  List<dynamic> inventoryTransferItems = [];
 
   @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    fetchInventoryTransferItemsData().then((data) {
+      if (data != null && data['data'] is List) {
+        setState(() {
+          inventoryTransferItems = data['data'];
+          // if (goodsIssueInvenItemsDetail.isNotEmpty) {
+          //   itemCodeController.text = goodsIssueInvenItemsDetail[0]['ItemCode'];
+          //   descriptionController.text = goodsIssueInvenItemsDetail[0]['ItemName'];
+          //   batchController.text = goodsIssueInvenItemsDetail[0]['Batch'];
+          //   whseController.text = goodsIssueInvenItemsDetail[0]['Whse'];
+          //   slThucTeController.text = goodsIssueInvenItemsDetail[0]['SlThucTe'].toString();
+          //   uoMCodeController.text = goodsIssueInvenItemsDetail[0]['UoMCode'].toString();
+          //   remakeController.text = goodsIssueInvenItemsDetail[0]['Remake'].toString();
+          // }
+        });
+      }
+    });
+  }
+  @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> qrDataMap = parseQrData(qrData);
+    var now = DateTime.now();
+    var formatter = DateFormat('yyyy-MM-dd');
+    String docDate = formatter.format(now);
+    final Map<String, dynamic> qrDataMap = parseQrData(widget.qrData);
     final TextEditingController _controller = TextEditingController();
     return Scaffold(
         appBar: const HeaderApp(title: "Inventory Transfer"),
@@ -26,45 +65,93 @@ class InventoryTrans extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           padding: AppStyles.paddingContainer,
-          child: SingleChildScrollView(
-            child: Column(
+            child: ListView(
               children: [
-                buildTextFieldRow(
-                  labelText: 'Doc.Num',
-                  hintText: 'Doc.Num',
+                DateInput(
+                  postDay: docDate,
+                  controller: _dateController,
                 ),
-                QRCodeInput(controller: _controller, labelText: 'Item Code'),
-                const DateInput(),
                 buildTextFieldRow(
-                    labelText: 'Batch', hintText: 'Batch', isEnable: true),
-                buildTextFieldRow(
-                    labelText: 'Quantity',
-                    hintText: 'Quantity',
-                    isEnable: true),
-                Dropdownbutton(
-                  items: ['UoM a', 'UoM b', 'UoM c'],
-                  labelText: 'UoM Code',
-                  hintText: 'UoM Code',
-                ),
-                buildTextFieldRow(labelText: 'UoM Name', hintText: 'UoM Name'),
-                buildTextFieldRow(
-                    labelText: 'From Warehouse',
+                    labelText: 'From Warehouse:',
                     hintText: 'From Warehouse',
                     isEnable: true),
                 buildTextFieldRow(
-                  labelText: 'Remake',
-                  isEnable: true,
-                  hintText: 'Remake here',
-                  icon: Icons.edit,
+                    labelText: 'To Warehouse:',
+                    hintText: 'To Warehouse',
+                    isEnable: true),
+                buildTextFieldRow(
+                  labelText: 'Item',
+                  hintText: 'Item',
+                  iconButton: IconButton(
+                    icon: const Icon(Icons.qr_code_scanner),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const QRViewExample(
+                              pageIdentifier: 'InventoryTransferDetail',
+                            )),
+                      );
+                    },
+                  ),
                 ),
+                // buildTextFieldRow(
+                //     labelText: 'Batch', hintText: 'Batch', isEnable: true),
+                // buildTextFieldRow(
+                //     labelText: 'Quantity',
+                //     hintText: 'Quantity',
+                //     isEnable: true),
+                // Dropdownbutton(
+                //   items: ['UoM a', 'UoM b', 'UoM c'],
+                //   labelText: 'UoM Code',
+                //   hintText: 'UoM Code',
+                // ),
+                // buildTextFieldRow(labelText: 'UoM Name', hintText: 'UoM Name'),
+                //
+                // buildTextFieldRow(
+                //   labelText: 'Remake',
+                //   isEnable: true,
+                //   hintText: 'Remake here',
+                //   icon: Icons.edit,
+                // ),
                 // list item ở đây
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                        context, Routes.inventoryTransferLabels);
-                  },
-                  child: const Text('Tạo Nhãn'),
-                ),
+                if (inventoryTransferItems.isNotEmpty)
+                  ListItems(
+                    listItems: inventoryTransferItems,
+                    // enableDismiss: true,
+                    // onDeleteItem: (index) async {
+                    //   String id = inventoryTransferItems[index]['ID'].toString();
+                    //   await deleteGrrItemsDetailData(id, context);
+                    // },
+                    onTapItem: (index) {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => GoodReturnDetailItems(
+                      //       isEditable: false,
+                      //       id: grrItemsDetail[index]['ID'].toString(),
+                      //       itemCode: grrItemsDetail[index]['ItemCode'],
+                      //       itemName: grrItemsDetail[index]['ItemName'],
+                      //       whse: grrItemsDetail[index]['Whse'],
+                      //       slThucTe:
+                      //       grrItemsDetail[index]['SlThucTe'].toString(),
+                      //       batch: grrItemsDetail[index]['Batch'].toString(),
+                      //       uoMCode:
+                      //       grrItemsDetail[index]['UoMCode'].toString(),
+                      //       remake: grrItemsDetail[index]['Remake'].toString(),
+                      //     ),
+                      //   ),
+                      // );
+                    },
+
+                    labelsAndChildren: const [
+                      {'label': 'ItemCode', 'child': 'ItemCode'},
+                      {'label': 'ItemName', 'child': 'ItemName'},
+                      {'label': 'FromWhse', 'child': 'FromWhse'},
+                      {'label': 'ToWhse', 'child': 'ToWhse'},
+                      // Add more as needed
+                    ],
+                  ),
                 Container(
                   width: double.infinity,
                   margin: AppStyles.marginButton,
@@ -77,7 +164,7 @@ class InventoryTrans extends StatelessWidget {
                         onPressed: () {},
                       ),
                       CustomButton(
-                        text: 'Delete',
+                        text: 'DELETE',
                         onPressed: () {},
                       ),
                     ],
@@ -85,7 +172,6 @@ class InventoryTrans extends StatelessWidget {
                 )
               ],
             ),
-          ),
         ));
   }
 
