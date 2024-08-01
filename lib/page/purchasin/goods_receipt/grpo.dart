@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/list_items.dart';
+import 'package:qr_code/component/loading.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo_detail.dart';
 import 'package:qr_code/service/grpo_service.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:intl/intl.dart'; // Import intl for date formatting
 
 class Grpo extends StatefulWidget {
   final String qrData;
@@ -28,7 +29,7 @@ class _GrpoState extends State<Grpo> {
   Map<String, dynamic>? po;
   List<dynamic> lines = [];
   List<dynamic> batches = [];
-
+  bool _isLoading = true;
   late TextEditingController vendorCodeController;
   late TextEditingController vendorNameController;
   late TextEditingController postDayController;
@@ -84,6 +85,7 @@ class _GrpoState extends State<Grpo> {
         final grpoData = {
           'CardCode': po?['cardCode'],
           'CardName': po?['cardName'],
+          'DocDate': _dateController.text,
           'Comments': _commentController.text,
           'Lines': []
         };
@@ -98,7 +100,7 @@ class _GrpoState extends State<Grpo> {
               'BaseLine': item['lineNum'] ?? 0,
               'WarehouseCode': item['warehouseCode'] ?? '',
               'BaseType': 22,
-              'Batches': [],
+              'Batches': []
             };
 
             final grpoItemsDetailForLine = await fetchGrpoItemsDetailData(
@@ -133,8 +135,13 @@ class _GrpoState extends State<Grpo> {
     final data = await fetchPoData(widget.qrData, context);
     if (data != null) {
       setState(() {
+        _isLoading = false;
         po = data;
         lines = po?["lines"] ?? [];
+        if (po?['docDate'] != null) {
+          _dateController.text =
+              DateFormat('yyyy-MM-dd').format(DateTime.parse(po?['docDate']));
+        }
       });
     } else {
       print("Sai");
@@ -144,95 +151,115 @@ class _GrpoState extends State<Grpo> {
   @override
   Widget build(BuildContext context) {
     var docNum = po?['docNum']?.toString() ?? '';
-    var docDate = po?['docDate']?.toString() ?? '';
     var cardCode = po?['cardCode'] ?? '';
     var cardName = po?['cardName'] ?? '';
     return Scaffold(
       appBar: const HeaderApp(title: "GRPO"),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: bgColor,
-        padding: AppStyles.paddingContainer,
-        child: Column(
-          children: [
-            buildTextFieldRow(
-              labelText: 'Doc No.',
-              hintText: 'Doc No.',
-              valueQR: docNum,
-            ),
-            DateInput(
-              postDay: docDate,
-              controller: _dateController,
-            ),
-            buildTextFieldRow(
-              labelText: 'Vendor Code',
-              hintText: 'Vendor Code',
-              valueQR: cardCode,
-            ),
-            buildTextFieldRow(
-              labelText: 'Vendor Name',
-              hintText: 'Vendor Name',
-              valueQR: cardName,
-            ),
-            buildTextFieldRow(
-              labelText: 'Remake',
-              isEnable: true,
-              hintText: 'Remake here',
-              icon: Icons.edit,
-              controller: _commentController,
-            ),
-            if (lines.isNotEmpty)
-              ListItems(
-                listItems: lines,
-                onTapItem: (index) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GrpoDetail(
-                        docEntry: lines[index]['docEntry']?.toString() ?? '',
-                        lineNum: lines[index]['lineNum']?.toString() ?? '',
-                        itemCode: lines[index]['itemCode']?.toString() ?? '',
-                        description:
-                            lines[index]['itemDescription']?.toString() ?? '',
-                        whse: lines[index]['warehouseCode']?.toString() ?? '',
-                        slYeuCau: lines[index]['quantity']?.toString() ?? '',
-                        slThucTe: lines[index]['SlThucTe']?.toString() ?? '',
-                        batch: lines[index]['Batch']?.toString() ?? '',
-                        uoMCode: lines[index]['UomCode']?.toString() ?? '',
-                        remake: lines[index]['remake']?.toString() ?? '',
-                      ),
+      body: _isLoading
+          ? const CustomLoading()
+          : SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
+                color: bgColor,
+                padding: AppStyles.paddingContainer,
+                child: Column(
+                  children: [
+                    buildTextFieldRow(
+                      labelText: 'Doc No.',
+                      hintText: 'Doc No.',
+                      valueQR: docNum,
                     ),
-                  );
-                },
-                labelsAndChildren: const [
-                  {'label': 'DocNo', 'child': 'docNum'},
-                  {'label': 'Code', 'child': 'itemCode'},
-                  {'label': 'Name', 'child': 'itemDescription'},
-                  {'label': 'SlYeuCau', 'child': 'quantity'},
-                ],
+                    DateInput(
+                      controller: _dateController,
+                    ),
+                    buildTextFieldRow(
+                      labelText: 'Vendor Code',
+                      hintText: 'Vendor Code',
+                      valueQR: cardCode,
+                    ),
+                    buildTextFieldRow(
+                      labelText: 'Vendor Name',
+                      hintText: 'Vendor Name',
+                      valueQR: cardName,
+                    ),
+                    buildTextFieldRow(
+                      labelText: 'Remake',
+                      isEnable: true,
+                      hintText: 'Remake here',
+                      icon: Icons.edit,
+                      controller: _commentController,
+                    ),
+                    if (lines.isNotEmpty)
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height *
+                            0.5, // Adjust as needed
+                        child: ListItems(
+                          listItems: lines,
+                          onTapItem: (index) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GrpoDetail(
+                                  docEntry:
+                                      lines[index]['docEntry']?.toString() ??
+                                          '',
+                                  lineNum:
+                                      lines[index]['lineNum']?.toString() ?? '',
+                                  itemCode:
+                                      lines[index]['itemCode']?.toString() ??
+                                          '',
+                                  description: lines[index]['itemDescription']
+                                          ?.toString() ??
+                                      '',
+                                  whse: lines[index]['warehouseCode']
+                                          ?.toString() ??
+                                      '',
+                                  slYeuCau:
+                                      lines[index]['quantity']?.toString() ??
+                                          '',
+                                  slThucTe:
+                                      lines[index]['SlThucTe']?.toString() ??
+                                          '',
+                                  batch:
+                                      lines[index]['Batch']?.toString() ?? '',
+                                  uoMCode:
+                                      lines[index]['UomCode']?.toString() ?? '',
+                                  remake:
+                                      lines[index]['remake']?.toString() ?? '',
+                                ),
+                              ),
+                            );
+                          },
+                          labelsAndChildren: const [
+                            {'label': 'DocNo', 'child': 'docNum'},
+                            {'label': 'Code', 'child': 'itemCode'},
+                            {'label': 'Name', 'child': 'itemDescription'},
+                            {'label': 'SlYeuCau', 'child': 'quantity'},
+                          ],
+                        ),
+                      ),
+                    Container(
+                      width: double.infinity,
+                      margin: AppStyles.marginButton,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CustomButton(
+                            text: 'Add to Sap',
+                            onPressed: _postPoToGrpo,
+                          ),
+                          CustomButton(
+                            text: 'POST',
+                            onPressed: () async {},
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            Container(
-              width: double.infinity,
-              margin: AppStyles.marginButton,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CustomButton(
-                    text: 'Add to Sap',
-                    onPressed: _postPoToGrpo,
-                  ),
-                  CustomButton(
-                    text: 'POST',
-                    onPressed: () async {},
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
+            ),
     );
   }
 }

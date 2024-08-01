@@ -1,6 +1,5 @@
 // lib/fetch_data.dart
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_code/component/dialog.dart';
@@ -222,39 +221,6 @@ Future<String?> getSessionId() async {
   final prefs = await SharedPreferences.getInstance();
   return prefs.getString('sessionId');
 }
-
-// ===================================================================================
-//                              Login to Sap
-// ===================================================================================
-// Future<void> loginSap(Map<String, dynamic> data, BuildContext context) async {
-//   const String url = '$serverIpSap/Login';
-//   try {
-//     final response = await http.post(
-//       Uri.parse(url),
-//       headers: <String, String>{
-//         'Content-Type': 'application/json; charset=UTF-8',
-//       },
-//       body: jsonEncode(data),
-//     );
-
-//     if (response.statusCode == 200) {
-//       final responseData = jsonDecode(response.body);
-//       final sessionId = responseData['SessionId'];
-
-//       print('Session ID: $sessionId');
-
-//       await saveSessionId(sessionId);
-
-//       CustomDialog.showDialog(context, 'Đăng nhập thành công', 'success');
-//     } else {
-//       print('Failed to log in. Status code: ${response.statusCode}');
-//       print('Response body: ${response.body}');
-//       CustomDialog.showDialog(context, 'Đăng nhập thất bại', 'error');
-//     }
-//   } catch (e) {
-//     print('Error during login: $e');
-//   }
-// }
 
 // ===================================================================================
 //                              Fetch data of purchase order

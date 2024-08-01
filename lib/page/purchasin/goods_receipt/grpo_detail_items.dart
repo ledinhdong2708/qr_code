@@ -70,7 +70,7 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderApp(title: "GRPO - Detail"),
+      appBar: const HeaderApp(title: "GRPO - Detail -Item"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -78,48 +78,54 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
         padding: AppStyles.paddingContainer,
         child: ListView(
           children: [
-            buildTextFieldRow(
-              controller: itemCodeController,
-              labelText: 'Item Code:',
-              hintText: 'Item Code',
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  buildTextFieldRow(
+                    controller: itemCodeController,
+                    labelText: 'Item Code:',
+                    hintText: 'Item Code',
+                  ),
+                  buildTextFieldRow(
+                    controller: descriptionController,
+                    labelText: 'Item Name:',
+                    hintText: 'Item Name',
+                  ),
+                  buildTextFieldRow(
+                    controller: slThucTeController,
+                    labelText: 'Quantity:',
+                    hintText: 'Quantity',
+                  ),
+                  buildTextFieldRow(
+                    controller: whseController,
+                    labelText: 'Whse:',
+                    hintText: 'Whse',
+                  ),
+                  buildTextFieldRow(
+                    controller: uoMCodeController,
+                    labelText: 'UoM Code:',
+                    hintText: 'UoMCode',
+                  ),
+                  buildTextFieldRow(
+                    controller: batchController,
+                    labelText: 'Số Batch:',
+                    hintText: 'Batch',
+                  ),
+                  buildTextFieldRow(
+                    controller: remakeController,
+                    labelText: 'Số kiện:',
+                    hintText: 'Số kiện',
+                  ),
+                  const SizedBox(height: 20),
+                  QrImageView(
+                    data: widget.batch,
+                    version: QrVersions.auto,
+                    size: 200.0,
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
-            buildTextFieldRow(
-              controller: descriptionController,
-              labelText: 'Item Name:',
-              hintText: 'Item Name',
-            ),
-            buildTextFieldRow(
-              controller: slThucTeController,
-              labelText: 'Quantity:',
-              hintText: 'Quantity',
-            ),
-            buildTextFieldRow(
-              controller: whseController,
-              labelText: 'Whse:',
-              hintText: 'Whse',
-            ),
-            buildTextFieldRow(
-              controller: uoMCodeController,
-              labelText: 'UoM Code:',
-              hintText: 'UoMCode',
-            ),
-            buildTextFieldRow(
-              controller: batchController,
-              labelText: 'Số Batch:',
-              hintText: 'Batch',
-            ),
-            buildTextFieldRow(
-              controller: remakeController,
-              labelText: 'Số kiện:',
-              hintText: 'Số kiện',
-            ),
-            const SizedBox(height: 20),
-            QrImageView(
-              data: widget.batch,
-              version: QrVersions.auto,
-              size: 200.0,
-            ),
-            const SizedBox(height: 20),
             Align(
               alignment: Alignment.bottomCenter,
               child: Row(
