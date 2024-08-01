@@ -76,9 +76,9 @@ class _ListItemsState extends State<ListItems> {
           return widget.isLoading
               ? const Center(child: CircularProgressIndicator())
               : TextButton(
-            onPressed: widget.onLoadMore,
-            child: const Text('Load More'),
-          );
+                  onPressed: widget.onLoadMore,
+                  child: const Text('Load More'),
+                );
         }
 
         var item = _filteredItems[index];
@@ -143,9 +143,7 @@ class _ListItemsState extends State<ListItems> {
               onChanged: _filterItems,
             ),
           ),
-        widget.enableExpansion
-            ? Expanded(child: listView)
-            : listView,
+        widget.enableExpansion ? Expanded(child: listView) : listView,
       ],
     );
   }

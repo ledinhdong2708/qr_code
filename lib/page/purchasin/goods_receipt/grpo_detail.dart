@@ -64,7 +64,6 @@ class _GrpoDetailState extends State<GrpoDetail> {
     slThucTeController = TextEditingController(text: widget.slThucTe);
     uoMCodeController = TextEditingController(text: widget.uoMCode);
     remakeController = TextEditingController(text: widget.remake);
-
     _fetchData();
   }
 
@@ -190,14 +189,6 @@ class _GrpoDetailState extends State<GrpoDetail> {
                     {'label': 'Remake', 'child': 'Remake'},
                     // Add more as needed
                   ],
-                  // labelName1: 'ID',
-                  // labelName2: 'Batch',
-                  // labelName3: 'SlThucTe',
-                  // labelName4: 'Remake',
-                  // listChild1: 'ID',
-                  // listChild2: 'Batch',
-                  // listChild3: 'SlThucTe',
-                  // listChild4: 'Remake',
                 ),
               Container(
                 width: double.infinity,

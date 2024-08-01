@@ -5,6 +5,7 @@ import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/print_page.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class GrpoDetailItems extends StatefulWidget {
   final String docEntry;
@@ -44,8 +45,6 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
   late TextEditingController descriptionController;
   late TextEditingController whseController;
   late TextEditingController uoMCodeController;
-
-  // final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
@@ -114,9 +113,13 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
               labelText: 'Remake',
               hintText: 'Remake',
             ),
-            Flexible(
-              child: Container(),
+            const SizedBox(height: 20),
+            QrImageView(
+              data: widget.batch,
+              version: QrVersions.auto,
+              size: 200.0,
             ),
+            const SizedBox(height: 20),
             Align(
               alignment: Alignment.bottomCenter,
               child: Row(
@@ -144,14 +147,6 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
                           builder: (_) => PrintPage(data: data),
                         ),
                       );
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => PrintPage(
-                      //       data: data
-                      //     ),
-                      //   ),
-                      // );
                     },
                   ),
                 ],
