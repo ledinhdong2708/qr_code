@@ -194,7 +194,7 @@ class _GrpoState extends State<Grpo> {
                   hintText: 'Remarks here',
                   icon: Icons.edit,
                   // valueQR: remark,
-                  controller: remakeController),
+                  controller: _remarksController),
               if (DocumentLines.isNotEmpty)
                 ListItems(
                   listItems: DocumentLines,

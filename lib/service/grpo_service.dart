@@ -4,8 +4,9 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_code/component/dialog.dart';
-import 'package:qr_code/constants/urlApi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../constants/urlAPI.dart';
 
 Future<void> postGrpoItemsData(
     Map<String, dynamic> data, BuildContext context) async {

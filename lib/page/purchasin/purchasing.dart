@@ -24,8 +24,8 @@ class Purchasing extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const Grpo(qrData: "31")),
+                  // MaterialPageRoute(
+                  //     builder: (context) => const Grpo(qrData: "31")),
                   // MaterialPageRoute(
                   //     builder: (context) => const Grpo(qrData: "1")
                   // ),

@@ -2,10 +2,10 @@
 // const serverIp = "http://192.168.50.249";
 // const serverIp = "http://127.0.0.1:1600";
 // const serverIp = "http://127.0.0.1:1600";
-const serverIp = "http://192.168.50.250:1600";
-const serverIpSap = "http://192.168.50.250:50001/b1s/v1";
+const serverIp = "http://192.168.1.21:1600";
+const serverIpSap = "http://192.168.1.21:50001/b1s/v1";
 
-const api = 'http://192.168.50.250:1600/api/v1';
+const api = 'http://192.168.1.21:1600/api/v1';
 const apilogin = '$api/login';
 const apiUser = '$api/users';
 const apiCsharp = "http://192.168.50.250:5232";
