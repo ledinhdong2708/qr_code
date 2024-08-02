@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/list_items.dart';
+import 'package:qr_code/component/loading.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo_detail.dart';
 import 'package:qr_code/service/grpo_service.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:intl/intl.dart'; // Import intl for date formatting
 
 class Grpo extends StatefulWidget {
   final String qrData;
@@ -21,41 +22,32 @@ class Grpo extends StatefulWidget {
 }
 
 class _GrpoState extends State<Grpo> {
-  final TextEditingController _remarksController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   Barcode? result;
   List<dynamic> grpo = [];
-  Map<String, dynamic>? opor;
   Map<String, dynamic>? po;
-  List<dynamic> opdn = [];
-  List<dynamic> DocumentLines = [];
-
+  List<dynamic> lines = [];
+  List<dynamic> batches = [];
+  bool _isLoading = true;
   late TextEditingController vendorCodeController;
   late TextEditingController vendorNameController;
   late TextEditingController postDayController;
   late TextEditingController docNoController;
   late TextEditingController docEntryController;
   late TextEditingController baseEntryController;
-  late TextEditingController remakeController;
 
   @override
   void initState() {
     super.initState();
-
+    vendorCodeController = TextEditingController();
+    vendorNameController = TextEditingController();
+    postDayController = TextEditingController();
+    docNoController = TextEditingController();
+    docEntryController = TextEditingController();
+    baseEntryController = TextEditingController();
     _fetchGrpoData();
-    _loginSap();
-  }
-
-  Future<void> _fetchOpdnData() async {
-    var data = await fetchOpdnData(widget.qrData);
-    if (data != null && data['data'] is List) {
-      setState(() {
-        opdn = data['data'];
-        print("Fetched opdn data: $opdn");
-      });
-    } else {
-      print("No data or data is not in the expected format");
-    }
+    _fetchPoData();
   }
 
   Future<void> _fetchGrpoData() async {
@@ -67,7 +59,6 @@ class _GrpoState extends State<Grpo> {
             vendorCodeController.text = grpo[0]['vendorcode'];
             vendorNameController.text = grpo[0]['vendorname'];
             postDayController.text = grpo[0]['postday'];
-            _remarksController.text = grpo[0]['remake'];
             docEntryController.text = grpo[0]['BaseEntry'];
           }
         });
@@ -82,7 +73,8 @@ class _GrpoState extends State<Grpo> {
     postDayController.dispose();
     docNoController.dispose();
     docEntryController.dispose();
-    remakeController.dispose();
+    _commentController.dispose();
+    _dateController.dispose();
     baseEntryController.dispose();
     super.dispose();
   }
@@ -91,32 +83,46 @@ class _GrpoState extends State<Grpo> {
     try {
       if (po != null) {
         final grpoData = {
-          'DocDate': po?['DocDate'],
-          'CardCode': po?['CardCode'],
-          'CardName': po?['CardName'],
-          'Comments': po?['Comments'],
-          'DocumentLines': []
+          'CardCode': po?['cardCode'],
+          'CardName': po?['cardName'],
+          'DocDate': _dateController.text,
+          'Comments': _commentController.text,
+          'Lines': []
         };
 
-        if (DocumentLines.isNotEmpty) {
-          for (var item in DocumentLines) {
+        if (lines.isNotEmpty) {
+          for (var item in lines) {
             final lineData = {
-              'ItemCode': item['ItemCode'],
-              'ItemDescription': item['ItemDescription'],
-              'Quantity': item['Quantity'],
-              'BaseEntry': item['DocEntry'],
-              'BaseLine': item['LineNum'],
-              'BaseType': 22
+              'ItemCode': item['itemCode'],
+              'ItemDescription': item['itemDescription'],
+              'Quantity': item['quantity'],
+              'BaseEntry': po?['docEntry'] ?? 0,
+              'BaseLine': item['lineNum'] ?? 0,
+              'WarehouseCode': item['warehouseCode'] ?? '',
+              'BaseType': 22,
+              'Batches': []
             };
-            grpoData['DocumentLines'].add(lineData);
+
+            final grpoItemsDetailForLine = await fetchGrpoItemsDetailData(
+                widget.qrData, item["lineNum"].toString());
+
+            if (grpoItemsDetailForLine != null &&
+                grpoItemsDetailForLine['data'] is List) {
+              for (var batch in grpoItemsDetailForLine['data']) {
+                final batchData = {
+                  'ItemCode': batch["ItemCode"],
+                  'BatchNumber': batch["Batch"],
+                  'Quantity': batch["SlThucTe"]
+                };
+                (lineData['Batches'] as List).add(batchData);
+              }
+            }
+
+            (grpoData['Lines'] as List).add(lineData);
           }
 
-          print('Dữ liệu gửi đi: $grpoData');
-
           await postPoToGrpo(grpoData, context);
-        } else {
-          print('DocumentLines là null');
-        }
+        } else {}
       } else {
         print('Dữ liệu đơn hàng (po) là null');
       }
@@ -125,140 +131,135 @@ class _GrpoState extends State<Grpo> {
     }
   }
 
-// Fetch Po Data
   Future<void> _fetchPoData() async {
     final data = await fetchPoData(widget.qrData, context);
     if (data != null) {
       setState(() {
+        _isLoading = false;
         po = data;
-        DocumentLines = po?["DocumentLines"];
+        lines = po?["lines"] ?? [];
+        if (po?['docDate'] != null) {
+          _dateController.text =
+              DateFormat('yyyy-MM-dd').format(DateTime.parse(po?['docDate']));
+        }
       });
     } else {
       print("Sai");
     }
   }
 
-// Login to sap
-  Future<void> _loginSap() async {
-    try {
-      final data = {
-        'CompanyDB': "DB_DEMO",
-        'UserName': "manager",
-        'Password': "manager",
-      };
-      await loginSap(data, context);
-      await _fetchPoData();
-    } catch (e) {
-      print('Error during login and data fetch: $e');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Header PO in Sap
-    var docNum = po?['DocNum']?.toString() ?? '';
-    var docDate = po?['DocDate']?.toString() ?? '';
-    var cardCode = po?['CardCode'] ?? '';
-    var cardName = po?['CardName'] ?? '';
+    var docNum = po?['docNum']?.toString() ?? '';
+    var cardCode = po?['cardCode'] ?? '';
+    var cardName = po?['cardName'] ?? '';
     return Scaffold(
-        appBar: const HeaderApp(title: "GRPO"),
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: bgColor,
-          padding: AppStyles.paddingContainer,
-          child: ListView(
-            children: [
-              buildTextFieldRow(
-                labelText: 'Doc No:',
-                hintText: 'Doc No',
-                valueQR: docNum,
-              ),
-              DateInput(
-                postDay: docDate,
-                controller: _dateController,
-              ),
-              buildTextFieldRow(
-                labelText: 'Vendor:',
-                hintText: 'Vendor Code',
-                valueQR: cardCode,
-              ),
-              buildTextFieldRow(
-                labelText: 'Name:',
-                hintText: 'Vendor Name',
-                valueQR: cardName,
-              ),
-              buildTextFieldRow(
-                  labelText: 'Remarks:',
-                  isEnable: true,
-                  hintText: 'Remarks here',
-                  icon: Icons.edit,
-                  // valueQR: remark,
-                  controller: _remarksController),
-              if (DocumentLines.isNotEmpty)
-                ListItems(
-                  listItems: DocumentLines,
-                  onTapItem: (index) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GrpoDetail(
-                          docEntry:
-                              DocumentLines[index]['DocEntry']?.toString() ??
-                                  '',
-                          lineNum:
-                              DocumentLines[index]['LineNum']?.toString() ?? '',
-                          itemCode:
-                              DocumentLines[index]['ItemCode']?.toString() ??
-                                  '',
-                          description: DocumentLines[index]['ItemDescription']
-                                  ?.toString() ??
-                              '',
-                          whse:
-                              DocumentLines[index]['WhsCode']?.toString() ?? '',
-                          slYeuCau:
-                              DocumentLines[index]['Quantity']?.toString() ??
-                                  '',
-                          slThucTe:
-                              DocumentLines[index]['SlThucTe']?.toString() ??
-                                  '',
-                          batch:
-                              DocumentLines[index]['Batch']?.toString() ?? '',
-                          uoMCode:
-                              DocumentLines[index]['UomCode']?.toString() ?? '',
-                          remake:
-                              DocumentLines[index]['remake']?.toString() ?? '',
+      appBar: const HeaderApp(title: "GRPO"),
+      body: _isLoading
+          ? const CustomLoading()
+          : SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
+                color: bgColor,
+                padding: AppStyles.paddingContainer,
+                child: Column(
+                  children: [
+                    buildTextFieldRow(
+                      labelText: 'Doc No.',
+                      hintText: 'Doc No.',
+                      valueQR: docNum,
+                    ),
+                    DateInput(
+                      controller: _dateController,
+                    ),
+                    buildTextFieldRow(
+                      labelText: 'Vendor Code',
+                      hintText: 'Vendor Code',
+                      valueQR: cardCode,
+                    ),
+                    buildTextFieldRow(
+                      labelText: 'Vendor Name',
+                      hintText: 'Vendor Name',
+                      valueQR: cardName,
+                    ),
+                    buildTextFieldRow(
+                      labelText: 'Remake',
+                      isEnable: true,
+                      hintText: 'Remake here',
+                      icon: Icons.edit,
+                      controller: _commentController,
+                    ),
+                    if (lines.isNotEmpty)
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height *
+                            0.5, // Adjust as needed
+                        child: ListItems(
+                          listItems: lines,
+                          onTapItem: (index) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GrpoDetail(
+                                  docEntry:
+                                      lines[index]['docEntry']?.toString() ??
+                                          '',
+                                  lineNum:
+                                      lines[index]['lineNum']?.toString() ?? '',
+                                  itemCode:
+                                      lines[index]['itemCode']?.toString() ??
+                                          '',
+                                  description: lines[index]['itemDescription']
+                                          ?.toString() ??
+                                      '',
+                                  whse: lines[index]['warehouseCode']
+                                          ?.toString() ??
+                                      '',
+                                  slYeuCau:
+                                      lines[index]['quantity']?.toString() ??
+                                          '',
+                                  slThucTe:
+                                      lines[index]['SlThucTe']?.toString() ??
+                                          '',
+                                  batch:
+                                      lines[index]['Batch']?.toString() ?? '',
+                                  uoMCode:
+                                      lines[index]['UomCode']?.toString() ?? '',
+                                  remake:
+                                      lines[index]['remake']?.toString() ?? '',
+                                ),
+                              ),
+                            );
+                          },
+                          labelsAndChildren: const [
+                            {'label': 'DocNo', 'child': 'docNum'},
+                            {'label': 'Code', 'child': 'itemCode'},
+                            {'label': 'Name', 'child': 'itemDescription'},
+                            {'label': 'SlYeuCau', 'child': 'quantity'},
+                          ],
                         ),
                       ),
-                    );
-                  },
-                  labelsAndChildren: const [
-                    {'label': 'DocNo', 'child': 'DocEntry'},
-                    {'label': 'Code', 'child': 'ItemCode'},
-                    {'label': 'Name', 'child': 'Dscription'},
-                    {'label': 'SlYeuCau', 'child': 'OpenQty'},
+                    Container(
+                      width: double.infinity,
+                      margin: AppStyles.marginButton,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CustomButton(
+                            text: 'Add to Sap',
+                            onPressed: _postPoToGrpo,
+                          ),
+                          CustomButton(
+                            text: 'POST',
+                            onPressed: () async {},
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              Container(
-                width: double.infinity,
-                margin: AppStyles.marginButton,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CustomButton(
-                      text: 'Add to Sap',
-                      onPressed: _postPoToGrpo,
-                    ),
-                    CustomButton(
-                      text: 'POST',
-                      onPressed: () async {},
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ));
+              ),
+            ),
+    );
   }
 }

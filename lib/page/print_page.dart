@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:bluetooth_print/bluetooth_print.dart';
 import 'package:bluetooth_print/bluetooth_print_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PrintPage extends StatefulWidget {
   final Map<String, String> data;
@@ -25,6 +23,12 @@ class _PrintPageState extends State<PrintPage> {
   void initState() {
     super.initState();
     _startScan();
+    _loadSavedDevice();
+  }
+
+  Future<void> _saveDeviceAddress(String address) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('saved_device_address', address);
   }
 
   void _startScan() {
@@ -45,6 +49,21 @@ class _PrintPageState extends State<PrintPage> {
     });
   }
 
+  Future<void> _loadSavedDevice() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedAddress = prefs.getString('saved_device_address');
+
+    if (savedAddress != null) {
+      // Tìm thiết bị có địa chỉ này
+      for (BluetoothDevice device in _devices) {
+        if (device.address == savedAddress) {
+          _connect(device);
+          break;
+        }
+      }
+    }
+  }
+
   void _connect(BluetoothDevice device) async {
     setState(() {
       _status = 'Connecting...';
@@ -56,6 +75,7 @@ class _PrintPageState extends State<PrintPage> {
         _selectedDevice = device;
         _status = 'Connected';
       });
+      await _saveDeviceAddress(device.address ?? '');
     } else {
       setState(() {
         _status = 'Connection failed';
@@ -63,9 +83,16 @@ class _PrintPageState extends State<PrintPage> {
     }
   }
 
+  Future<void> _removeSavedDevice() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('saved_device_address');
+  }
+
   String _removeDiacritics(String str) {
-    const withDia = 'áàảãạăắằẳẵặâấầẩẫậđéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬĐÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴ';
-    const withoutDia = 'aaaaaăăăăăâââââdeeeeeeeeeeeiiiiiioooooôôôôôơơơơơuuuuuưưưưưyyyyyAAAAAĂĂĂĂĂÂÂÂÂÂDEEEEEEEEEEEIIIIIIOOOOOÔÔÔÔÔƠƠƠƠƠUUUUƯƯƯƯƯYYYYY';
+    const withDia =
+        'áàảãạăắằẳẵặâấầẩẫậđéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬĐÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴ';
+    const withoutDia =
+        'aaaaaăăăăăâââââdeeeeeeeeeeeiiiiiioooooôôôôôơơơơơuuuuuưưưưưyyyyyAAAAAĂĂĂĂĂÂÂÂÂÂDEEEEEEEEEEEIIIIIIOOOOOÔÔÔÔÔƠƠƠƠƠUUUUƯƯƯƯƯYYYYY';
 
     for (int i = 0; i < str.length; i++) {
       int index = withDia.indexOf(str[i]);
@@ -140,7 +167,8 @@ class _PrintPageState extends State<PrintPage> {
 
       list.add(LineText(
         type: LineText.TYPE_QRCODE,
-        content: 'ID: ${widget.data['id']}, DocEntry: ${widget.data['docEntry']}, LineNum: ${widget.data['lineNum']}',
+        content:
+            'ID: ${widget.data['id']}, DocEntry: ${widget.data['docEntry']}, LineNum: ${widget.data['lineNum']}',
         align: LineText.ALIGN_CENTER,
         linefeed: 1,
         size: 1,

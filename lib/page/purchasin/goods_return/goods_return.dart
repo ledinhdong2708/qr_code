@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
@@ -8,12 +6,8 @@ import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
-import 'package:qr_code/routes/routes.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:http/http.dart' as http;
-import '../../../component/dialog.dart';
 import '../../../component/list_items.dart';
-import '../../../constants/urlAPI.dart';
 import '../../../service/goodreturn_service.dart';
 import 'goods_return_detail.dart';
 
@@ -104,34 +98,34 @@ class _GoodsReturnState extends State<GoodsReturn> {
                 controller: _remakeController),
             if (prr1.isNotEmpty)
               ListItems(
-                  listItems: prr1,
-                  onTapItem: (index) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GoodsReturnDetail(
-                          docEntry: prr1[index]['DocEntry'],
-                          lineNum: prr1[index]['LineNum'],
-                          itemCode: prr1[index]['ItemCode'],
-                          description: prr1[index]['Dscription'],
-                          whse: prr1[index]['WhsCode'],
-                          slYeuCau: prr1[index]['OpenQty'].toString(),
-                          slThucTe: prr1[index]['SlThucTe'].toString(),
-                          batch: prr1[index]['Batch'].toString(),
-                          uoMCode: prr1[index]['UomCode'].toString(),
-                          remake: prr1[index]['remake'].toString(),
-                        ),
+                listItems: prr1,
+                onTapItem: (index) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GoodsReturnDetail(
+                        docEntry: prr1[index]['DocEntry'],
+                        lineNum: prr1[index]['LineNum'],
+                        itemCode: prr1[index]['ItemCode'],
+                        description: prr1[index]['Dscription'],
+                        whse: prr1[index]['WhsCode'],
+                        slYeuCau: prr1[index]['OpenQty'].toString(),
+                        slThucTe: prr1[index]['SlThucTe'].toString(),
+                        batch: prr1[index]['Batch'].toString(),
+                        uoMCode: prr1[index]['UomCode'].toString(),
+                        remake: prr1[index]['remake'].toString(),
                       ),
-                    );
-                  },
-                  labelsAndChildren: const [
-                    {'label': 'ItemCode', 'child': 'ItemCode'},
-                    {'label': 'Name', 'child': 'Dscription'},
-                    {'label': 'Whse', 'child': 'WhsCode'},
-                    {'label': 'Quantity', 'child': 'OpenQty'},
-                    {'label': 'UoM Code', 'child': 'UomCode'},
-                    // Add more as needed
-                  ],
+                    ),
+                  );
+                },
+                labelsAndChildren: const [
+                  {'label': 'ItemCode', 'child': 'ItemCode'},
+                  {'label': 'Name', 'child': 'Dscription'},
+                  {'label': 'Whse', 'child': 'WhsCode'},
+                  {'label': 'Quantity', 'child': 'OpenQty'},
+                  {'label': 'UoM Code', 'child': 'UomCode'},
+                  // Add more as needed
+                ],
               ),
             Container(
               width: double.infinity,

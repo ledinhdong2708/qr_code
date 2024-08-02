@@ -1,6 +1,5 @@
 // lib/fetch_data.dart
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_code/component/dialog.dart';
@@ -35,6 +34,7 @@ Future<void> postGrpoItemsData(
 Future<void> postGrpoItemsDetailData(Map<String, dynamic> data,
     BuildContext context, String docentry, String linenum) async {
   final String url = '$serverIp/api/v1/grpoitemsdetail/$docentry/$linenum';
+  print(url);
   try {
     var response = await http.post(
       Uri.parse(url),
@@ -224,39 +224,6 @@ Future<String?> getSessionId() async {
 }
 
 // ===================================================================================
-//                              Login to Sap
-// ===================================================================================
-Future<void> loginSap(Map<String, dynamic> data, BuildContext context) async {
-  const String url = '$serverIpSap/Login';
-  try {
-    final response = await http.post(
-      Uri.parse(url),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(data),
-    );
-
-    if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
-      final sessionId = responseData['SessionId'];
-
-      print('Session ID: $sessionId');
-
-      await saveSessionId(sessionId);
-
-      CustomDialog.showDialog(context, 'Đăng nhập thành công', 'success');
-    } else {
-      print('Failed to log in. Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      CustomDialog.showDialog(context, 'Đăng nhập thất bại', 'error');
-    }
-  } catch (e) {
-    print('Error during login: $e');
-  }
-}
-
-// ===================================================================================
 //                              Fetch data of purchase order
 // ===================================================================================
 Future<Map<String, dynamic>?> fetchPoData(
@@ -271,7 +238,7 @@ Future<Map<String, dynamic>?> fetchPoData(
       return null;
     }
   }
-  final url = '$serverIpSap/PurchaseOrders($resultCode)';
+  final url = '$serverIpSap/SAP_PurchaseOrders/$resultCode';
   try {
     final response = await http.get(
       Uri.parse(url),
@@ -309,18 +276,17 @@ Future<void> postPoToGrpo(
       return;
     }
   }
-  const String url = '$serverIpSap/PurchaseDeliveryNotes';
+  const String url = '$serverIpSap/SAP_PurchaseDeliveryNotes';
   try {
     var response = await http.post(
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Cookie': "B1SESSION=$sessionId",
       },
       body: jsonEncode(data),
     );
 
-    if (response.statusCode == 200 && response.statusCode == 201) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       CustomDialog.showDialog(context, 'Cập nhật thành công', 'success');
     } else {
       print('Failed to send data. Status code: ${response.statusCode}');

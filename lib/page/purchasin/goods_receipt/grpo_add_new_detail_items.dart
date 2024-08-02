@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
-import 'package:qr_code/page/print_page.dart';
 import 'package:qr_code/service/grpo_service.dart';
 
 class GrpoAddNewDetailItems extends StatefulWidget {
@@ -90,68 +87,64 @@ class _GrpoAddNewDetailItemsState extends State<GrpoAddNewDetailItems> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const HeaderApp(title: "GRPO - Detail"),
-      body:
-         Container(
-          height: double.infinity,
-          width: double.infinity,
-          color: bgColor,
-          padding: AppStyles.paddingContainer,
-          child: ListView(
-            children: [
-              buildTextFieldRow(
-                controller: itemCodeController,
-                labelText: 'Item Code:',
-                hintText: 'Item Code',
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        color: bgColor,
+        padding: AppStyles.paddingContainer,
+        child: ListView(
+          children: [
+            buildTextFieldRow(
+              controller: itemCodeController,
+              labelText: 'Item Code:',
+              hintText: 'Item Code',
+            ),
+            buildTextFieldRow(
+              controller: descriptionController,
+              labelText: 'Item Name:',
+              hintText: 'Item Name',
+            ),
+            buildTextFieldRow(
+                controller: slThucTeController,
+                labelText: 'Quantity:',
+                hintText: 'Quantity',
+                isEnable: true),
+            buildTextFieldRow(
+              controller: whseController,
+              labelText: 'Whse:',
+              hintText: 'Whse',
+            ),
+            buildTextFieldRow(
+              controller: uoMCodeController,
+              labelText: 'UoM Code:',
+              hintText: 'UoMCode',
+            ),
+            buildTextFieldRow(
+                controller: batchController,
+                labelText: 'Số Batch:',
+                hintText: 'Batch'),
+            buildTextFieldRow(
+                controller: remakeController,
+                labelText: 'Số kiện:',
+                hintText: 'Số kiện',
+                isEnable: true),
+            const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomButton(
+                    text: 'OK',
+                    onPressed: _submitData,
+                  ),
+                ],
               ),
-              buildTextFieldRow(
-                controller: descriptionController,
-                labelText: 'Item Name:',
-                hintText: 'Item Name',
-              ),
-              buildTextFieldRow(
-                  controller: slThucTeController,
-                  labelText: 'Quantity:',
-                  hintText: 'Quantity',
-                  isEnable: true
-              ),
-              buildTextFieldRow(
-                controller: whseController,
-                labelText: 'Whse:',
-                hintText: 'Whse',
-              ),
-              buildTextFieldRow(
-                controller: uoMCodeController,
-                labelText: 'UoM Code:',
-                hintText: 'UoMCode',
-              ),
-              buildTextFieldRow(
-                  controller: batchController,
-                  labelText: 'Số Batch:',
-                  hintText: 'Batch'
-              ),
-              buildTextFieldRow(
-                  controller: remakeController,
-                  labelText: 'Số kiện:',
-                  hintText: 'Số kiện',
-                  isEnable: true
-              ),
-              const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CustomButton(
-                      text: 'OK',
-                      onPressed: _submitData,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }

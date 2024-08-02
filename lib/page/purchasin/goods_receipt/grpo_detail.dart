@@ -65,7 +65,6 @@ class _GrpoDetailState extends State<GrpoDetail> {
     slThucTeController = TextEditingController(text: '0');
     uoMCodeController = TextEditingController(text: widget.uoMCode);
     remakeController = TextEditingController(text: widget.remake);
-
     _fetchData();
   }
 
