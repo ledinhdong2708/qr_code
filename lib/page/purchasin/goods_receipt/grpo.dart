@@ -157,12 +157,11 @@ class _GrpoState extends State<Grpo> {
       appBar: const HeaderApp(title: "GRPO"),
       body: _isLoading
           ? const CustomLoading()
-          : SingleChildScrollView(
-              child: Container(
+          : Container(
                 width: double.infinity,
                 color: bgColor,
                 padding: AppStyles.paddingContainer,
-                child: Column(
+                child: ListView(
                   children: [
                     buildTextFieldRow(
                       labelText: 'Doc No.',
@@ -190,53 +189,49 @@ class _GrpoState extends State<Grpo> {
                       controller: _commentController,
                     ),
                     if (lines.isNotEmpty)
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height *
-                            0.5, // Adjust as needed
-                        child: ListItems(
-                          listItems: lines,
-                          onTapItem: (index) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => GrpoDetail(
-                                  docEntry:
-                                      lines[index]['docEntry']?.toString() ??
-                                          '',
-                                  lineNum:
-                                      lines[index]['lineNum']?.toString() ?? '',
-                                  itemCode:
-                                      lines[index]['itemCode']?.toString() ??
-                                          '',
-                                  description: lines[index]['itemDescription']
-                                          ?.toString() ??
-                                      '',
-                                  whse: lines[index]['warehouseCode']
-                                          ?.toString() ??
-                                      '',
-                                  slYeuCau:
-                                      lines[index]['quantity']?.toString() ??
-                                          '',
-                                  slThucTe:
-                                      lines[index]['SlThucTe']?.toString() ??
-                                          '',
-                                  batch:
-                                      lines[index]['Batch']?.toString() ?? '',
-                                  uoMCode:
-                                      lines[index]['UomCode']?.toString() ?? '',
-                                  remake:
-                                      lines[index]['remake']?.toString() ?? '',
-                                ),
+                      ListItems(
+                        listItems: lines,
+                        onTapItem: (index) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GrpoDetail(
+                                docEntry:
+                                    lines[index]['docEntry']?.toString() ??
+                                        '',
+                                lineNum:
+                                    lines[index]['lineNum']?.toString() ?? '',
+                                itemCode:
+                                    lines[index]['itemCode']?.toString() ??
+                                        '',
+                                description: lines[index]['itemDescription']
+                                        ?.toString() ??
+                                    '',
+                                whse: lines[index]['warehouseCode']
+                                        ?.toString() ??
+                                    '',
+                                slYeuCau:
+                                    lines[index]['quantity']?.toString() ??
+                                        '',
+                                slThucTe:
+                                    lines[index]['SlThucTe']?.toString() ??
+                                        '',
+                                batch:
+                                    lines[index]['Batch']?.toString() ?? '',
+                                uoMCode:
+                                    lines[index]['UomCode']?.toString() ?? '',
+                                remake:
+                                    lines[index]['remake']?.toString() ?? '',
                               ),
-                            );
-                          },
-                          labelsAndChildren: const [
-                            {'label': 'DocNo', 'child': 'docNum'},
-                            {'label': 'Code', 'child': 'itemCode'},
-                            {'label': 'Name', 'child': 'itemDescription'},
-                            {'label': 'SlYeuCau', 'child': 'quantity'},
-                          ],
-                        ),
+                            ),
+                          );
+                        },
+                        labelsAndChildren: const [
+                          {'label': 'DocNo', 'child': 'docNum'},
+                          {'label': 'Code', 'child': 'itemCode'},
+                          {'label': 'Name', 'child': 'itemDescription'},
+                          {'label': 'SlYeuCau', 'child': 'quantity'},
+                        ],
                       ),
                     Container(
                       width: double.infinity,
@@ -259,7 +254,7 @@ class _GrpoState extends State<Grpo> {
                   ],
                 ),
               ),
-            ),
+
     );
   }
 }

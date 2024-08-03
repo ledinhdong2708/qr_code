@@ -228,23 +228,22 @@ Future<String?> getSessionId() async {
 // ===================================================================================
 Future<Map<String, dynamic>?> fetchPoData(
     String resultCode, BuildContext context) async {
-  String? sessionId = await getSessionId();
-  if (sessionId == null) {
-    print("Session ID is not available. Attempting to login again.");
-
-    sessionId = await getSessionId();
-    if (sessionId == null) {
-      print("Failed to acquire new session ID.");
-      return null;
-    }
-  }
+  // String? sessionId = await getSessionId();
+  // if (sessionId == null) {
+  //   print("Session ID is not available. Attempting to login again.");
+  //
+  //   sessionId = await getSessionId();
+  //   if (sessionId == null) {
+  //     print("Failed to acquire new session ID.");
+  //     return null;
+  //   }
+  // }
   final url = '$serverIpSap/SAP_PurchaseOrders/$resultCode';
   try {
     final response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Cookie': "B1SESSION=$sessionId",
       },
     );
     if (response.statusCode == 200) {
@@ -267,15 +266,15 @@ Future<Map<String, dynamic>?> fetchPoData(
 // ===================================================================================
 Future<void> postPoToGrpo(
     Map<String, dynamic> data, BuildContext context) async {
-  String? sessionId = await getSessionId();
-  if (sessionId == null) {
-    print("Session ID is not available. Attempting to login again.");
-    sessionId = await getSessionId();
-    if (sessionId == null) {
-      print("Failed to acquire new session ID.");
-      return;
-    }
-  }
+  // String? sessionId = await getSessionId();
+  // if (sessionId == null) {
+  //   print("Session ID is not available. Attempting to login again.");
+  //   sessionId = await getSessionId();
+  //   if (sessionId == null) {
+  //     print("Failed to acquire new session ID.");
+  //     return;
+  //   }
+  // }
   const String url = '$serverIpSap/SAP_PurchaseDeliveryNotes';
   try {
     var response = await http.post(
