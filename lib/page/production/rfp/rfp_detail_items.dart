@@ -71,7 +71,7 @@ class _RfpDetailItemsState extends State<RfpDetailItems> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderApp(title: "RFP - Detail"),
+      appBar: const HeaderApp(title: "Receipt from Production - PO Detail"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -90,29 +90,29 @@ class _RfpDetailItemsState extends State<RfpDetailItems> {
               hintText: 'Item Name',
             ),
             buildTextFieldRow(
+              controller: slThucTeController,
+              labelText: 'Quantity:',
+              hintText: 'Quantity',
+            ),
+            buildTextFieldRow(
               controller: whseController,
               labelText: 'Whse:',
               hintText: 'Whse',
             ),
             buildTextFieldRow(
               controller: uoMCodeController,
-              labelText: 'UoMCode:',
+              labelText: 'UoM Code:',
               hintText: 'UoMCode',
             ),
             buildTextFieldRow(
-              controller: slThucTeController,
-              labelText: 'Số lượng thực tế:',
-              hintText: 'Số lượng thực tế',
-            ),
-            buildTextFieldRow(
               controller: batchController,
-              labelText: 'Batch:',
-              hintText: 'Batch',
+              labelText: 'Số Batch:',
+              hintText: 'Số Batch',
             ),
             buildTextFieldRow(
               controller: remarksController,
-              labelText: 'Remarks:',
-              hintText: 'Remarks',
+              labelText: 'Số kiện:',
+              hintText: 'Số kiện',
             ),
             Flexible(
               child: Container(),

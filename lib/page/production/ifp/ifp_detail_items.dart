@@ -150,7 +150,7 @@ class _IfpDetailItemsState extends State<IfpDetailItems> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const HeaderApp(title: "IFP - Details"),
+        appBar: const HeaderApp(title: "Issue for Production - POs"),
         body: Container(
           color: bgColor,
           width: double.infinity,
@@ -223,11 +223,12 @@ class _IfpDetailItemsState extends State<IfpDetailItems> {
                     );
                   },
                   labelsAndChildren: const [
+                    {'label': 'ItemCode', 'child': 'ItemCode'},
+                    {'label': 'Name', 'child': 'ItemName'},
                     {'label': 'Whse', 'child': 'Whse'},
+                    {'label': 'Quantity', 'child': 'SlThucTe'},
+                    {'label': 'UoM Code', 'child': 'UoMCode'},
                     {'label': 'Batch', 'child': 'Batch'},
-                    {'label': 'SlThucTe', 'child': 'SlThucTe'},
-                    {'label': 'Remarks', 'child': 'Remake'},
-                    // Add more as needed
                   ],
                 ),
               Container(

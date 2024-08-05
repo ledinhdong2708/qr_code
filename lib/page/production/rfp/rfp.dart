@@ -50,11 +50,12 @@ class _RfpState extends State<Rfp> {
   @override
   Widget build(BuildContext context) {
     var data = oprr?['data'];
-    var docDate = data != null ? data['DocDate'].toString() : '';
+    DateTime now = DateTime.now();
+    var docDate = data != null ? data['PostDate'].toString() : DateFormat('dd/MM/yyyy').format(now);
     var remark = data != null ? data['remake'] : '';
 
     return Scaffold(
-      appBar: const HeaderApp(title: "RECEIPT FROM PRODUCTION"),
+      appBar: const HeaderApp(title: "Receipt from Production"),
       body: Container(
         width: double.infinity,
         height: double.infinity,

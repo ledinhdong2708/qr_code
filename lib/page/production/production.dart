@@ -56,20 +56,6 @@ class Production extends StatelessWidget {
               // thay đổi lại hình ảnh
               child: card("assets/rfp.png", "Receipt from Production"),
             ),
-            // InkWell(
-            //   onTap: () {
-            //     Navigator.pushNamed(context, Routes.goodsReceipt);
-            //   },
-            //   // thay đổi lại hình ảnh
-            //   child: card("assets/goods-receipt.png", "Goods Receipt"),
-            // ),
-            // InkWell(
-            //   onTap: () {
-            //     Navigator.pushNamed(context, Routes.goodsIssue);
-            //   },
-            //   // thay đổi lại hình ảnh
-            //   child: card("assets/goods-issue.png", "Goods Issue"),
-            // ),
           ],
         ),
       ),

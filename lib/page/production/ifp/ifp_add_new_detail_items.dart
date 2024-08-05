@@ -151,7 +151,7 @@ class _IfpAddNewDetailItemsState extends State<IfpAddNewDetailItems> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: const HeaderApp(title: "IFP - Detail"),
+      appBar: const HeaderApp(title: "Issue for Production - PO Detail"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -170,29 +170,29 @@ class _IfpAddNewDetailItemsState extends State<IfpAddNewDetailItems> {
               hintText: 'Item Name',
             ),
             buildTextFieldRow(
+              controller: slThucTeController,
+              labelText: 'Quantity:',
+              hintText: 'Quantity',
+            ),
+            buildTextFieldRow(
               controller: whseController,
               labelText: 'Whse:',
               hintText: 'Whse',
             ),
             buildTextFieldRow(
               controller: uoMCodeController,
-              labelText: 'UoMCode:',
+              labelText: 'UoM Code:',
               hintText: 'UoMCode',
             ),
             buildTextFieldRow(
-              controller: slThucTeController,
-              labelText: 'Số lượng thực tế:',
-              hintText: 'Số lượng thực tế',
-            ),
-            buildTextFieldRow(
               controller: batchController,
-              labelText: 'Batch:',
-              hintText: 'Batch',
+              labelText: 'Số Batch:',
+              hintText: 'Số Batch',
             ),
             buildTextFieldRow(
               controller: remarksController,
-              labelText: 'Remarks:',
-              hintText: 'Remarks',
+              labelText: 'Số kiện:',
+              hintText: 'Số kiện',
               isEnable: widget.isEditable,
             ),
             Flexible(

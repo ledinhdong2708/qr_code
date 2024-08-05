@@ -101,10 +101,6 @@ class _RfpDetailState extends State<RfpDetail> {
     });
   }
 
-  Future<void> _fetchOworData() async {
-
-  }
-
 
   @override
   void dispose() {
@@ -188,7 +184,7 @@ class _RfpDetailState extends State<RfpDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: const HeaderApp(title: "RFP - Details"),
+        appBar: const HeaderApp(title: "Receipt from Production - PO"),
         body: Container(
           color: bgColor,
           width: double.infinity,
@@ -203,8 +199,8 @@ class _RfpDetailState extends State<RfpDetail> {
               ),
               buildTextFieldRow(
                 controller: _itemCodeController,
-                labelText: 'Item Code:',
-                hintText: 'Item Code',
+                labelText: 'Product Code:',
+                hintText: 'Product Code',
               ),
               buildTextFieldRow(
                 controller: _prodNameController,
@@ -213,18 +209,8 @@ class _RfpDetailState extends State<RfpDetail> {
               ),
               buildTextFieldRow(
                 controller: _plannedQtyController,
-                labelText: 'Planned Qty:',
+                labelText: 'Planned Quantity:',
                 hintText: 'Planned Qty',
-              ),
-              buildTextFieldRow(
-                controller: _uomController,
-                labelText: 'UoM:',
-                hintText: 'UoM',
-              ),
-              buildTextFieldRow(
-                controller: _warehouseController,
-                labelText: 'Warehouse:',
-                hintText: 'Warehouse',
               ),
               // buildTextFieldRow(
               //   controller: _remakeController,
@@ -255,11 +241,14 @@ class _RfpDetailState extends State<RfpDetail> {
                     );
                   },
                   labelsAndChildren: const [
-                    {'label': 'Batch', 'child': 'Batch'},
+                    {'label': 'ItemCode', 'child': 'ItemCode'},
+                    {'label': 'Name', 'child': 'ItemName'},
+                    {'label': 'Whse', 'child': 'Whse'},
                     {'label': 'Quantity', 'child': 'SlThucTe'},
-                    {'label': 'Remarks', 'child': 'Remake'},
-                    // Add more as needed
+                    {'label': 'UoM Code', 'child': 'UoMCode'},
+                    {'label': 'Batch', 'child': 'Batch'},
                   ],
+
                 ),
               Container(
                 width: double.infinity,

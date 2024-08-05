@@ -210,6 +210,12 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
                 isEnable: widget.isEditable
               ),
               buildTextFieldRow(
+                  controller: slThucTeController,
+                  labelText: 'Quantity:',
+                  hintText: 'Quantity',
+                  isEnable: widget.isEditable
+              ),
+              buildTextFieldRow(
                 controller: whseController,
                 labelText: 'Whse:',
                 hintText: 'Whse',
@@ -217,26 +223,26 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
               ),
               buildTextFieldRow(
                 controller: uoMCodeController,
-                labelText: 'UoMCode:',
+                labelText: 'UoM Code:',
                 hintText: 'UoMCode',
                 isEnable: widget.isEditable
               ),
               buildTextFieldRow(
-                controller: slThucTeController,
-                labelText: 'Số lượng thực tế:',
-                hintText: 'Số lượng thực tế',
-                  isEnable: widget.isEditable
-              ),
-              buildTextFieldRow(
                 controller: batchController,
-                labelText: 'Batch:',
-                hintText: 'Batch',
+                labelText: 'Số Batch:',
+                hintText: 'Số Batch',
                 isEnable: widget.isEditable
               ),
               buildTextFieldRow(
+                // controller: remarksController,
+                labelText: 'Account Code:',
+                hintText: 'Account Code',
+                isEnable: widget.isEditable,
+              ),
+              buildTextFieldRow(
                 controller: remarksController,
-                labelText: 'Remarks:',
-                hintText: 'Remarks',
+                labelText: 'Số kiện:',
+                hintText: 'Số kiện',
                 isEnable: widget.isEditable,
               ),
               Container(

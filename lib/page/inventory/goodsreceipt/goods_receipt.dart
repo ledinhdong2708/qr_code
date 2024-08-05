@@ -81,7 +81,7 @@ class _GoodsReceiptInvenState extends State<GoodsReceiptInven> {
   @override
   Widget build(BuildContext context) {
     var now = DateTime.now();
-    var formatter = DateFormat('yyyy-MM-dd');
+    var formatter = DateFormat('dd/MM/yyyy');
     String docDate = formatter.format(now);
 
 
