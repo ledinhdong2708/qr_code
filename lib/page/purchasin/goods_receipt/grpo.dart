@@ -148,6 +148,61 @@ class _GrpoState extends State<Grpo> {
     }
   }
 
+  Future<void> _postGrpo() async {
+    try {
+      if (po != null) {
+        final grpoData = {
+          'DocEntry': po?['docEntry'].toString(),
+          'DocNo': po?['docNum'].toString(),
+          'VendorCode': po?['cardCode'],
+          'VendorName': po?['cardName'],
+          'PostDay': _dateController.text,
+          'Remake': _commentController.text,
+          'Lines': []
+        };
+
+        if (lines.isNotEmpty) {
+          for (var item in lines) {
+            final lineData = {
+              'ItemCode': item['itemCode'],
+              'ItemName': item['itemDescription'],
+              // 'LineNum': item['lineNum'].toString(),
+              'Quantity': item['quantity'].toString(),
+              'BaseEntry': po?['docEntry'].toString() ?? 0,
+              'BaseLine': item['lineNum'].toString() ?? 0,
+              'WarehouseCode': item['warehouseCode'] ?? '',
+              'BaseType': 22.toString(),
+              'Batches': []
+            };
+
+            final grpoItemsDetailForLine = await fetchGrpoItemsDetailData(
+                widget.qrData, item["lineNum"].toString());
+
+            if (grpoItemsDetailForLine != null &&
+                grpoItemsDetailForLine['data'] is List) {
+              for (var batch in grpoItemsDetailForLine['data']) {
+                final batchData = {
+                  // 'ItemCode': batch["ItemCode"],
+                  'BatchNumber': batch["Batch"],
+                  'Quantity': batch["SlThucTe"]
+                };
+                (lineData['Batches'] as List).add(batchData);
+              }
+            }
+
+            (grpoData['Lines'] as List).add(lineData);
+          }
+
+          await postGrpo(grpoData, context);
+        } else {}
+      } else {
+        print('Dữ liệu đơn hàng (po) là null');
+      }
+    } catch (e) {
+      print('Lỗi khi gửi dữ liệu: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var docNum = po?['docNum']?.toString() ?? '';
@@ -248,7 +303,7 @@ class _GrpoState extends State<Grpo> {
                           ),
                           CustomButton(
                             text: 'POST',
-                            onPressed: () async {},
+                            onPressed: _postGrpo,
                           ),
                         ],
                       ),

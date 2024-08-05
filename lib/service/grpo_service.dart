@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_code/component/dialog.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/urlAPI.dart';
 
@@ -83,7 +82,6 @@ Future<Map<String, dynamic>?> fetchGrpoItemsDetailData(
     if (response.statusCode == 200) {
       final json = jsonDecode(decodedResponse);
       print("Fetch grpoitemsdetail data successful");
-      print(json);
       return json;
     } else {
       print("Failed to load data with status code: ${response.statusCode}");
@@ -208,36 +206,10 @@ Future<void> updatePor1Data(
 }
 
 // ===================================================================================
-//                              Save SessionID to SharedPreferences
-// ===================================================================================
-Future<void> saveSessionId(String sessionId) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('sessionId', sessionId);
-}
-
-// ===================================================================================
-//                              Save SessionID to SharedPreferences
-// ===================================================================================
-Future<String?> getSessionId() async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getString('sessionId');
-}
-
-// ===================================================================================
 //                              Fetch data of purchase order
 // ===================================================================================
 Future<Map<String, dynamic>?> fetchPoData(
     String resultCode, BuildContext context) async {
-  // String? sessionId = await getSessionId();
-  // if (sessionId == null) {
-  //   print("Session ID is not available. Attempting to login again.");
-  //
-  //   sessionId = await getSessionId();
-  //   if (sessionId == null) {
-  //     print("Failed to acquire new session ID.");
-  //     return null;
-  //   }
-  // }
   final url = '$serverIpSap/SAP_PurchaseOrders/$resultCode';
   try {
     final response = await http.get(
@@ -266,16 +238,33 @@ Future<Map<String, dynamic>?> fetchPoData(
 // ===================================================================================
 Future<void> postPoToGrpo(
     Map<String, dynamic> data, BuildContext context) async {
-  // String? sessionId = await getSessionId();
-  // if (sessionId == null) {
-  //   print("Session ID is not available. Attempting to login again.");
-  //   sessionId = await getSessionId();
-  //   if (sessionId == null) {
-  //     print("Failed to acquire new session ID.");
-  //     return;
-  //   }
-  // }
   const String url = '$serverIpSap/SAP_PurchaseDeliveryNotes';
+  try {
+    var response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      CustomDialog.showDialog(context, 'Cập nhật thành công', 'success');
+    } else {
+      print('Failed to send data. Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
+    }
+  } catch (e) {
+    print('Error during POST request: $e');
+  }
+}
+
+// ===================================================================================
+//                              Post data in GRPO GoLang
+// ===================================================================================
+Future<void> postGrpo(Map<String, dynamic> data, BuildContext context) async {
+  const String url = '$api/grpo';
   try {
     var response = await http.post(
       Uri.parse(url),

@@ -8,4 +8,4 @@ const serverIpSap = "http://192.168.1.9:5001/api";
 const api = 'http://192.168.1.9:1600/api/v1';
 const apilogin = '$api/login';
 const apiUser = '$api/users';
-const apiCsharp = "http://192.168.1.4:5232";
+const apiCsharp = "http://192.168.50.249:5232";
