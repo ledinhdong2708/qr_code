@@ -21,14 +21,14 @@ class Purchasing extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const Grpo(qrData: "48")),
+                  // MaterialPageRoute(
+                  //     builder: (context) => const Grpo(qrData: "48")),
                   // MaterialPageRoute(
                   //     builder: (context) => const Grpo(qrData: "1")),
-                  // MaterialPageRoute(
-                  //     builder: (context) => const QRViewExample(
-                  //           pageIdentifier: 'GRPO',
-                  //         )),
+                  MaterialPageRoute(
+                      builder: (context) => const QRViewExample(
+                            pageIdentifier: 'GRPO',
+                          )),
                 );
               },
               child: card("assets/receipt.png", "Goods Receipt PO"),
