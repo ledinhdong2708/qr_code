@@ -213,105 +213,95 @@ class _GrpoState extends State<Grpo> {
       body: _isLoading
           ? const CustomLoading()
           : Container(
-                width: double.infinity,
-                color: bgColor,
-                padding: AppStyles.paddingContainer,
-                child: ListView(
-                  children: [
-                    buildTextFieldRow(
-                      labelText: 'Doc No.',
-                      hintText: 'Doc No.',
-                      valueQR: docNum,
-                    ),
-                    DateInput(
-                      controller: _dateController,
-                    ),
-                    buildTextFieldRow(
-                      labelText: 'Vendor Code',
-                      hintText: 'Vendor Code',
-                      valueQR: cardCode,
-                    ),
-                    buildTextFieldRow(
-                      labelText: 'Vendor Name',
-                      hintText: 'Vendor Name',
-                      valueQR: cardName,
-                    ),
-                    buildTextFieldRow(
-                      labelText: 'Remake',
-                      isEnable: true,
-                      hintText: 'Remake here',
-                      icon: Icons.edit,
-                      controller: _commentController,
-                    ),
-                    if (lines.isNotEmpty)
-                      ListItems(
-                        listItems: lines,
-                        onTapItem: (index) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GrpoDetail(
-                                docEntry:
-                                    lines[index]['docEntry']?.toString() ??
-                                        '',
-                                lineNum:
-                                    lines[index]['lineNum']?.toString() ?? '',
-                                itemCode:
-                                    lines[index]['itemCode']?.toString() ??
-                                        '',
-                                description: lines[index]['itemDescription']
-                                        ?.toString() ??
-                                    '',
-                                whse: lines[index]['warehouseCode']
-                                        ?.toString() ??
-                                    '',
-                                slYeuCau:
-                                    lines[index]['quantity']?.toString() ??
-                                        '',
-                                slThucTe:
-                                    lines[index]['SlThucTe']?.toString() ??
-                                        '',
-                                batch:
-                                    lines[index]['Batch']?.toString() ?? '',
-                                uoMCode:
-                                    lines[index]['UomCode']?.toString() ?? '',
-                                remake:
-                                    lines[index]['remake']?.toString() ?? '',
-                              ),
+              width: double.infinity,
+              color: bgColor,
+              padding: AppStyles.paddingContainer,
+              child: ListView(
+                children: [
+                  buildTextFieldRow(
+                    labelText: 'Doc No.',
+                    hintText: 'Doc No.',
+                    valueQR: docNum,
+                  ),
+                  DateInput(
+                    controller: _dateController,
+                  ),
+                  buildTextFieldRow(
+                    labelText: 'Vendor Code',
+                    hintText: 'Vendor Code',
+                    valueQR: cardCode,
+                  ),
+                  buildTextFieldRow(
+                    labelText: 'Vendor Name',
+                    hintText: 'Vendor Name',
+                    valueQR: cardName,
+                  ),
+                  buildTextFieldRow(
+                    labelText: 'Remake',
+                    isEnable: true,
+                    hintText: 'Remake here',
+                    icon: Icons.edit,
+                    controller: _commentController,
+                  ),
+                  if (lines.isNotEmpty)
+                    ListItems(
+                      listItems: lines,
+                      onTapItem: (index) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GrpoDetail(
+                              docEntry:
+                                  lines[index]['docEntry']?.toString() ?? '',
+                              lineNum:
+                                  lines[index]['lineNum']?.toString() ?? '',
+                              itemCode:
+                                  lines[index]['itemCode']?.toString() ?? '',
+                              description:
+                                  lines[index]['itemDescription']?.toString() ??
+                                      '',
+                              whse: lines[index]['warehouseCode']?.toString() ??
+                                  '',
+                              slYeuCau:
+                                  lines[index]['quantity']?.toString() ?? '',
+                              slThucTe:
+                                  lines[index]['SlThucTe']?.toString() ?? '',
+                              batch: lines[index]['Batch']?.toString() ?? '',
+                              uoMCode:
+                                  lines[index]['uomCode']?.toString() ?? '',
+                              remake: lines[index]['remake']?.toString() ?? '',
                             ),
-                          );
-                        },
-                        labelsAndChildren: const [
-                          {'label': 'ItemCode', 'child': 'itemCode'},
-                          {'label': 'Name', 'child': 'itemDescription'},
-                          {'label': 'Whse', 'child': 'warehouseCode'},
-                          {'label': 'Quantity', 'child': 'quantity'},
-                          {'label': 'UoM Code', 'child': 'UomCode'},
-                          // Add more as needed
-                        ],
-                      ),
-                    Container(
-                      width: double.infinity,
-                      margin: AppStyles.marginButton,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CustomButton(
-                            text: 'Add to Sap',
-                            onPressed: _postPoToGrpo,
                           ),
-                          CustomButton(
-                            text: 'POST',
-                            onPressed: _postGrpo,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                        );
+                      },
+                      labelsAndChildren: const [
+                        {'label': 'DocNo', 'child': 'docNum'},
+                        {'label': 'Code', 'child': 'itemCode'},
+                        {'label': 'Name', 'child': 'itemDescription'},
+                        {'label': 'SlYeuCau', 'child': 'quantity'},
+                      ],
+                    ),
+                  Container(
+                    width: double.infinity,
+                    margin: AppStyles.marginButton,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CustomButton(
+                          text: 'Add to Sap',
+                          onPressed: _postPoToGrpo,
+                        ),
+                        CustomButton(
+                          text: 'POST',
+                          onPressed: _postGrpo,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
-
+            ),
     );
   }
 }

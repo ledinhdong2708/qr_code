@@ -41,8 +41,6 @@ class _GrpoAddNewDetailItemsState extends State<GrpoAddNewDetailItems> {
   late TextEditingController whseController;
   late TextEditingController uoMCodeController;
 
-  // final TextEditingController _controller = TextEditingController();
-
   @override
   void initState() {
     super.initState();
