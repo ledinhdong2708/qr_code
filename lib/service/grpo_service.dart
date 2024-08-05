@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_code/component/dialog.dart';
-import 'package:qr_code/constants/urlApi.dart';
+
+import '../constants/urlAPI.dart';
 
 Future<void> postGrpoItemsData(
     Map<String, dynamic> data, BuildContext context) async {
@@ -215,7 +216,6 @@ Future<Map<String, dynamic>?> fetchPoData(
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        // 'Cookie': "B1SESSION=$sessionId",
       },
     );
     if (response.statusCode == 200) {

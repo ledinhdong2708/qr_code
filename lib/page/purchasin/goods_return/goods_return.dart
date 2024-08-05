@@ -70,11 +70,11 @@ class _GoodsReturnState extends State<GoodsReturn> {
         padding: AppStyles.paddingContainer,
         child: ListView(
           children: [
-            buildTextFieldRow(
-              labelText: 'Doc No:',
-              hintText: 'Doc No',
-              valueQR: docNum,
-            ),
+            // buildTextFieldRow(
+            //   labelText: 'Doc No:',
+            //   hintText: 'Doc No',
+            //   valueQR: docNum,
+            // ),
             DateInput(
               postDay: docDate,
               controller: _dateController,

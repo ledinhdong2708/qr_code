@@ -76,7 +76,7 @@ class _DeliveryState extends State<Delivery> {
           height: double.infinity,
           color: bgColor,
           padding: AppStyles.paddingContainer,
-            child: ListView(
+            child: Column(
               children: [
                 buildTextFieldRow(
                   labelText: 'Doc No:',
@@ -135,14 +135,6 @@ class _DeliveryState extends State<Delivery> {
                       {'label': 'UoM Code', 'child': 'UomCode'},
                       // Add more as needed
                     ],
-                      // labelName1: 'DocNo',
-                      // labelName2: 'Code',
-                      // labelName3: 'Name',
-                      // labelName4: 'SlYeuCau',
-                      // listChild1: 'DocEntry',
-                      // listChild2: 'ItemCode',
-                      // listChild3: 'Dscription',
-                      // listChild4: 'OpenQty'
                   ),
                 Container(
                   width: double.infinity,
@@ -170,6 +162,7 @@ class _DeliveryState extends State<Delivery> {
                 )
               ],
             ),
-        ));
+        )
+    );
   }
 }

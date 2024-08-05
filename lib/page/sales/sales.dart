@@ -22,19 +22,19 @@ class Sales extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const QRViewExample(
-                            pageIdentifier: 'Delivery',
-                          )),
-                );
-
-                // To testing api
                 // Navigator.push(
                 //   context,
-                //   MaterialPageRoute(builder: (context) => const Delivery(qrData: "1")),
+                //   MaterialPageRoute(
+                //       builder: (context) => const QRViewExample(
+                //             pageIdentifier: 'Delivery',
+                //           )),
                 // );
+
+                // To testing api
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Delivery(qrData: "22")),
+                );
               },
               child: card("assets/delivery.png", "Delivery"),
             ),
