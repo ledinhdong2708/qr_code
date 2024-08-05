@@ -48,21 +48,23 @@ class _IfpState extends State<Ifp> {
   @override
   Widget build(BuildContext context) {
     var data = oprr?['data'];
-    var docDate = data != null ? data['DocDate'].toString() : '';
+    DateTime now = DateTime.now();
+    var docDate = data != null ? data['PostDate'].toString() : DateFormat('dd/MM/yyyy').format(now);
     var remark = data != null ? data['remake'] : '';
 
+
     return Scaffold(
-      appBar: const HeaderApp(title: "ISSUE FOR PRODUCTION"),
+      appBar: const HeaderApp(title: "Issue for Production"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         color: bgColor,
         padding: AppStyles.paddingContainer,
-        child: ListView(
+        child: Column(
           children: [
             buildTextFieldRow(
-              labelText: 'Production Order',
-              hintText: 'Production Order',
+              labelText: 'Production No',
+              hintText: 'Production No',
               iconButton: IconButton(
                 icon: const Icon(Icons.qr_code_scanner),
                 onPressed: () {

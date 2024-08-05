@@ -90,7 +90,7 @@ class _RfpAddNewDetailItemsState extends State<RfpAddNewDetailItems> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: const HeaderApp(title: "RFP - Detail"),
+      appBar: const HeaderApp(title: "Receipt from Production - PO Detail"),
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
@@ -111,6 +111,11 @@ class _RfpAddNewDetailItemsState extends State<RfpAddNewDetailItems> {
                 hintText: 'Item Name',
               ),
               buildTextFieldRow(
+                  controller: slThucTeController,
+                  labelText: 'Quantity:',
+                  hintText: 'Quantity',
+                  isEnable: true),
+              buildTextFieldRow(
                 controller: whseController,
                 labelText: 'Whse:',
                 hintText: 'Whse',
@@ -121,19 +126,14 @@ class _RfpAddNewDetailItemsState extends State<RfpAddNewDetailItems> {
                 hintText: 'UoMCode',
               ),
               buildTextFieldRow(
-                  controller: slThucTeController,
-                  labelText: 'Số lượng thực tế:',
-                  hintText: 'Số lượng thực tế',
-                  isEnable: true),
-              buildTextFieldRow(
                   controller: batchController,
-                  labelText: 'Batch:',
-                  hintText: 'Batch',
+                  labelText: 'Số Batch:',
+                  hintText: 'Số Batch',
                   ),
               buildTextFieldRow(
                   controller: remarksController,
-                  labelText: 'Remarks:',
-                  hintText: 'Remarks',
+                  labelText: 'Số kiện:',
+                  hintText: 'Số kiện',
                   isEnable: true),
               const SizedBox(height: 20),
               Align(

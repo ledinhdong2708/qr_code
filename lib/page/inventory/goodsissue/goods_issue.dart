@@ -9,6 +9,7 @@ import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/inventory/goodsissue/goods_issue_detail_item.dart';
 
 import '../../../component/dialog.dart';
+import '../../../component/dropdownbutton.dart';
 import '../../../component/list_items.dart';
 import '../../../service/goods_issue_inven_service.dart';
 import '../../qr_view_example.dart';
@@ -49,14 +50,16 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
 
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController itemQRController = TextEditingController();
-  late TextEditingController itemCodeController;
-  late TextEditingController descriptionController;
-  late TextEditingController batchController;
-  late TextEditingController slYeuCauController;
-  late TextEditingController whseController;
-  late TextEditingController slThucTeController;
-  late TextEditingController uoMCodeController;
-  late TextEditingController remakeController;
+  final TextEditingController _reasonController = TextEditingController();
+  final TextEditingController _remarkController = TextEditingController();
+  // late TextEditingController itemCodeController;
+  // late TextEditingController descriptionController;
+  // late TextEditingController batchController;
+  // late TextEditingController slYeuCauController;
+  // late TextEditingController whseController;
+  // late TextEditingController slThucTeController;
+  // late TextEditingController uoMCodeController;
+  // late TextEditingController remakeController;
   @override
   void initState() {
     super.initState();
@@ -132,7 +135,7 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
   @override
   Widget build(BuildContext context) {
     var now = DateTime.now();
-    var formatter = DateFormat('yyyy-MM-dd');
+    var formatter = DateFormat('dd/MM/yyyy');
     String docDate = formatter.format(now);
     return Scaffold(
         appBar: const HeaderApp(title: "Goods Issue"),
@@ -147,6 +150,7 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                 postDay: docDate,
                 controller: _dateController,
               ),
+
               buildTextFieldRow(
                 controller: itemQRController,
                 labelText: 'Item',
@@ -163,6 +167,19 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                     ).then((_) => _fetchData());
                   },
                 ),
+              ),
+              Dropdownbutton(
+                items: ['Lý do a', 'Lý do b', 'Lý do c'],
+                labelText: 'Lý do xuất kho:',
+                hintText: 'Lý do xuất kho',
+                controller: _reasonController,
+              ),
+              buildTextFieldRow(
+                labelText: 'Remarks',
+                isEnable: true,
+                hintText: 'Remarks here',
+                icon: Icons.edit,
+                controller: _remarkController,
               ),
               if (goodsIssueInvenItemsDetail.isNotEmpty)
                 ListItems(
@@ -198,14 +215,6 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                     {'label': 'Remarks', 'child': 'Remake'},
                     // Add more as needed
                   ],
-                  // labelName1: 'ItemCode',
-                  // labelName2: 'Batch',
-                  // labelName3: 'SlThucTe',
-                  // labelName4: 'Remake',
-                  // listChild1: 'ItemCode',
-                  // listChild2: 'Batch',
-                  // listChild3: 'SlThucTe',
-                  // listChild4: 'Remake',
                 ),
               Container(
                 width: double.infinity,

@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         Navigator.pushNamed(context, Routes.sales);
                       },
-                      child: card("assets/sales.png", "Sales-A/R"),
+                      child: card("assets/sales.png", "Sales"),
                     ),
                     InkWell(
                       onTap: () {

@@ -145,7 +145,7 @@ class _IfpDetailState extends State<IfpDetail> {
     var remark = data != null ? data['remake'] : '';
 
     return Scaffold(
-        appBar: const HeaderApp(title: "IFP - Detail"),
+        appBar: const HeaderApp(title: "Issue for Production - PO"),
         body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -204,13 +204,13 @@ class _IfpDetailState extends State<IfpDetail> {
                         ),
                       );
                     },
-                    labelsAndChildren: const [
-                      // {'label': 'DocNo', 'child': 'DocEntry'},
-                      {'label': 'Code', 'child': 'ItemCode'},
-                      {'label': 'Name', 'child': 'ItemName'},
-                      {'label': 'SlYeuCau', 'child': 'PlannedQty'},
-                      // Add more as needed
-                    ],
+                  labelsAndChildren: const [
+                    {'label': 'ItemCode', 'child': 'ItemCode'},
+                    {'label': 'Name', 'child': 'ItemName'},
+                    {'label': 'Whse', 'child': 'WareHouse'},
+                    {'label': 'Quantity', 'child': 'PlannedQty'},
+                    {'label': 'UoM Code', 'child': 'UomCode'},
+                  ],
                 ),
               Container(
                 width: double.infinity,

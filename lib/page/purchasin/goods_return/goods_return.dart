@@ -33,7 +33,7 @@ class _GoodsReturnState extends State<GoodsReturn> {
       if (data != null) {
         if (data['data'] != null && data['data']['DocDate'] != null) {
           DateTime parsedDate = DateTime.parse(data['data']['DocDate']);
-          String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+          String formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
           data['data']['DocDate'] = formattedDate;
         }
         setState(() {
