@@ -51,26 +51,10 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController itemQRController = TextEditingController();
   final TextEditingController _reasonController = TextEditingController();
-  final TextEditingController _remarkController = TextEditingController();
-  // late TextEditingController itemCodeController;
-  // late TextEditingController descriptionController;
-  // late TextEditingController batchController;
-  // late TextEditingController slYeuCauController;
-  // late TextEditingController whseController;
-  // late TextEditingController slThucTeController;
-  // late TextEditingController uoMCodeController;
-  // late TextEditingController remakeController;
+  final TextEditingController _remarksController = TextEditingController();
   @override
   void initState() {
     super.initState();
-    // itemCodeController = TextEditingController(text: widget.itemCode);
-    // descriptionController = TextEditingController(text: widget.description);
-    // batchController = TextEditingController(text: widget.batch);
-    // slYeuCauController = TextEditingController(text: widget.slYeuCau);
-    // whseController = TextEditingController(text: widget.whse);
-    // slThucTeController = TextEditingController(text: widget.slThucTe);
-    // uoMCodeController = TextEditingController(text: widget.uoMCode);
-    // remakeController = TextEditingController(text: widget.remake);
     _fetchData();
   }
 
@@ -79,15 +63,6 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
       if (data != null && data['data'] is List) {
         setState(() {
           goodsIssueInvenItemsDetail = data['data'];
-          // if (goodsIssueInvenItemsDetail.isNotEmpty) {
-          //   itemCodeController.text = goodsIssueInvenItemsDetail[0]['ItemCode'];
-          //   descriptionController.text = goodsIssueInvenItemsDetail[0]['ItemName'];
-          //   batchController.text = goodsIssueInvenItemsDetail[0]['Batch'];
-          //   whseController.text = goodsIssueInvenItemsDetail[0]['Whse'];
-          //   slThucTeController.text = goodsIssueInvenItemsDetail[0]['SlThucTe'].toString();
-          //   uoMCodeController.text = goodsIssueInvenItemsDetail[0]['UoMCode'].toString();
-          //   remakeController.text = goodsIssueInvenItemsDetail[0]['Remake'].toString();
-          // }
         });
       }
     });
@@ -102,17 +77,19 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
         String docEntry = item['DocEntry'].toString();
         String lineNum = item['LineNum'].toString();
         final data = {
-          'docEntry': docEntry,
-          'lineNum': lineNum,
-          'postDay': _dateController.text,
-          'itemCode': item['ItemCode'],
-          'itemName': item['ItemName'],
-          'batch': item['Batch'],
-          'slYeuCau': widget.slYeuCau,
-          'whse': item['Whse'],
-          'slThucTe': item['SlThucTe'].toString(),
-          'uoMCode': item['UoMCode'].toString(),
-          'remake': item['Remake'].toString(),
+          'DocEntry': docEntry,
+          'LineNum': lineNum,
+          'PostDay': _dateController.text,
+          'Lydoxuatkho': _reasonController.text,
+          'Remarks': _remarksController.text,
+          'ItemCode': item['ItemCode'],
+          'ItemName': item['ItemName'],
+          'Quantity': item['Quantity'],
+          'Whse': item['Whse'],
+          'UoMCode': item['UoMCode'],
+          'Batch': item['Batch'],
+          'AccountCode': item['AccountCode'].toString(),
+          'Sokien': item['Sokien'].toString(),
         };
 
         await postGoodsIssueInvenItemsData(data, context, docEntry, lineNum);
@@ -150,7 +127,6 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                 postDay: docDate,
                 controller: _dateController,
               ),
-
               buildTextFieldRow(
                 controller: itemQRController,
                 labelText: 'Item',
@@ -168,18 +144,24 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                   },
                 ),
               ),
-              Dropdownbutton(
-                items: ['Lý do a', 'Lý do b', 'Lý do c'],
+              // Dropdownbutton(
+              //   items: ['Lý do a', 'Lý do b', 'Lý do c'],
+              //   labelText: 'Lý do xuất kho:',
+              //   hintText: 'Lý do xuất kho',
+              //   controller: _reasonController,
+              // ),
+              buildTextFieldRow(
                 labelText: 'Lý do xuất kho:',
+                isEnable: true,
                 hintText: 'Lý do xuất kho',
                 controller: _reasonController,
               ),
               buildTextFieldRow(
-                labelText: 'Remarks',
+                labelText: 'Remarks:',
                 isEnable: true,
                 hintText: 'Remarks here',
                 icon: Icons.edit,
-                controller: _remarkController,
+                controller: _remarksController,
               ),
               if (goodsIssueInvenItemsDetail.isNotEmpty)
                 ListItems(
@@ -197,12 +179,13 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                           isEditable: false,
                           id: goodsIssueInvenItemsDetail[index]['ID'].toString(),
                           itemCode: goodsIssueInvenItemsDetail[index]['ItemCode'],
-                          description: goodsIssueInvenItemsDetail[index]['ItemName'],
+                          itemName: goodsIssueInvenItemsDetail[index]['ItemName'],
                           whse: goodsIssueInvenItemsDetail[index]['Whse'],
-                          slThucTe: goodsIssueInvenItemsDetail[index]['SlThucTe'].toString(),
+                          quantity: goodsIssueInvenItemsDetail[index]['Quantity'].toString(),
                           batch: goodsIssueInvenItemsDetail[index]['Batch'].toString(),
                           uoMCode: goodsIssueInvenItemsDetail[index]['UoMCode'].toString(),
-                          remarks: goodsIssueInvenItemsDetail[index]['Remake'].toString(),
+                          accountCode: goodsIssueInvenItemsDetail[index]['AccountCode'].toString(),
+                          sokien: goodsIssueInvenItemsDetail[index]['Sokien'].toString(),
                         ),
                       ),
                     );
@@ -211,8 +194,7 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                     {'label': 'Item Code', 'child': 'ItemCode'},
                     {'label': 'Item Name', 'child': 'ItemName'},
                     {'label': 'Batch', 'child': 'Batch'},
-                    {'label': 'Quantity', 'child': 'SlThucTe'},
-                    {'label': 'Remarks', 'child': 'Remake'},
+                    {'label': 'Quantity', 'child': 'Quantity'},
                     // Add more as needed
                   ],
                 ),

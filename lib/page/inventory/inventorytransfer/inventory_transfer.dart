@@ -54,7 +54,7 @@ class _InventoryTransferState extends State<InventoryTransfer> {
   @override
   Widget build(BuildContext context) {
     var now = DateTime.now();
-    var formatter = DateFormat('yyyy-MM-dd');
+    var formatter = DateFormat('dd/MM/yyyy');
     String docDate = formatter.format(now);
     final Map<String, dynamic> qrDataMap = parseQrData(widget.qrData);
     final TextEditingController _controller = TextEditingController();

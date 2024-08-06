@@ -174,8 +174,8 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
                 ),
                 buildTextFieldRow(
                   controller: slThucTeController,
-                  labelText: 'Số lượng yêu cầu:',
-                  hintText: 'Số lượng yêu cầu',
+                  labelText: 'Số lượng thực tế:',
+                  hintText: 'Số lượng thực tế',
                   iconButton: IconButton(
                     icon: const Icon(Icons.qr_code_scanner),
                     onPressed: () {

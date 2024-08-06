@@ -14,14 +14,13 @@ class GoodsIssueDetailItem extends StatefulWidget {
   late String lineNum;
   final String id;
   final String itemCode;
-  final String description;
+  final String itemName;
   final String batch;
-  final String openQty;
   final String whse;
-  final String slYeuCau;
-  final String slThucTe;
+  final String quantity;
   final String uoMCode;
-  final String remarks;
+  final String accountCode;
+  final String sokien;
   final bool isEditable;
 
   GoodsIssueDetailItem({
@@ -31,14 +30,13 @@ class GoodsIssueDetailItem extends StatefulWidget {
     this.lineNum = "",
     this.id = '',
     this.itemCode = "",
+    this.itemName = "",
+    this.quantity = "",
     this.whse = "",
-    this.slYeuCau = "",
-    this.slThucTe = "",
     this.uoMCode = "",
-    this.remarks = "",
-    this.description = "",
     this.batch = "",
-    this.openQty = "",
+    this.accountCode = "",
+    this.sokien = "",
     this.isEditable = true,
   });
 
@@ -53,13 +51,13 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
   late String lineNum;
   late TextEditingController idController;
   late TextEditingController itemCodeController;
-  late TextEditingController descriptionController;
-  late TextEditingController batchController;
-  late TextEditingController slYeuCauController;
+  late TextEditingController itemNameController;
+  late TextEditingController quantityController;
   late TextEditingController whseController;
-  late TextEditingController slThucTeController;
   late TextEditingController uoMCodeController;
-  late TextEditingController remarksController;
+  late TextEditingController batchController;
+  late TextEditingController accountCodeController;
+  late TextEditingController sokienController;
   bool isLoading = true;
   bool isConfirmEnabled = false;
 
@@ -67,14 +65,13 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
   void initState() {
     super.initState();
     itemCodeController = TextEditingController(text: widget.itemCode);
-    descriptionController = TextEditingController(text: widget.description);
-    batchController = TextEditingController(text: widget.batch);
-    slYeuCauController = TextEditingController(text: widget.slYeuCau);
+    itemNameController = TextEditingController(text: widget.itemName);
+    quantityController = TextEditingController(text: widget.quantity);
     whseController = TextEditingController(text: widget.whse);
-    slThucTeController = TextEditingController(text: widget.slThucTe);
     uoMCodeController = TextEditingController(text: widget.uoMCode);
-    remarksController = TextEditingController(text: widget.remarks);
-    //_fetchData();
+    batchController = TextEditingController(text: widget.batch);
+    accountCodeController = TextEditingController(text: widget.accountCode);
+    sokienController = TextEditingController(text: widget.sokien);
 
     if (widget.qrData.isNotEmpty) {
       // If QR data is provided, fetch data
@@ -88,12 +85,13 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
           setState(() {
             GRPO_QR = itemData;
             itemCodeController.text = itemData['ItemCode']?.toString() ?? '';
-            descriptionController.text = itemData['ItemName']?.toString() ?? '';
+            itemNameController.text = itemData['ItemName']?.toString() ?? '';
             batchController.text = itemData['Batch']?.toString() ?? '';
             whseController.text = itemData['Whse']?.toString() ?? '';
-            slThucTeController.text = itemData['SlThucTe']?.toString() ?? '';
+            quantityController.text = itemData['SlThucTe']?.toString() ?? '';
             uoMCodeController.text = itemData['UoMCode']?.toString() ?? '';
-            remarksController.text = itemData['Remake']?.toString() ?? '';
+            accountCodeController.text = itemData['AccountCode']?.toString() ?? '';
+            sokienController.text = itemData['Sokien']?.toString() ?? '';
             isLoading = false;
             isConfirmEnabled = true;
           });
@@ -109,63 +107,45 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
         isLoading = false;
         idController = TextEditingController(text: widget.id);
         itemCodeController = TextEditingController(text: widget.itemCode);
-        descriptionController = TextEditingController(text: widget.description);
+        itemNameController = TextEditingController(text: widget.itemName);
         batchController = TextEditingController(text: widget.batch);
         whseController = TextEditingController(text: widget.whse);
-        slThucTeController = TextEditingController(text: widget.slThucTe);
+        quantityController = TextEditingController(text: widget.quantity);
         uoMCodeController = TextEditingController(text: widget.uoMCode);
-        remarksController = TextEditingController(text: widget.remarks);
+        accountCodeController = TextEditingController(text: widget.accountCode);
+        sokienController = TextEditingController(text: widget.sokien);
         isConfirmEnabled = false;
       });
     }
   }
 
-  Future<void> _fetchData() async {
-    // fetchGrrItemsDetailData(widget.docEntry, widget.lineNum).then((data) {
-    //   if (data != null && data['data'] is List) {
-    //     setState(() {
-    //       grrItemsDetail = data['data'];
-    //
-    //       if (grrItemsDetail.isNotEmpty) {
-    //         itemCodeController.text = grrItemsDetail[0]['ItemCode'];
-    //         descriptionController.text = grrItemsDetail[0]['ItemName'];
-    //         batchController.text = grrItemsDetail[0]['Batch'];
-    //         whseController.text = grrItemsDetail[0]['Whse'];
-    //         slThucTeController.text = grrItemsDetail[0]['SlThucTe'].toString();
-    //         uoMCodeController.text = grrItemsDetail[0]['UoMCode'].toString();
-    //         remakeController.text = grrItemsDetail[0]['Remake'].toString();
-    //       }
-    //     });
-    //   }
-    // });
-  }
-
-
   @override
   void dispose() {
     itemCodeController.dispose();
-    descriptionController.dispose();
+    itemNameController.dispose();
     batchController.dispose();
-    slYeuCauController.dispose();
+    quantityController.dispose();
     whseController.dispose();
-    slThucTeController.dispose();
+    quantityController.dispose();
     uoMCodeController.dispose();
-    remarksController.dispose();
+    accountCodeController.dispose();
+    sokienController.dispose();
     super.dispose();
   }
 
 
   Future<void> _submitData() async {
     final data = {
-      'itemCode': itemCodeController.text,
-      'itemName': descriptionController.text,
-      'whse': whseController.text,
-      'uoMCode': uoMCodeController.text,
       'docEntry': docEntry,
       'lineNum': lineNum,
+      'itemCode': itemCodeController.text,
+      'itemName': itemNameController.text,
+      'quantity': quantityController.text,
+      'whse': whseController.text,
+      'uoMCode': uoMCodeController.text,
       'batch': batchController.text,
-      'slThucTe': slThucTeController.text,
-      'remake': remarksController.text,
+      'accountCode': accountCodeController.text,
+      'sokien': sokienController.text,
     };
 
     try {
@@ -204,13 +184,13 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
                 isEnable: widget.isEditable
               ),
               buildTextFieldRow(
-                controller: descriptionController,
+                controller: itemNameController,
                 labelText: 'Item Name:',
                 hintText: 'Item Name',
                 isEnable: widget.isEditable
               ),
               buildTextFieldRow(
-                  controller: slThucTeController,
+                  controller: quantityController,
                   labelText: 'Quantity:',
                   hintText: 'Quantity',
                   isEnable: widget.isEditable
@@ -234,13 +214,13 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
                 isEnable: widget.isEditable
               ),
               buildTextFieldRow(
-                // controller: remarksController,
+                controller: accountCodeController,
                 labelText: 'Account Code:',
                 hintText: 'Account Code',
                 isEnable: widget.isEditable,
               ),
               buildTextFieldRow(
-                controller: remarksController,
+                controller: sokienController,
                 labelText: 'Số kiện:',
                 hintText: 'Số kiện',
                 isEnable: widget.isEditable,

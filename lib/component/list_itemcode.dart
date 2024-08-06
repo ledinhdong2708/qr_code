@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../../../component/list_items.dart';
-import '../../../service/goods_receipt_inven_service.dart';
+import 'list_items.dart';
+import '../service/goods_receipt_inven_service.dart';
 
 class ListItemcode extends StatefulWidget {
   final void Function(String itemCode, String itemName) onItemSelected;

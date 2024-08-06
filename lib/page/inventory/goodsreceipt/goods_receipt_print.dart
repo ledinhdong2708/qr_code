@@ -10,14 +10,13 @@ class GoodsReceiptInvenPrint extends StatefulWidget {
   final String id;
   final String itemCode;
   final String itemName;
-  final String whse;
   final String quantity;
-  final String batch;
+  final String whse;
   final String uoMCode;
-  final String price;
-  final String total;
-  final String reason;
-  final String remark;
+  final String batch;
+  final String accountCode;
+  final String sokien;
+
 
 
 
@@ -30,10 +29,8 @@ class GoodsReceiptInvenPrint extends StatefulWidget {
         this.itemName = '',
         this.whse = '',
         this.uoMCode = '',
-        this.remark = '',
-        this.reason = '',
-        this.price = '',
-        this.total = '',
+        this.accountCode = '',
+        this.sokien = '',
       });
 
   @override
@@ -42,14 +39,6 @@ class GoodsReceiptInvenPrint extends StatefulWidget {
 }
 
 class _GoodsReceiptInvenPrintState extends State<GoodsReceiptInvenPrint> {
-  // late TextEditingController idController;
-  // late TextEditingController batchController;
-  // late TextEditingController slThucTeController;
-  // late TextEditingController remakeController;
-  // late TextEditingController itemCodeController;
-  // late TextEditingController descriptionController;
-  // late TextEditingController whseController;
-  // late TextEditingController uoMCodeController;
   late TextEditingController _idController;
   late TextEditingController _itemCodeController;
   late TextEditingController _itemNameController;
@@ -57,10 +46,8 @@ class _GoodsReceiptInvenPrintState extends State<GoodsReceiptInvenPrint> {
   late TextEditingController _quantityController;
   late TextEditingController _batchController;
   late TextEditingController _uomController;
-  late TextEditingController _priceController;
-  late TextEditingController _totalController;
-  late TextEditingController _reasonController;
-  late TextEditingController _remarkController;
+  late TextEditingController _accountCodeController;
+  late TextEditingController _sokienController;
 
   // final TextEditingController _controller = TextEditingController();
 
@@ -70,22 +57,19 @@ class _GoodsReceiptInvenPrintState extends State<GoodsReceiptInvenPrint> {
     _idController = TextEditingController(text: widget.id);
     _itemCodeController = TextEditingController(text: widget.itemCode);
     _itemNameController = TextEditingController(text: widget.itemName);
-    _batchController = TextEditingController(text: widget.batch);
-    _whseController = TextEditingController(text: widget.whse);
     _quantityController = TextEditingController(text: widget.quantity);
+    _whseController = TextEditingController(text: widget.whse);
     _uomController = TextEditingController(text: widget.uoMCode);
-    _remarkController = TextEditingController(text: widget.remark);
-    _priceController = TextEditingController(text: widget.price);
-    _totalController = TextEditingController(text: widget.total);
-    _reasonController = TextEditingController(text: widget.reason);
-
+    _batchController = TextEditingController(text: widget.batch);
+    _accountCodeController = TextEditingController(text: widget.accountCode);
+    _sokienController = TextEditingController(text: widget.sokien);
   }
 
   @override
   void dispose() {
     _batchController.dispose();
     _quantityController.dispose();
-    _remarkController.dispose();
+    _sokienController.dispose();
     super.dispose();
   }
 
@@ -111,29 +95,34 @@ class _GoodsReceiptInvenPrintState extends State<GoodsReceiptInvenPrint> {
               hintText: 'Item Name',
             ),
             buildTextFieldRow(
+              controller: _quantityController,
+              labelText: 'Quantity:',
+              hintText: 'Quantity',
+            ),
+            buildTextFieldRow(
               controller: _whseController,
-              labelText: 'Whse',
+              labelText: 'Whse:',
               hintText: 'Whse',
             ),
             buildTextFieldRow(
               controller: _uomController,
-              labelText: 'UoMCode',
+              labelText: 'UoM Code:',
               hintText: 'UoMCode',
             ),
             buildTextFieldRow(
-              controller: _quantityController,
-              labelText: 'Sl Thực tế',
-              hintText: 'Sl Thực tế',
-            ),
-            buildTextFieldRow(
               controller: _batchController,
-              labelText: 'Batch',
+              labelText: 'Số Batch:',
               hintText: 'Batch',
             ),
             buildTextFieldRow(
-              controller: _remarkController,
-              labelText: 'Remake',
-              hintText: 'Remake',
+              controller: _accountCodeController,
+              labelText: 'Account Code:',
+              hintText: 'Account Code',
+            ),
+            buildTextFieldRow(
+              controller: _sokienController,
+              labelText: 'Số kiện',
+              hintText: 'Số kiện',
             ),
             Flexible(
               child: Container(),
@@ -153,11 +142,12 @@ class _GoodsReceiptInvenPrintState extends State<GoodsReceiptInvenPrint> {
                         'id': _idController.text,
                         'itemCode': _itemCodeController.text,
                         'itemName': _itemNameController.text,
+                        'slThucTe': _quantityController.text,
                         'whse': _whseController.text,
                         'uoMCode': _uomController.text,
                         'batch': _batchController.text,
-                        'slThucTe': _quantityController.text,
-                        'remake': _remarkController.text,
+                        'accountCode': _accountCodeController.text,
+                        'sokien': _sokienController.text,
                       };
                       Navigator.push(
                         context,

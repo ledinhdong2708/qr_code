@@ -4,7 +4,7 @@ import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
-import 'package:qr_code/page/inventory/inventorytransfer/list_warehouses.dart';
+import 'package:qr_code/component/list_warehouses.dart';
 import 'package:qr_code/service/inventory_transfer_service.dart';
 import '../../../service/goodreturn_service.dart';
 import '../../../service/qr_service.dart';
@@ -15,14 +15,14 @@ class InventoryTransferItem extends StatefulWidget {
   final String id;
   final String docEntry;
   final String lineNum;
-  final String batch;
-  final String slThucTe;
-  final String remake;
   final String itemCode;
   final String itemName;
+  final String quantity;
   final String fromWhse;
   final String toWhse;
   final String uoMCode;
+  final String batch;
+  final String sokien;
   final bool isEditable;
   const InventoryTransferItem(
       {super.key,
@@ -31,13 +31,13 @@ class InventoryTransferItem extends StatefulWidget {
         this.docEntry = '',
         this.lineNum = '',
         this.batch = '',
-        this.slThucTe = '',
+        this.quantity = '',
         this.itemCode = '',
         this.itemName = '',
         this.fromWhse = '',
         this.toWhse = '',
         this.uoMCode = '',
-        this.remake = '',
+        this.sokien = '',
         this.isEditable = true,
       });
 
@@ -52,8 +52,8 @@ class _InventoryTransferItemState extends State<InventoryTransferItem> {
   late String lineNum;
   late TextEditingController idController;
   late TextEditingController batchController;
-  late TextEditingController slThucTeController;
-  late TextEditingController remarkController;
+  late TextEditingController quantityController;
+  late TextEditingController sokienController;
   late TextEditingController itemCodeController;
   late TextEditingController itemNameController;
   late TextEditingController fromWhseController;
@@ -74,8 +74,8 @@ class _InventoryTransferItemState extends State<InventoryTransferItem> {
   void initState() {
     super.initState();
     batchController = TextEditingController();
-    slThucTeController = TextEditingController();
-    remarkController = TextEditingController();
+    quantityController = TextEditingController();
+    sokienController = TextEditingController();
     itemCodeController = TextEditingController();
     itemNameController = TextEditingController();
     fromWhseController = TextEditingController();
@@ -97,9 +97,9 @@ class _InventoryTransferItemState extends State<InventoryTransferItem> {
               itemNameController.text = itemData['ItemName']?.toString() ?? '';
               batchController.text = itemData['Batch']?.toString() ?? '';
               fromWhseController.text = itemData['Whse']?.toString() ?? '';
-              slThucTeController.text = itemData['SlThucTe']?.toString() ?? '';
+              quantityController.text = itemData['SlThucTe']?.toString() ?? '';
               uoMCodeController.text = itemData['UoMCode']?.toString() ?? '';
-              remarkController.text = itemData['Remake']?.toString() ?? '';
+              sokienController.text = itemData['Remake']?.toString() ?? '';
               isLoading = false;
               isConfirmEnabled = true;
             });
@@ -118,9 +118,9 @@ class _InventoryTransferItemState extends State<InventoryTransferItem> {
         batchController = TextEditingController(text: widget.batch);
         fromWhseController = TextEditingController(text: widget.fromWhse);
         toWhseController = TextEditingController(text: widget.toWhse);
-        slThucTeController = TextEditingController(text: widget.slThucTe);
+        quantityController = TextEditingController(text: widget.quantity);
         uoMCodeController = TextEditingController(text: widget.uoMCode);
-        remarkController = TextEditingController(text: widget.remake);
+        sokienController = TextEditingController(text: widget.sokien);
         isConfirmEnabled = false;
       });
     }
@@ -129,8 +129,8 @@ class _InventoryTransferItemState extends State<InventoryTransferItem> {
   @override
   void dispose() {
     batchController.dispose();
-    slThucTeController.dispose();
-    remarkController.dispose();
+    quantityController.dispose();
+    sokienController.dispose();
     itemCodeController.dispose();
     itemNameController.dispose();
     fromWhseController.dispose();
@@ -148,17 +148,19 @@ class _InventoryTransferItemState extends State<InventoryTransferItem> {
     }
 
     final data = {
-      'ItemCode': itemCodeController.text,
-      'ItemName': itemNameController.text,
-      'FromWhse': fromWhseController.text,
-      'ToWhse': toWhseController.text,
-      'Batch': batchController.text,
-      'SlThucTe': slThucTeController.text,
-      'UoMCode': uoMCodeController.text,
-      'Remark': remarkController.text,
       'DocEntry': docEntry,
       'LineNum': lineNum,
+      'ItemCode': itemCodeController.text,
+      'ItemName': itemNameController.text,
+      'Quantity': quantityController.text,
+      'FromWhse': fromWhseController.text,
+      'ToWhse': toWhseController.text,
+      'UoMCode': uoMCodeController.text,
+      'Batch': batchController.text,
+      'Sokien': sokienController.text,
     };
+
+    print(data);
 
     try {
       await postInventoryTransferItemsData(data, context, docEntry, lineNum);
@@ -191,6 +193,11 @@ class _InventoryTransferItemState extends State<InventoryTransferItem> {
               hintText: 'Item Name',
             ),
             buildTextFieldRow(
+              controller: quantityController,
+              labelText: 'Quantity:',
+              hintText: 'Quantity',
+            ),
+            buildTextFieldRow(
               controller: fromWhseController,
               labelText: 'From Whse:',
               hintText: 'From Whse',
@@ -214,24 +221,19 @@ class _InventoryTransferItemState extends State<InventoryTransferItem> {
               ),
             ),
             buildTextFieldRow(
-              controller: batchController,
-              labelText: 'Batch:',
-              hintText: 'Batch',
-            ),
-            buildTextFieldRow(
-              controller: slThucTeController,
-              labelText: 'Số lượng thực tế:',
-              hintText: 'Sl Thực tế',
-            ),
-            buildTextFieldRow(
               controller: uoMCodeController,
               labelText: 'UoM Code:',
               hintText: 'UoMCode',
             ),
             buildTextFieldRow(
-              controller: remarkController,
-              labelText: 'Remarks',
-              hintText: 'Remarks',
+              controller: batchController,
+              labelText: 'Số Batch:',
+              hintText: 'Batch',
+            ),
+            buildTextFieldRow(
+              controller: sokienController,
+              labelText: 'Số kiện',
+              hintText: 'Số kiện',
               isEnable: widget.isEditable,
             ),
             Flexible(
