@@ -23,7 +23,7 @@ class Purchasing extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const Grpo(qrData: "49")),
+                      builder: (context) => const Grpo(qrData: "42")),
                   // builder: (context) => const QRViewExample(
                   //       pageIdentifier: 'GRPO',
                   //     )),
@@ -40,7 +40,7 @@ class Purchasing extends StatelessWidget {
                   //           pageIdentifier: 'GoodsReturn',
                   //         )),
                   MaterialPageRoute(
-                      builder: (context) => const GoodsReturn(qrData: "2")),
+                      builder: (context) => const GoodsReturn(qrData: "10")),
                 );
                 //Test api
                 // Navigator.push(
