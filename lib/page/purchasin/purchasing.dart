@@ -38,12 +38,12 @@ class Purchasing extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  // MaterialPageRoute(
-                  //     builder: (context) => const QRViewExample(
-                  //           pageIdentifier: 'GoodsReturn',
-                  //         )),
                   MaterialPageRoute(
-                      builder: (context) => const GoodsReturn(qrData: "2")),
+                      builder: (context) => const QRViewExample(
+                            pageIdentifier: 'GoodsReturn',
+                          )),
+                  // MaterialPageRoute(
+                  //     builder: (context) => const GoodsReturn(qrData: "2")),
                 );
                 //Test api
                 // Navigator.push(

@@ -125,7 +125,6 @@ class _IfpDetailState extends State<IfpDetail> {
           'PostDate': _dateController.text,
           'ItemCode': itemCode,
           'ProdName': prodName,
-          'remake': _remarksController.text,
           'thongtinvattu': '',
         };
         await postIfpHeaderData(submitData, context);
@@ -159,10 +158,6 @@ class _IfpDetailState extends State<IfpDetail> {
                 valueQR: docNum,
                 //controller: _docNoController
               ),
-              DateInput(
-                postDay: docDate,
-                controller: _dateController,
-              ),
               buildTextFieldRow(
                 labelText: 'Product Code:',
                 hintText: 'Product Code',
@@ -175,13 +170,6 @@ class _IfpDetailState extends State<IfpDetail> {
                 valueQR: prodName,
                 //controller: _itemNameController
               ),
-              buildTextFieldRow(
-                  labelText: 'Remarks:',
-                  isEnable: true,
-                  hintText: 'Remarks here',
-                  icon: Icons.edit,
-                  valueQR: remark,
-                  controller: _remarksController),
               if (wor1.isNotEmpty)
                 ListItems(
                     listItems: wor1,
