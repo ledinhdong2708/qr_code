@@ -4,11 +4,11 @@ import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/page/qr_view_example.dart';
 
 import '../../../component/dialog.dart';
 import '../../../component/list_items.dart';
 import '../../../service/goodreturn_service.dart';
-import '../../qr_view_example.dart';
 import 'goods_return_detail_item.dart';
 
 class GoodsReturnDetail extends StatefulWidget {
@@ -151,98 +151,95 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
           width: double.infinity,
           height: double.infinity,
           padding: AppStyles.paddingContainer,
-            child: ListView(
-              children: [
-                buildTextFieldRow(
-                  controller: itemCodeController,
-                  labelText: 'Item Code:',
-                  hintText: 'Item Code',
+          child: ListView(
+            children: [
+              buildTextFieldRow(
+                controller: itemCodeController,
+                labelText: 'Item Code:',
+                hintText: 'Item Code',
+              ),
+              buildTextFieldRow(
+                controller: descriptionController,
+                labelText: 'Item Name:',
+                hintText: 'Item Name',
+              ),
+              buildTextFieldRow(
+                controller: slYeuCauController,
+                labelText: 'Số lượng yêu cầu:',
+                hintText: 'Số lượng yêu cầu',
+              ),
+              buildTextFieldRow(
+                controller: slThucTeController,
+                labelText: 'Số lượng thực tế:',
+                hintText: 'Số lượng thực tế',
+                iconButton: IconButton(
+                  icon: const Icon(Icons.qr_code_scanner),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const QRViewExample(
+                                pageIdentifier: 'GoodReturnDetailItems',
+                              )),
+                    ).then((_) => _fetchData());
+                  },
                 ),
-                buildTextFieldRow(
-                  controller: descriptionController,
-                  labelText: 'Item Name:',
-                  hintText: 'Item Name',
-                ),
-                buildTextFieldRow(
-                  controller: slYeuCauController,
-                  labelText: 'Số lượng yêu cầu:',
-                  hintText: 'Số lượng yêu cầu',
-                ),
-                buildTextFieldRow(
-                  controller: slThucTeController,
-                  labelText: 'Số lượng thực tế:',
-                  hintText: 'Số lượng thực tế',
-                  iconButton: IconButton(
-                    icon: const Icon(Icons.qr_code_scanner),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => QRViewExample(
-                                  pageIdentifier: 'GoodReturnDetailItems',
-                                  docEntry: widget.docEntry,
-                                  lineNum: widget.lineNum,
-                                )),
-                      ).then((_) => _fetchData());
-                    },
-                  ),
-                ),
-                if (grrItemsDetail.isNotEmpty)
-                  ListItems(
-                    listItems: grrItemsDetail,
-                    enableDismiss: true,
-                    onDeleteItem: (index) async {
-                      String id = grrItemsDetail[index]['ID'].toString();
-                      await deleteGrrItemsDetailData(id, context);
-                    },
-                    onTapItem: (index) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => GoodReturnDetailItems(
-                            isEditable: false,
-                            id: grrItemsDetail[index]['ID'].toString(),
-                            itemCode: grrItemsDetail[index]['ItemCode'],
-                            itemName: grrItemsDetail[index]['ItemName'],
-                            whse: grrItemsDetail[index]['Whse'],
-                            slThucTe:
-                                grrItemsDetail[index]['SlThucTe'].toString(),
-                            batch: grrItemsDetail[index]['Batch'].toString(),
-                            uoMCode:
-                                grrItemsDetail[index]['UoMCode'].toString(),
-                            remake: grrItemsDetail[index]['Remake'].toString(),
-                          ),
+              ),
+              if (grrItemsDetail.isNotEmpty)
+                ListItems(
+                  listItems: grrItemsDetail,
+                  enableDismiss: true,
+                  onDeleteItem: (index) async {
+                    String id = grrItemsDetail[index]['ID'].toString();
+                    await deleteGrrItemsDetailData(id, context);
+                  },
+                  onTapItem: (index) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GoodReturnDetailItems(
+                          isEditable: false,
+                          id: grrItemsDetail[index]['ID'].toString(),
+                          itemCode: grrItemsDetail[index]['ItemCode'],
+                          itemName: grrItemsDetail[index]['ItemName'],
+                          whse: grrItemsDetail[index]['Whse'],
+                          slThucTe:
+                              grrItemsDetail[index]['SlThucTe'].toString(),
+                          batch: grrItemsDetail[index]['Batch'].toString(),
+                          uoMCode: grrItemsDetail[index]['UoMCode'].toString(),
+                          remake: grrItemsDetail[index]['Remake'].toString(),
                         ),
-                      );
-                    },
-                    labelsAndChildren: const [
-                      {'label': 'ItemCode', 'child': 'ItemCode'},
-                      {'label': 'Name', 'child': 'ItemName'},
-                      {'label': 'Whse', 'child': 'Whse'},
-                      {'label': 'Quantity', 'child': 'SlThucTe'},
-                      {'label': 'UoM Code', 'child': 'UoMCode'},
-                      {'label': 'Batch', 'child': 'Batch'},
-                    ],
-                  ),
-                Container(
-                  width: double.infinity,
-                  margin: AppStyles.marginButton,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 20,
                       ),
-                      CustomButton(
-                        text: 'OK',
-                        onPressed: _submitData,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    );
+                  },
+                  labelsAndChildren: const [
+                    {'label': 'ItemCode', 'child': 'ItemCode'},
+                    {'label': 'Name', 'child': 'ItemName'},
+                    {'label': 'Whse', 'child': 'Whse'},
+                    {'label': 'Quantity', 'child': 'SlThucTe'},
+                    {'label': 'UoM Code', 'child': 'UoMCode'},
+                    {'label': 'Batch', 'child': 'Batch'},
+                  ],
+                ),
+              Container(
+                width: double.infinity,
+                margin: AppStyles.marginButton,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    CustomButton(
+                      text: 'OK',
+                      onPressed: _submitData,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ));
   }
 }

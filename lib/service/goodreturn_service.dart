@@ -65,8 +65,8 @@ Future<void> fetchAndUpdateGrrDatabase(
   }
 }
 
-Future<void> updateGrrDatabase(
-    String resultCode, String remake, String docDate, BuildContext context) async {
+Future<void> updateGrrDatabase(String resultCode, String remake, String docDate,
+    BuildContext context) async {
   final data = await fetchOprrData(resultCode);
   if (data == null || data.isEmpty) {
     print('No data to update');
@@ -164,21 +164,26 @@ Future<void> postGrrItemsDetailData(Map<String, dynamic> data,
 
     if (response.statusCode == 200) {
       print('Data successfully sent to server');
-      CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success',
+      CustomDialog.showDialog(
+        context,
+        'Cập nhật thành công!',
+        'success',
         onOkPressed: () {
-        int count = 0;
-        Navigator.of(context).popUntil((_) => count++ >= 2);
-      },
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 2);
+        },
       );
-
     } else {
       print('Failed to send data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
-      CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error',
-      onOkPressed: () {
-        int count = 0;
-        Navigator.of(context).popUntil((_) => count++ >= 2);
-      },
+      CustomDialog.showDialog(
+        context,
+        'Cập nhật thất bại!',
+        'error',
+        onOkPressed: () {
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 2);
+        },
       );
     }
   } catch (e) {
@@ -207,6 +212,7 @@ Future<Map<String, dynamic>?> fetchGrrItemsDetailData(
     return null;
   }
 }
+
 // QR quet ma batch tu grpo sang grr
 Future<Map<String, dynamic>?> fetchQRGrrItemsDetailData(
     String docentry, String linenum, String id) async {
@@ -248,7 +254,6 @@ Future<void> deleteGrrItemsDetailData(String id, BuildContext context) async {
       //     Navigator.of(context).popUntil((_) => count++ >= 0);
       //   },
       // );
-
     } else {
       print('Failed to delete data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -265,5 +270,58 @@ Future<void> deleteGrrItemsDetailData(String id, BuildContext context) async {
   }
 }
 
+// ===================================================================================
+//                              Fetch data of good return request
+// ===================================================================================
+Future<Map<String, dynamic>?> fetchGrrData(
+    String resultCode, BuildContext context) async {
+  final url = '$serverIpSap/SAP_GoodReturnRequest/$resultCode';
+  try {
+    final response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      print("Fetch Grr data successful");
+      return json;
+    } else {
+      print("Failed to load data with status code: ${response.statusCode}");
+      print('Response body: ${response.body}');
+      return null;
+    }
+  } catch (e) {
+    print("Error fetching Grr data: $e");
+    return null;
+  }
+}
 
-
+// ===================================================================================
+//                              Fetch data of grpoLine
+// ===================================================================================
+Future<Map<String, dynamic>?> fetchGrpoBatchesLineData(
+    String resultCode, BuildContext context) async {
+  final url = '$serverIpSap/SAP_PurchaseDeliveryNotes/$resultCode';
+  try {
+    final response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      print("Fetch GrpoLine data successful");
+      return json;
+    } else {
+      print("Failed to load data with status code: ${response.statusCode}");
+      print('Response body: ${response.body}');
+      return null;
+    }
+  } catch (e) {
+    print("Error fetching GrpoLine data: $e");
+    return null;
+  }
+}

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/header_app.dart';
+import 'package:qr_code/component/loading.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
@@ -26,134 +27,151 @@ class _GoodsReturnState extends State<GoodsReturn> {
   List<dynamic> goodreturn = [];
   Map<String, dynamic>? oprr;
   List<dynamic> prr1 = [];
+  List<dynamic> lines = [];
+  Map<String, dynamic>? grr;
+  bool _isLoading = true;
   @override
   void initState() {
     super.initState();
-    fetchOprrData(widget.qrData).then((data) {
-      if (data != null) {
-        if (data['data'] != null && data['data']['DocDate'] != null) {
-          DateTime parsedDate = DateTime.parse(data['data']['DocDate']);
-          String formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
-          data['data']['DocDate'] = formattedDate;
+    // fetchOprrData(widget.qrData).then((data) {
+    //   if (data != null) {
+    //     if (data['data'] != null && data['data']['DocDate'] != null) {
+    //       DateTime parsedDate = DateTime.parse(data['data']['DocDate']);
+    //       String formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
+    //       data['data']['DocDate'] = formattedDate;
+    //     }
+    //     setState(() {
+    //       oprr = data;
+    //       _remakeController.text = oprr?['data']['remake'] ?? '';
+    //       _dateController.text = oprr?['data']['DocDate'] ?? '';
+    //     });
+    //   }
+    // });
+    // fetchPrr1Data(widget.qrData).then((data) {
+    //   if (data != null && data['data'] is List) {
+    //     setState(() {
+    //       prr1 = data['data'];
+    //     });
+    //   }
+    // });
+    _fetchGrrData();
+  }
+
+  Future<void> _fetchGrrData() async {
+    final data = await fetchGrrData(widget.qrData, context);
+    if (data != null) {
+      setState(() {
+        _isLoading = false;
+        grr = data;
+        lines = grr?["lines"] ?? [];
+        if (grr?['docDate'] != null) {
+          _dateController.text =
+              DateFormat('yyyy-MM-dd').format(DateTime.parse(grr?['docDate']));
         }
-        setState(() {
-          oprr = data;
-          _remakeController.text = oprr?['data']['remake'] ?? '';
-          _dateController.text = oprr?['data']['DocDate'] ?? '';
-        });
-      }
-    });
-    fetchPrr1Data(widget.qrData).then((data) {
-      if (data != null && data['data'] is List) {
-        setState(() {
-          prr1 = data['data'];
-        });
-      }
-    });
+      });
+    } else {
+      print("Sai");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var data = oprr?['data'];
-    var docNum = data != null ? data['DocNum'].toString() : '';
-    var docDate = data != null ? data['DocDate'].toString() : '';
-    var cardCode = data != null ? data['CardCode'] : '';
-    var cardName = data != null ? data['CardName'] : '';
-    var remark = data != null ? data['remake'] : '';
+    var docNum = grr?['docNum']?.toString() ?? '';
+    var cardCode = grr?['cardCode'] ?? '';
+    var cardName = grr?['cardName'] ?? '';
 
     return Scaffold(
       appBar: const HeaderApp(title: "Good Return"),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: bgColor,
-        padding: AppStyles.paddingContainer,
-        child: ListView(
-          children: [
-            // buildTextFieldRow(
-            //   labelText: 'Doc No:',
-            //   hintText: 'Doc No',
-            //   valueQR: docNum,
-            // ),
-            DateInput(
-              postDay: docDate,
-              controller: _dateController,
-            ),
-            buildTextFieldRow(
-              labelText: 'Vendor:',
-              hintText: 'Vendor Code',
-              valueQR: cardCode,
-            ),
-            buildTextFieldRow(
-              labelText: 'Name:',
-              hintText: 'Vendor Name',
-              valueQR: cardName,
-            ),
-            buildTextFieldRow(
-                labelText: 'Remarks:',
-                isEnable: true,
-                hintText: 'Remarks here',
-                icon: Icons.edit,
-                valueQR: remark,
-                controller: _remakeController),
-            if (prr1.isNotEmpty)
-              ListItems(
-                listItems: prr1,
-                onTapItem: (index) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GoodsReturnDetail(
-                        docEntry: prr1[index]['DocEntry'],
-                        lineNum: prr1[index]['LineNum'],
-                        itemCode: prr1[index]['ItemCode'],
-                        description: prr1[index]['Dscription'],
-                        whse: prr1[index]['WhsCode'],
-                        slYeuCau: prr1[index]['OpenQty'].toString(),
-                        slThucTe: prr1[index]['SlThucTe'].toString(),
-                        batch: prr1[index]['Batch'].toString(),
-                        uoMCode: prr1[index]['UomCode'].toString(),
-                        remake: prr1[index]['remake'].toString(),
-                      ),
-                    ),
-                  );
-                },
-                labelsAndChildren: const [
-                  {'label': 'ItemCode', 'child': 'ItemCode'},
-                  {'label': 'Name', 'child': 'Dscription'},
-                  {'label': 'Whse', 'child': 'WhsCode'},
-                  {'label': 'Quantity', 'child': 'OpenQty'},
-                  {'label': 'UoM Code', 'child': 'UomCode'},
-                  // Add more as needed
-                ],
-              ),
-            Container(
+      body: _isLoading
+          ? const CustomLoading()
+          : Container(
               width: double.infinity,
-              margin: AppStyles.marginButton,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              height: double.infinity,
+              color: bgColor,
+              padding: AppStyles.paddingContainer,
+              child: ListView(
                 children: [
-                  CustomButton(
-                    text: 'DELETE',
-                    onPressed: () {},
+                  buildTextFieldRow(
+                    labelText: 'Doc No:',
+                    hintText: 'Doc No',
+                    valueQR: docNum,
                   ),
-                  CustomButton(
-                    text: 'POST',
-                    onPressed: () async {
-                      await updateGrrDatabase(
-                          widget.qrData,
-                          _remakeController.text,
-                          _dateController.text,
-                          context);
-                    },
+                  DateInput(
+                    controller: _dateController,
                   ),
+                  buildTextFieldRow(
+                    labelText: 'Vendor:',
+                    hintText: 'Vendor Code',
+                    valueQR: cardCode,
+                  ),
+                  buildTextFieldRow(
+                    labelText: 'Name:',
+                    hintText: 'Vendor Name',
+                    valueQR: cardName,
+                  ),
+                  buildTextFieldRow(
+                      labelText: 'Remarks:',
+                      isEnable: true,
+                      hintText: 'Remarks here',
+                      icon: Icons.edit,
+                      controller: _remakeController),
+                  if (lines.isNotEmpty)
+                    ListItems(
+                      listItems: lines,
+                      onTapItem: (index) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GoodsReturnDetail(
+                              docEntry: lines[index]['docEntry'].toString(),
+                              lineNum: lines[index]['lineNum'].toString(),
+                              itemCode: lines[index]['itemCode'].toString(),
+                              description: lines[index]['itemDescription'],
+                              whse: lines[index]['warehouseCode'],
+                              slYeuCau: lines[index]['quantity'].toString(),
+                              slThucTe: lines[index]['SlThucTe'].toString(),
+                              batch: lines[index]['Batch'].toString(),
+                              uoMCode: lines[index]['uomCode'].toString(),
+                              remake: lines[index]['remake'].toString(),
+                            ),
+                          ),
+                        );
+                      },
+                      labelsAndChildren: const [
+                        {'label': 'ItemCode', 'child': 'itemCode'},
+                        {'label': 'Name', 'child': 'itemDescription'},
+                        {'label': 'Whse', 'child': 'warehouseCode'},
+                        {'label': 'Quantity', 'child': 'quantity'},
+                        {'label': 'UoM Code', 'child': 'uomCode'},
+                      ],
+                    ),
+                  Container(
+                    width: double.infinity,
+                    margin: AppStyles.marginButton,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CustomButton(
+                          text: 'DELETE',
+                          onPressed: () {},
+                        ),
+                        CustomButton(
+                          text: 'POST',
+                          onPressed: () async {
+                            await updateGrrDatabase(
+                                widget.qrData,
+                                _remakeController.text,
+                                _dateController.text,
+                                context);
+                          },
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
-          ],
-        ),
-      ),
+            ),
     );
   }
 }

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qr_code/page/inventory/goodsreceipt/goods_receipt.dart';
 import 'package:qr_code/page/inventory/inventorycounting/inventory_counting.dart';
-import 'package:qr_code/page/inventory/inventorytransfer/inventory_transfer.dart';
-import 'package:qr_code/page/production/ifp/ifp.dart';
 import 'package:qr_code/page/production/ifp/ifp_add_new_detail_items.dart';
 import 'package:qr_code/page/production/ifp/ifp_detail.dart';
 import 'package:qr_code/page/production/rfp/rfp.dart';
@@ -12,7 +9,6 @@ import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo_detail_items.d
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return_detail_item.dart';
-import 'package:qr_code/page/result_screen.dart';
 import 'package:qr_code/page/sales/creditmemo/ar_creditmemo.dart';
 import 'package:qr_code/page/sales/delivery/delivery.dart';
 import 'package:qr_code/page/sales/delivery/delivery_detail_items.dart';
@@ -27,7 +23,11 @@ class QRViewExample extends StatefulWidget {
   final String pageIdentifier;
   final String docEntry;
   final String lineNum;
-  const QRViewExample({super.key, required this.pageIdentifier, this.docEntry="", this.lineNum=""});
+  const QRViewExample(
+      {super.key,
+      required this.pageIdentifier,
+      this.docEntry = "",
+      this.lineNum = ""});
 
   @override
   State<StatefulWidget> createState() => _QRViewExampleState();
@@ -82,38 +82,41 @@ class _QRViewExampleState extends State<QRViewExample> {
         context,
         MaterialPageRoute(builder: (context) => GoodsReturn(qrData: qrData)),
       );
-    }
-    else if (pageIdentifier == 'GoodReturnDetailItems') {
+    } else if (pageIdentifier == 'GoodReturnDetailItems') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => GoodReturnDetailItems(qrData: qrData, docEntry: widget.docEntry, lineNum: widget.lineNum)),
+        MaterialPageRoute(
+            builder: (context) => GoodReturnDetailItems(qrData: qrData)),
       );
-    }
-    else if (pageIdentifier == 'APCreditMemo') {
+    } else if (pageIdentifier == 'APCreditMemo') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ApCreditMemo(qrData: qrData)),
       );
-    }
-    else if (pageIdentifier == 'ApCreditMemoDetailItems') {
+    } else if (pageIdentifier == 'ApCreditMemoDetailItems') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ApCreditmemoDetailItems(qrData: qrData, docEntry: widget.docEntry, lineNum: widget.lineNum)),
+        MaterialPageRoute(
+            builder: (context) => ApCreditmemoDetailItems(
+                qrData: qrData,
+                docEntry: widget.docEntry,
+                lineNum: widget.lineNum)),
       );
-    }
-    else if (pageIdentifier == 'Delivery') {
+    } else if (pageIdentifier == 'Delivery') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Delivery(qrData: qrData)),
       );
-    }
-    else if (pageIdentifier == 'DeliveryDetailItems') {
+    } else if (pageIdentifier == 'DeliveryDetailItems') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => DeliveryDetailItems(qrData: qrData, docEntry: widget.docEntry, lineNum: widget.lineNum)),
+        MaterialPageRoute(
+            builder: (context) => DeliveryDetailItems(
+                qrData: qrData,
+                docEntry: widget.docEntry,
+                lineNum: widget.lineNum)),
       );
-    }
-    else if (pageIdentifier == 'SalesReturn') {
+    } else if (pageIdentifier == 'SalesReturn') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => SalesReturn(qrData: qrData)),
@@ -128,31 +131,33 @@ class _QRViewExampleState extends State<QRViewExample> {
         context,
         MaterialPageRoute(builder: (context) => IfpDetail(qrData: qrData)),
       );
-    }
-    else if (pageIdentifier == 'RfpDetail') {
+    } else if (pageIdentifier == 'RfpDetail') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => RfpDetail(qrData: qrData)),
       );
-    }
-    else if (pageIdentifier == 'IfpAddNewDetailItems') {
+    } else if (pageIdentifier == 'IfpAddNewDetailItems') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => IfpAddNewDetailItems(qrData: qrData, docEntry: widget.docEntry, lineNum: widget.lineNum)),
+        MaterialPageRoute(
+            builder: (context) => IfpAddNewDetailItems(
+                qrData: qrData,
+                docEntry: widget.docEntry,
+                lineNum: widget.lineNum)),
       );
-    }else if (pageIdentifier == 'rfp') {
+    } else if (pageIdentifier == 'rfp') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Rfp(qrData: qrData)),
       );
-    }
-    else if (pageIdentifier == 'GoodsIssueDetailItem') {
+    } else if (pageIdentifier == 'GoodsIssueDetailItem') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => GoodsIssueDetailItem(qrData: qrData, isEditable: false)),
+        MaterialPageRoute(
+            builder: (context) =>
+                GoodsIssueDetailItem(qrData: qrData, isEditable: false)),
       );
-    }
-    else if (pageIdentifier == 'IventoryCounting') {
+    } else if (pageIdentifier == 'IventoryCounting') {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -161,7 +166,11 @@ class _QRViewExampleState extends State<QRViewExample> {
     } else if (pageIdentifier == 'InventoryTransferDetail') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => InventoryTransferItem(qrData: qrData, docEntry: widget.docEntry, lineNum: widget.lineNum)),
+        MaterialPageRoute(
+            builder: (context) => InventoryTransferItem(
+                qrData: qrData,
+                docEntry: widget.docEntry,
+                lineNum: widget.lineNum)),
       );
     }
   }
