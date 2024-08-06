@@ -41,7 +41,7 @@ class _DeliveryState extends State<Delivery> {
       if (data != null) {
         if (data['data'] != null && data['data']['DocDate'] != null) {
           DateTime parsedDate = DateTime.parse(data['data']['DocDate']);
-          String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+          String formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
           data['data']['DocDate'] = formattedDate;
         }
         setState(() {
@@ -64,7 +64,8 @@ class _DeliveryState extends State<Delivery> {
   Widget build(BuildContext context) {
     var data = ordr?['data'];
     var docNum = data != null ? data['DocNum'].toString() : '';
-    var docDate = data != null ? data['DocDate'].toString() : '';
+    DateTime now = DateTime.now();
+    var docDate = data != null ? data['DocDate'].toString() : DateFormat('dd/MM/yyyy').format(now);
     var cardCode = data != null ? data['CardCode'] : '';
     var cardName = data != null ? data['CardName'] : '';
     var remark = data != null ? data['remake'] : '';

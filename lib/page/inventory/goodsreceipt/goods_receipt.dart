@@ -10,7 +10,7 @@ import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/inventory/goodsreceipt/goods_receipt_add_new.dart';
 import 'package:qr_code/page/inventory/goodsreceipt/goods_receipt_print.dart';
-import 'package:qr_code/page/inventory/goodsreceipt/list_itemcode.dart';
+import 'package:qr_code/component/list_itemcode.dart';
 import 'package:qr_code/routes/routes.dart';
 
 import '../../../component/list_items.dart';
@@ -26,8 +26,8 @@ class GoodsReceiptInven extends StatefulWidget {
 
 class _GoodsReceiptInvenState extends State<GoodsReceiptInven> {
   List<dynamic> goodsReceiptInvenItemsDetail = [];
-  final TextEditingController _remarkCodeController = TextEditingController();
-  //final TextEditingController _itemNameController = TextEditingController();
+  final TextEditingController _remarksController = TextEditingController();
+  final TextEditingController _reasonController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
 
   @override
@@ -46,25 +46,6 @@ class _GoodsReceiptInvenState extends State<GoodsReceiptInven> {
     });
   }
 
-  // Future<void> _fetchData() async {
-  //   fetchGoodsReceiptInvenItemsData().then((data) {
-  //     if (data != null && data['data'] is List) {
-  //       setState(() {
-  //         goodsReceiptInvenItems = data['data'];
-  //
-  //         // if (srrItemsDetail.isNotEmpty) {
-  //         //   itemCodeController.text = srrItemsDetail[0]['ItemCode'];
-  //         //   descriptionController.text = srrItemsDetail[0]['ItemName'];
-  //         //   batchController.text = srrItemsDetail[0]['Batch'];
-  //         //   whseController.text = srrItemsDetail[0]['Whse'];
-  //         //   slThucTeController.text = srrItemsDetail[0]['SlThucTe'].toString();
-  //         //   uoMCodeController.text = srrItemsDetail[0]['UoMCode'].toString();
-  //         //   remakeController.text = srrItemsDetail[0]['Remake'].toString();
-  //         // }
-  //       });
-  //     }
-  //   });
-  // }
   String _generateBatchCode() {
     final now = DateTime.now();
     final dateFormat = DateFormat('ddMMyyyy');
@@ -83,11 +64,8 @@ class _GoodsReceiptInvenState extends State<GoodsReceiptInven> {
     var now = DateTime.now();
     var formatter = DateFormat('dd/MM/yyyy');
     String docDate = formatter.format(now);
-
-
-    final TextEditingController _controller = TextEditingController();
     return Scaffold(
-        appBar: const HeaderApp(title: "Goods Receipt"),
+        appBar: const HeaderApp(title: "Good Receipt"),
         body: Container(
           color: bgColor,
           width: double.infinity,
@@ -100,10 +78,16 @@ class _GoodsReceiptInvenState extends State<GoodsReceiptInven> {
                   controller: _dateController,
                 ),
                 buildTextFieldRow(
+                  labelText: 'Lý do nhập kho:',
+                  hintText: 'Lý do nhập kho',
+                  isEnable: true,
+                  controller: _reasonController,
+                ),
+                buildTextFieldRow(
                   labelText: 'Remarks:',
                   hintText: 'Remarks',
                   isEnable: true,
-                  controller: _remarkCodeController,
+                  controller: _remarksController,
                 ),
                 if (goodsReceiptInvenItemsDetail.isNotEmpty)
                   ListItems(
@@ -116,11 +100,12 @@ class _GoodsReceiptInvenState extends State<GoodsReceiptInven> {
                             id: goodsReceiptInvenItemsDetail[index]['ID'].toString(),
                             itemCode: goodsReceiptInvenItemsDetail[index]['ItemCode'],
                             itemName: goodsReceiptInvenItemsDetail[index]['ItemName'],
-                            whse: goodsReceiptInvenItemsDetail[index]['Whse'],
                             quantity: goodsReceiptInvenItemsDetail[index]['Quantity'].toString(),
-                            batch: goodsReceiptInvenItemsDetail[index]['Batch'].toString(),
+                            whse: goodsReceiptInvenItemsDetail[index]['Whse'],
                             uoMCode: goodsReceiptInvenItemsDetail[index]['UoMCode'].toString(),
-                            remark: goodsReceiptInvenItemsDetail[index]['Remake'].toString(),
+                            batch: goodsReceiptInvenItemsDetail[index]['Batch'].toString(),
+                            accountCode: goodsReceiptInvenItemsDetail[index]['AccountCode'].toString(),
+                            sokien: goodsReceiptInvenItemsDetail[index]['Sokien'].toString(),
                           ),
                         ),
                       );
@@ -129,7 +114,7 @@ class _GoodsReceiptInvenState extends State<GoodsReceiptInven> {
                       {'label': 'ItemCode', 'child': 'ItemCode'},
                       {'label': 'ItemName', 'child': 'ItemName'},
                       {'label': 'Quantity', 'child': 'Quantity'},
-                      {'label': 'Batch', 'child': 'Batch'},
+                      {'label': 'Whse', 'child': 'Whse'},
 
 
                       // Add more as needed

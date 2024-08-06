@@ -3,22 +3,22 @@ import 'package:http/http.dart' as http;
 import 'package:qr_code/service/inventory_transfer_service.dart';
 import 'dart:convert';
 
-import '../../../component/list_items.dart';
-import '../../../service/goods_receipt_inven_service.dart';
+import 'list_items.dart';
+import '../service/goods_receipt_inven_service.dart';
 
-class ListWarehouses extends StatefulWidget {
-  final void Function(String whsCode) onItemSelected;
-  const ListWarehouses({super.key, required this.onItemSelected});
+class ListUom extends StatefulWidget {
+  final void Function(String uomCode) onItemSelected;
+  const ListUom({super.key, required this.onItemSelected});
 
   @override
-  _ListWarehousesState createState() => _ListWarehousesState();
+  _ListUomState createState() => _ListUomState();
 }
 
-class _ListWarehousesState extends State<ListWarehouses> {
+class _ListUomState extends State<ListUom> {
   // int _currentPage = 1;
   // final int _pageSize = 10;
   bool _isLoading = false;
-  final List<dynamic> _warehouses = [];
+  final List<dynamic> _uom = [];
 
   @override
   void initState() {
@@ -31,11 +31,11 @@ class _ListWarehousesState extends State<ListWarehouses> {
       _isLoading = true;
     });
 
-    final response = await fetchOwhsData();
+    final response = await fetchOuomData();
 
     if (response != null && response['data'] != null) {
       setState(() {
-        _warehouses.addAll(response['data']);
+        _uom.addAll(response['data']);
         //_isLoading = false;
       });
     } else {
@@ -57,25 +57,25 @@ class _ListWarehousesState extends State<ListWarehouses> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Warehouses List View'),
+        title: const Text('UoM List View'),
       ),
-      body: _isLoading && _warehouses.isEmpty
+      body: _isLoading && _uom.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : ListItems(
-        listItems: _warehouses,
+        listItems: _uom,
         enableSearch: true,
         enableExpansion: true,
         onTapItem: (index) {
           // Handle item tap
-          var item = _warehouses[index];
-          widget.onItemSelected(item['WhsCode']);
+          var item = _uom[index];
+          widget.onItemSelected(item['UomCode']);
           Navigator.pop(context);
         },
         // isLoading: _isLoading,
         // onLoadMore: _loadMoreItems,
         labelsAndChildren: const [
-          {'label': 'WhsCode', 'child': 'WhsCode'},
-          {'label': 'WhsName', 'child': 'WhsName'},
+          {'label': 'UomCode', 'child': 'UomCode'},
+          {'label': 'UomName', 'child': 'UomName'},
           // Add more as needed
         ],
       ),

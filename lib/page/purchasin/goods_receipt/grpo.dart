@@ -275,10 +275,12 @@ class _GrpoState extends State<Grpo> {
                         );
                       },
                       labelsAndChildren: const [
-                        {'label': 'DocNo', 'child': 'docNum'},
-                        {'label': 'Code', 'child': 'itemCode'},
+                        {'label': 'ItemCode', 'child': 'itemCode'},
                         {'label': 'Name', 'child': 'itemDescription'},
-                        {'label': 'SlYeuCau', 'child': 'quantity'},
+                        {'label': 'Whse', 'child': 'warehouseCode'},
+                        {'label': 'Quantity', 'child': 'quantity'},
+                        {'label': 'UoM Code', 'child': 'uomCode'},
+                        // Add more as needed
                       ],
                     ),
                   Container(
