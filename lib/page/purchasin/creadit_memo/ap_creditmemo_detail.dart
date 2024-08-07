@@ -182,15 +182,20 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
                   iconButton: IconButton(
                     icon: const Icon(Icons.qr_code_scanner),
                     onPressed: () {
-                      //_navigateAndDisplaySelection(context);
                       Navigator.push(
                         context,
+                        // MaterialPageRoute(
+                        //     builder: (context) => QRViewExample(
+                        //       pageIdentifier: 'ApCreditMemoDetailItems',
+                        //       docEntry: widget.docEntry,
+                        //       lineNum: widget.lineNum,
+                        //     )
+                        // ),
                         MaterialPageRoute(
-                            builder: (context) => QRViewExample(
-                              pageIdentifier: 'ApCreditMemoDetailItems',
-                              docEntry: widget.docEntry,
-                              lineNum: widget.lineNum,
-                            )),
+                            builder: (context) => const ApCreditmemoDetailItems(
+                              qrData: "ID: 12, DocEntry: 30, LineNum: 0",
+                            )
+                        ),
                       ).then((_) => _fetchData());
                     },
                   ),

@@ -145,7 +145,7 @@ class _DeliveryState extends State<Delivery> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CustomButton(
-                        text: 'DELETE',
+                        text: 'POST TO SAP',
                         onPressed: () {},
                       ),
                       CustomButton(

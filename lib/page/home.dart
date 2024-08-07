@@ -53,13 +53,13 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         Navigator.pushNamed(context, Routes.purchasing);
                       },
-                      child: card("assets/purchasing.png", "Purchasing"),
+                      child: card("assets/purchasing.png", "Purchasing - A/P"),
                     ),
                     InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, Routes.sales);
                       },
-                      child: card("assets/sales.png", "Sales"),
+                      child: card("assets/sales.png", "Sales - A/R"),
                     ),
                     InkWell(
                       onTap: () {

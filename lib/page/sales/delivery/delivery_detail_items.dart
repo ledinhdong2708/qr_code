@@ -77,7 +77,7 @@ class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
       String id = extractedValues['id'] ?? '';
       String docEntry = extractedValues['docEntry'] ?? '';
       String lineNum = extractedValues['lineNum'] ?? '';
-      if (docEntry == widget.docEntry && lineNum == widget.lineNum) {
+      if (docEntry == '30' && lineNum == '0') {
         fetchQRDeliveryItemsDetailData(docEntry, lineNum, id).then((data) {
           if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
             final itemData = data['data'][0];
@@ -134,8 +134,8 @@ class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
       'itemName': descriptionController.text,
       'whse': whseController.text,
       'uoMCode': uoMCodeController.text,
-      'docEntry': widget.docEntry,
-      'lineNum': widget.lineNum,
+      'docEntry': '30',
+      'lineNum': '0',
       'batch': batchController.text,
       'slThucTe': slThucTeController.text,
       'remake': remakeController.text,
@@ -143,7 +143,7 @@ class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
 
     try {
       await postDeliveryItemsDetailData(
-          data, context, widget.docEntry, widget.lineNum);
+          data, context, '26', '0');
     } catch (e) {
       print('Error submitting data: $e');
     }
@@ -153,7 +153,7 @@ class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: const HeaderApp(title: "Delivery - Detail - Items"),
+      appBar: const HeaderApp(title: "Delivery - Detail"),
       body: Container(
         width: double.infinity,
         height: double.infinity,

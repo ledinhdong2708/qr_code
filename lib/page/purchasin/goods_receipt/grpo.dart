@@ -140,7 +140,7 @@ class _GrpoState extends State<Grpo> {
         lines = po?["lines"] ?? [];
         if (po?['docDate'] != null) {
           _dateController.text =
-              DateFormat('yyyy-MM-dd').format(DateTime.parse(po?['docDate']));
+              DateFormat('dd/MM/yyyy').format(DateTime.parse(po?['docDate']));
         }
       });
     } else {
@@ -219,7 +219,7 @@ class _GrpoState extends State<Grpo> {
               child: ListView(
                 children: [
                   buildTextFieldRow(
-                    labelText: 'Doc No.',
+                    labelText: 'Doc No:',
                     hintText: 'Doc No.',
                     valueQR: docNum,
                   ),
@@ -227,19 +227,19 @@ class _GrpoState extends State<Grpo> {
                     controller: _dateController,
                   ),
                   buildTextFieldRow(
-                    labelText: 'Vendor Code',
+                    labelText: 'Vendor:',
                     hintText: 'Vendor Code',
                     valueQR: cardCode,
                   ),
                   buildTextFieldRow(
-                    labelText: 'Vendor Name',
+                    labelText: 'Name:',
                     hintText: 'Vendor Name',
                     valueQR: cardName,
                   ),
                   buildTextFieldRow(
-                    labelText: 'Remake',
+                    labelText: 'Remarks:',
                     isEnable: true,
-                    hintText: 'Remake here',
+                    hintText: 'Remarks here',
                     icon: Icons.edit,
                     controller: _commentController,
                   ),

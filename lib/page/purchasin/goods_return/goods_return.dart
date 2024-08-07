@@ -66,7 +66,7 @@ class _GoodsReturnState extends State<GoodsReturn> {
         lines = grr?["lines"] ?? [];
         if (grr?['docDate'] != null) {
           _dateController.text =
-              DateFormat('yyyy-MM-dd').format(DateTime.parse(grr?['docDate']));
+              DateFormat('dd/MM/yyyy').format(DateTime.parse(grr?['docDate']));
         }
       });
     } else {
@@ -153,7 +153,7 @@ class _GoodsReturnState extends State<GoodsReturn> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CustomButton(
-                          text: 'DELETE',
+                          text: 'POST TO SAP',
                           onPressed: () {},
                         ),
                         CustomButton(

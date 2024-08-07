@@ -7,6 +7,7 @@ import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/print_page.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class SalesReturnDetailItems extends StatefulWidget {
   final String id;
@@ -76,44 +77,53 @@ class _SalesReturnDetailItemsState extends State<SalesReturnDetailItems> {
         padding: AppStyles.paddingContainer,
         child: ListView(
           children: [
-            buildTextFieldRow(
-              controller: itemCodeController,
-              labelText: 'Item Code:',
-              hintText: 'Item Code',
-            ),
-            buildTextFieldRow(
-              controller: descriptionController,
-              labelText: 'Item Name:',
-              hintText: 'Item Name',
-            ),
-            buildTextFieldRow(
-              controller: slThucTeController,
-              labelText: 'Quantity:',
-              hintText: 'Quantity',
-            ),
-            buildTextFieldRow(
-              controller: whseController,
-              labelText: 'Whse:',
-              hintText: 'Whse',
-            ),
-            buildTextFieldRow(
-              controller: uoMCodeController,
-              labelText: 'UoM Code:',
-              hintText: 'UoMCode',
-            ),
-
-            buildTextFieldRow(
-              controller: batchController,
-              labelText: 'Số Batch:',
-              hintText: 'Batch',
-            ),
-            buildTextFieldRow(
-              controller: remakeController,
-              labelText: 'Số kiện:',
-              hintText: 'Số kiện',
-            ),
-            Flexible(
-              child: Container(),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  buildTextFieldRow(
+                    controller: itemCodeController,
+                    labelText: 'Item Code:',
+                    hintText: 'Item Code',
+                  ),
+                  buildTextFieldRow(
+                    controller: descriptionController,
+                    labelText: 'Item Name:',
+                    hintText: 'Item Name',
+                  ),
+                  buildTextFieldRow(
+                    controller: slThucTeController,
+                    labelText: 'Quantity:',
+                    hintText: 'Quantity',
+                  ),
+                  buildTextFieldRow(
+                    controller: whseController,
+                    labelText: 'Whse:',
+                    hintText: 'Whse',
+                  ),
+                  buildTextFieldRow(
+                    controller: uoMCodeController,
+                    labelText: 'UoM Code:',
+                    hintText: 'UoMCode',
+                  ),
+                  buildTextFieldRow(
+                    controller: batchController,
+                    labelText: 'Số Batch:',
+                    hintText: 'Batch',
+                  ),
+                  buildTextFieldRow(
+                    controller: remakeController,
+                    labelText: 'Số kiện:',
+                    hintText: 'Số kiện',
+                  ),
+                  const SizedBox(height: 20),
+                  QrImageView(
+                    data: widget.batch,
+                    version: QrVersions.auto,
+                    size: 150.0,
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
             Align(
               alignment: Alignment.bottomCenter,

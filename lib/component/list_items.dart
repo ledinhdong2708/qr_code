@@ -9,8 +9,8 @@ class ListItems extends StatefulWidget {
   final List<Map<String, String>> labelsAndChildren;
   final bool isLoading;
   final VoidCallback? onLoadMore;
-  final bool enableSearch; // New parameter for search functionality
-  final bool enableExpansion; // New parameter for optional Expansion
+  final bool enableSearch;
+  final bool enableExpansion;
 
   const ListItems({
     super.key,
@@ -21,8 +21,8 @@ class ListItems extends StatefulWidget {
     required this.labelsAndChildren,
     this.isLoading = false,
     this.onLoadMore,
-    this.enableSearch = false, // Default to false
-    this.enableExpansion = false, // Default to false
+    this.enableSearch = false,
+    this.enableExpansion = false,
   });
 
   @override
@@ -96,7 +96,12 @@ class _ListItemsState extends State<ListItems> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('#${index + 1}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                    '#${index + 1}',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold
+                  )
+                ),
                 ...widget.labelsAndChildren.map((labelAndChild) {
                   final label = labelAndChild['label']!;
                   final child = labelAndChild['child']!;
@@ -113,11 +118,13 @@ class _ListItemsState extends State<ListItems> {
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text('${item[child]}'),
+                        child: Text(
+                            '${item[child]}'
+                        ),
                       ),
                     ],
                   );
-                }).toList(),
+                }),
               ],
             ),
           ),

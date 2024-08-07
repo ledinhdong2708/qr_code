@@ -5,12 +5,14 @@ import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
 import 'package:qr_code/page/qr_view_example.dart';
 
+import 'creadit_memo/ap_creditmemo.dart';
+
 class Purchasing extends StatelessWidget {
   const Purchasing({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderApp(title: "Purchasing A/P"),
+      appBar: const HeaderApp(title: "Purchasing - A/P"),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
         color: bgColor,
@@ -24,12 +26,12 @@ class Purchasing extends StatelessWidget {
                   context,
                   // MaterialPageRoute(
                   //     builder: (context) => const Grpo(qrData: "48")),
-                  // MaterialPageRoute(
-                  //     builder: (context) => const Grpo(qrData: "1")),
                   MaterialPageRoute(
-                      builder: (context) => const QRViewExample(
-                            pageIdentifier: 'GRPO',
-                          )),
+                      builder: (context) => const Grpo(qrData: "30")),
+                  // MaterialPageRoute(
+                  //     builder: (context) => const QRViewExample(
+                  //           pageIdentifier: 'GRPO',
+                  //         )),
                 );
               },
               child: card("assets/receipt.png", "Goods Receipt PO"),
@@ -38,12 +40,12 @@ class Purchasing extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const QRViewExample(
-                            pageIdentifier: 'GoodsReturn',
-                          )),
                   // MaterialPageRoute(
-                  //     builder: (context) => const GoodsReturn(qrData: "2")),
+                  //     builder: (context) => const QRViewExample(
+                  //           pageIdentifier: 'GoodsReturn',
+                  //         )),
+                  MaterialPageRoute(
+                      builder: (context) => const GoodsReturn(qrData: "9")),
                 );
                 //Test api
                 // Navigator.push(
@@ -56,19 +58,20 @@ class Purchasing extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const QRViewExample(
-                            pageIdentifier: 'APCreditMemo',
-                          )),
-                );
-                //Test api
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(
-                //       builder: (context) => const ApCreditMemo(qrData: "1")),
+                //       builder: (context) => const QRViewExample(
+                //             pageIdentifier: 'APCreditMemo',
+                //           )
+                //   ),
                 // );
+                //Test api
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ApCreditMemo(qrData: "9")),
+                );
               },
               child: card("assets/credit-memo.png", "A/P Credit Memo"),
             ),
