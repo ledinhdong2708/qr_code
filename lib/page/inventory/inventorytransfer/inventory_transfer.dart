@@ -10,6 +10,7 @@ import 'package:qr_code/component/qr_input.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
+import 'package:qr_code/page/inventory/inventorytransfer/inventory_transfer_item.dart';
 import 'package:qr_code/routes/routes.dart';
 
 import '../../../component/list_items.dart';
@@ -124,24 +125,23 @@ class _InventoryTransferState extends State<InventoryTransfer> {
                     //   await deleteGrrItemsDetailData(id, context);
                     // },
                     onTapItem: (index) {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => GoodReturnDetailItems(
-                      //       isEditable: false,
-                      //       id: grrItemsDetail[index]['ID'].toString(),
-                      //       itemCode: grrItemsDetail[index]['ItemCode'],
-                      //       itemName: grrItemsDetail[index]['ItemName'],
-                      //       whse: grrItemsDetail[index]['Whse'],
-                      //       slThucTe:
-                      //       grrItemsDetail[index]['SlThucTe'].toString(),
-                      //       batch: grrItemsDetail[index]['Batch'].toString(),
-                      //       uoMCode:
-                      //       grrItemsDetail[index]['UoMCode'].toString(),
-                      //       remake: grrItemsDetail[index]['Remake'].toString(),
-                      //     ),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => InventoryTransferItem(
+                            isEditable: false,
+                            id: inventoryTransferItems[index]['ID'].toString(),
+                            itemCode: inventoryTransferItems[index]['ItemCode'],
+                            itemName: inventoryTransferItems[index]['ItemName'],
+                            quantity: inventoryTransferItems[index]['Quantity'],
+                            fromWhse: inventoryTransferItems[index]['FromWhse'],
+                            toWhse: inventoryTransferItems[index]['ToWhse'],
+                            uoMCode: inventoryTransferItems[index]['UoMCode'].toString(),
+                            batch: inventoryTransferItems[index]['Batch'].toString(),
+                            sokien: inventoryTransferItems[index]['Sokien'].toString(),
+                          ),
+                        ),
+                      );
                     },
 
                     labelsAndChildren: const [
