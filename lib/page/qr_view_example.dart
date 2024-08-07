@@ -19,7 +19,6 @@ import 'inventory/goodsissue/goods_issue_detail_item.dart';
 import 'inventory/inventorytransfer/inventory_transfer_item.dart';
 
 class QRViewExample extends StatefulWidget {
-  // tạo mã định danh cho trang
   final String pageIdentifier;
   final String docEntry;
   final String lineNum;
@@ -61,11 +60,9 @@ class _QRViewExampleState extends State<QRViewExample> {
     controller.scannedDataStream.take(1).listen((scanData) {
       if (scanData != null) {
         controller.pauseCamera();
-
         setState(() {
           result = scanData;
         });
-
         navigateToPage(widget.pageIdentifier, scanData.code!);
       }
     });

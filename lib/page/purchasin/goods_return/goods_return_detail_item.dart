@@ -149,10 +149,12 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
       'slThucTe': grpoBatchesLine?["quantity"].toString(),
       // 'remake': grpoBatchesLine?[""],
     };
-    print(data['docEntry']);
     try {
-      await postGrrItemsDetailData(data, context,
-          "$grpoBatchesLine['docEntry']", "$grpoBatchesLine['lineNum']");
+      await postGrrItemsDetailData(
+          data,
+          context,
+          grpoBatchesLine?["docEntry"]?.toString() ?? '',
+          grpoBatchesLine?["lineNum"]?.toString() ?? '');
     } catch (e) {
       print('Error submitting data: $e');
     }
