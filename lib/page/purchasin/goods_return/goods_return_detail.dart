@@ -23,6 +23,8 @@ class GoodsReturnDetail extends StatefulWidget {
   final String slThucTe;
   final String uoMCode;
   final String remake;
+  final String baseEntry;
+  final String baseLine;
 
   const GoodsReturnDetail({
     super.key,
@@ -37,6 +39,8 @@ class GoodsReturnDetail extends StatefulWidget {
     this.description = "",
     this.batch = "",
     this.openQty = "",
+    this.baseEntry = "",
+    this.baseLine = "",
   });
 
   @override
@@ -69,10 +73,11 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
   }
 
   Future<void> _fetchData() async {
-    fetchGrrItemsDetailData(widget.docEntry, widget.lineNum).then((data) {
+    fetchGrrItemsDetailData(widget.baseEntry, widget.baseLine).then((data) {
       if (data != null && data['data'] is List) {
         setState(() {
           grrItemsDetail = data['data'];
+          print("Nếu em đi: $grrItemsDetail");
           double totalSlThucTe = 0.0;
 
           if (grrItemsDetail.isNotEmpty) {
@@ -178,8 +183,11 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const QRViewExample(
-                                pageIdentifier: 'GoodReturnDetailItems',
+                          // builder: (context) => const QRViewExample(
+                          //       pageIdentifier: 'GoodReturnDetailItems',
+                          //     )
+                          builder: (context) => const GoodReturnDetailItems(
+                                qrData: "50/0/Bb123",
                               )),
                     ).then((_) => _fetchData());
                   },

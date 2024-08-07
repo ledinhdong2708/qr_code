@@ -177,7 +177,6 @@ class _GrpoState extends State<Grpo> {
 
             final grpoItemsDetailForLine = await fetchGrpoItemsDetailData(
                 widget.qrData, item["lineNum"].toString());
-
             if (grpoItemsDetailForLine != null &&
                 grpoItemsDetailForLine['data'] is List) {
               for (var batch in grpoItemsDetailForLine['data']) {

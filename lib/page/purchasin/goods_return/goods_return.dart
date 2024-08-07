@@ -21,39 +21,18 @@ class GoodsReturn extends StatefulWidget {
 }
 
 class _GoodsReturnState extends State<GoodsReturn> {
-  final TextEditingController _remakeController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   Barcode? result;
-  List<dynamic> goodreturn = [];
   Map<String, dynamic>? oprr;
   List<dynamic> prr1 = [];
   List<dynamic> lines = [];
   Map<String, dynamic>? grr;
+  // Map<String, dynamic>? goodReturn;
   bool _isLoading = true;
   @override
   void initState() {
     super.initState();
-    // fetchOprrData(widget.qrData).then((data) {
-    //   if (data != null) {
-    //     if (data['data'] != null && data['data']['DocDate'] != null) {
-    //       DateTime parsedDate = DateTime.parse(data['data']['DocDate']);
-    //       String formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
-    //       data['data']['DocDate'] = formattedDate;
-    //     }
-    //     setState(() {
-    //       oprr = data;
-    //       _remakeController.text = oprr?['data']['remake'] ?? '';
-    //       _dateController.text = oprr?['data']['DocDate'] ?? '';
-    //     });
-    //   }
-    // });
-    // fetchPrr1Data(widget.qrData).then((data) {
-    //   if (data != null && data['data'] is List) {
-    //     setState(() {
-    //       prr1 = data['data'];
-    //     });
-    //   }
-    // });
     _fetchGrrData();
   }
 
@@ -64,6 +43,7 @@ class _GoodsReturnState extends State<GoodsReturn> {
         _isLoading = false;
         grr = data;
         lines = grr?["lines"] ?? [];
+        print(grr);
         if (grr?['docDate'] != null) {
           _dateController.text =
               DateFormat('yyyy-MM-dd').format(DateTime.parse(grr?['docDate']));
@@ -71,6 +51,113 @@ class _GoodsReturnState extends State<GoodsReturn> {
       });
     } else {
       print("Sai");
+    }
+  }
+
+  Future<void> _postGrr() async {
+    try {
+      if (grr != null) {
+        final grrData = {
+          'DocEntry': grr?['docEntry'].toString(),
+          'DocNo': grr?['docNum'].toString(),
+          'VendorCode': grr?['cardCode'],
+          'VendorName': grr?['cardName'],
+          'PostDay': _dateController.text,
+          'Remake': _commentController.text,
+          'Lines': []
+        };
+
+        if (lines.isNotEmpty) {
+          for (var item in lines) {
+            final lineData = {
+              'ItemCode': item['itemCode'],
+              'ItemName': item['itemDescription'],
+              // 'LineNum': item['lineNum'].toString(),
+              'Quantity': item['quantity'].toString(),
+              'BaseEntry': grr?['docEntry'].toString() ?? 0,
+              'BaseLine': item['lineNum'].toString() ?? 0,
+              'WarehouseCode': item['warehouseCode'] ?? '',
+              // 'BaseType': 22.toString(),
+              'Batches': []
+            };
+
+            final grrItemsDetailForLine = await fetchGrrItemsDetailData(
+                widget.qrData, item["lineNum"].toString());
+            if (grrItemsDetailForLine != null &&
+                grrItemsDetailForLine['data'] is List) {
+              for (var batch in grrItemsDetailForLine['data']) {
+                final batchData = {
+                  // 'ItemCode': batch["ItemCode"],
+                  'BatchNumber': batch["Batch"],
+                  'Quantity': batch["SlThucTe"]
+                };
+                (lineData['Batches'] as List).add(batchData);
+              }
+            }
+
+            (grrData['Lines'] as List).add(lineData);
+          }
+
+          await postGrr(grrData, context);
+        } else {}
+      } else {
+        print('Dữ liệu đơn hàng (grr) là null');
+      }
+    } catch (e) {
+      print('Lỗi khi gửi dữ liệu: $e');
+    }
+  }
+
+  Future<void> _postGoodReturnRequestToGoodReturn() async {
+    try {
+      if (grr != null) {
+        final goodReturnData = {
+          'CardCode': grr?['cardCode'],
+          'CardName': grr?['cardName'],
+          'DocDate': _dateController.text,
+          'Comments': _commentController.text,
+          'Lines': []
+        };
+
+        if (lines.isNotEmpty) {
+          for (var item in lines) {
+            final lineData = {
+              'ItemCode': item['itemCode'],
+              'ItemDescription': item['itemDescription'],
+              'Quantity': item['quantity'],
+              'BaseEntry': grr?['docEntry'] ?? 0,
+              'BaseLine': item['lineNum'] ?? 0,
+              'WarehouseCode': item['warehouseCode'] ?? '',
+              'BaseType': 234000032,
+              'Batches': []
+            };
+            final grrItemsDetailForLine = await fetchGrrItemsDetailData(
+                item?["baseEntry"].toString() ?? "",
+                item["baseLine"].toString());
+
+            if (grrItemsDetailForLine != null &&
+                grrItemsDetailForLine['data'] is List) {
+              for (var batch in grrItemsDetailForLine['data']) {
+                final batchData = {
+                  'ItemCode': batch["ItemCode"],
+                  'BatchNumber': batch["Batch"],
+                  'Quantity': batch["SlThucTe"]
+                };
+                (lineData['Batches'] as List).add(batchData);
+              }
+            }
+
+            (goodReturnData['Lines'] as List).add(lineData);
+          }
+
+          await postGoodReturnRequestToGoodReturn(goodReturnData, context);
+          print("Dữ liệu gửi đi: $goodReturnData");
+        } else {}
+      } else {
+        print('Dữ liệu đơn hàng (grr) là null');
+      }
+    } catch (e) {
+      print('Lỗi khi gửi dữ liệu: $e');
     }
   }
 
@@ -114,7 +201,7 @@ class _GoodsReturnState extends State<GoodsReturn> {
                       isEnable: true,
                       hintText: 'Remarks here',
                       icon: Icons.edit,
-                      controller: _remakeController),
+                      controller: _commentController),
                   if (lines.isNotEmpty)
                     ListItems(
                       listItems: lines,
@@ -125,6 +212,8 @@ class _GoodsReturnState extends State<GoodsReturn> {
                             builder: (context) => GoodsReturnDetail(
                               docEntry: lines[index]['docEntry'].toString(),
                               lineNum: lines[index]['lineNum'].toString(),
+                              baseEntry: lines[index]['baseEntry'].toString(),
+                              baseLine: lines[index]['baseLine'].toString(),
                               itemCode: lines[index]['itemCode'].toString(),
                               description: lines[index]['itemDescription'],
                               whse: lines[index]['warehouseCode'],
@@ -153,19 +242,20 @@ class _GoodsReturnState extends State<GoodsReturn> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CustomButton(
-                          text: 'DELETE',
-                          onPressed: () {},
+                          text: 'POST',
+                          onPressed: _postGrr,
                         ),
                         CustomButton(
-                          text: 'POST',
-                          onPressed: () async {
-                            await updateGrrDatabase(
-                                widget.qrData,
-                                _remakeController.text,
-                                _dateController.text,
-                                context);
-                          },
-                        ),
+                            text: 'POST TO SAP',
+                            onPressed: _postGoodReturnRequestToGoodReturn
+                            // () async {
+                            //   await updateGrrDatabase(
+                            //       widget.qrData,
+                            //       _remakeController.text,
+                            //       _dateController.text,
+                            //       context);
+                            // },
+                            ),
                       ],
                     ),
                   )

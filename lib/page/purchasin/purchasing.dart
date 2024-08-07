@@ -40,7 +40,7 @@ class Purchasing extends StatelessWidget {
                   //           pageIdentifier: 'GoodsReturn',
                   //         )),
                   MaterialPageRoute(
-                      builder: (context) => const GoodsReturn(qrData: "10")),
+                      builder: (context) => const GoodsReturn(qrData: "17")),
                 );
                 //Test api
                 // Navigator.push(
