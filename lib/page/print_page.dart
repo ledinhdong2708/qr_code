@@ -168,7 +168,7 @@ class _PrintPageState extends State<PrintPage> {
       list.add(LineText(
         type: LineText.TYPE_QRCODE,
         content:
-        '${widget.data['docEntry']}/${widget.data['lineNum']}/${widget.data['batch']}',
+        '${widget.data['lineNum']}/${widget.data['batch']}',
             // 'ID: ${widget.data['id']}, DocEntry: ${widget.data['docEntry']}, LineNum: ${widget.data['lineNum']}',
         align: LineText.ALIGN_CENTER,
         linefeed: 1,

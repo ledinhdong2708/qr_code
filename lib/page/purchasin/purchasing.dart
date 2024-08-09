@@ -27,7 +27,7 @@ class Purchasing extends StatelessWidget {
                   // MaterialPageRoute(
                   //     builder: (context) => const Grpo(qrData: "48")),
                   MaterialPageRoute(
-                      builder: (context) => const Grpo(qrData: "38")),
+                      builder: (context) => const Grpo(qrData: "40")),
                   // MaterialPageRoute(
                   //     builder: (context) => const QRViewExample(
                   //           pageIdentifier: 'GRPO',
@@ -44,7 +44,7 @@ class Purchasing extends StatelessWidget {
                       // builder: (context) => const QRViewExample(
                       //       pageIdentifier: 'GoodsReturn',
                       //     )),
-                      builder: (context) => const GoodsReturn(qrData: "17")),
+                      builder: (context) => const GoodsReturn(qrData: "13")),
                 );
               },
               child: card("assets/return.png", "Goods Return"),
@@ -57,7 +57,7 @@ class Purchasing extends StatelessWidget {
                       //     builder: (context) => const QRViewExample(
                       //           pageIdentifier: 'APCreditMemo',
                       //         )),
-                      builder: (context) => const ApCreditMemo(qrData: "21")),
+                      builder: (context) => const ApCreditMemo(qrData: "13")),
                 );
               },
               child: card("assets/credit-memo.png", "A/P Credit Memo"),

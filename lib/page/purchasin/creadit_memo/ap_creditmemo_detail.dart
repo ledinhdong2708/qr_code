@@ -9,6 +9,7 @@ import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo_detail_items.d
 import '../../../component/dialog.dart';
 import '../../../component/list_items.dart';
 import '../../../service/ap_credit_memo_service.dart';
+import '../../qr_view_example.dart';
 
 class ApCreditmemoDetail extends StatefulWidget {
   final String docEntry;
@@ -181,22 +182,13 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
                     //_navigateAndDisplaySelection(context);
                     Navigator.push(
                         context,
-                        // MaterialPageRoute(
-                        //     builder: (context) => QRViewExample(
-                        //       pageIdentifier: 'ApCreditMemoDetailItems',
-                        //       docEntry: widget.docEntry,
-                        //       lineNum: widget.lineNum,
-                        //     )
-                        // ),
                         MaterialPageRoute(
-                            // builder: (context) => QRViewExample(
-                            //       pageIdentifier: 'ApCreditMemoDetailItems',
-                            //       docEntry: widget.docEntry,
-                            //       lineNum: widget.lineNum,
-                            //     )),
-                            builder: (context) => const ApCreditmemoDetailItems(
-                                  qrData: "54/0/nb2",
-                                ))).then((_) => _fetchData());
+                            builder: (context) => QRViewExample(
+                                  pageIdentifier: 'ApCreditMemoDetailItems',
+                              docEntry: widget.baseEntry,
+                                )
+                        )
+                    );
                   },
                 ),
               ),

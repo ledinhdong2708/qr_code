@@ -82,6 +82,7 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
   }
 
   Future<void> _fetchGrpoBatchesLineData() async {
+    print(widget.qrData);
     final data = await fetchGrpoBatchesLineData(widget.qrData, context);
     if (data != null) {
       setState(() {

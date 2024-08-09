@@ -83,7 +83,10 @@ class _QRViewExampleState extends State<QRViewExample> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => GoodReturnDetailItems(qrData: qrData)),
+            builder: (context) => GoodReturnDetailItems(
+                qrData: '${widget.docEntry}/$qrData',
+                //docEntry: widget.docEntry,
+            )),
       );
     } else if (pageIdentifier == 'APCreditMemo') {
       Navigator.push(
@@ -95,9 +98,7 @@ class _QRViewExampleState extends State<QRViewExample> {
         context,
         MaterialPageRoute(
             builder: (context) => ApCreditmemoDetailItems(
-                qrData: qrData,
-                docEntry: widget.docEntry,
-                lineNum: widget.lineNum)),
+                qrData: '${widget.docEntry}/$qrData')),
       );
     } else if (pageIdentifier == 'Delivery') {
       Navigator.push(

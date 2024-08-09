@@ -182,15 +182,16 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      // MaterialPageRoute(
-                      //     builder: (context) => const QRViewExample(
-                      //           pageIdentifier: 'GoodReturnDetailItems',
-                      //         )
-                      // ),
                       MaterialPageRoute(
-                          builder: (context) => const GoodReturnDetailItems(
-                                qrData: "29/0/09082024_2",
-                              )),
+                          builder: (context) => QRViewExample(
+                                pageIdentifier: 'GoodReturnDetailItems',
+                                docEntry: widget.baseEntry,
+                              )
+                      ),
+                      // MaterialPageRoute(
+                      //     builder: (context) => const GoodReturnDetailItems(
+                      //           qrData: "29/0/09082024_2",
+                      //         )),
                     ).then((_) => _fetchData());
                   },
                 ),
