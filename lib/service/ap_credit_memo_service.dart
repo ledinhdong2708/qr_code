@@ -65,8 +65,8 @@ Future<void> fetchAndUpdateApCreditMemoDatabase(
   }
 }
 
-Future<void> updateApCreditMemoDatabase(
-    String resultCode, String remake, String docDate, BuildContext context) async {
+Future<void> updateApCreditMemoDatabase(String resultCode, String remake,
+    String docDate, BuildContext context) async {
   final data = await fetchOprrData(resultCode);
   if (data == null || data.isEmpty) {
     print('No data to update');
@@ -152,7 +152,8 @@ Future<void> postApCreditMemoItemsData(
 
 Future<void> postApCreditMemoItemsDetailData(Map<String, dynamic> data,
     BuildContext context, String docentry, String linenum) async {
-  final String url = '$serverIp/api/v1/apcreditmemoitemsdetail/$docentry/$linenum';
+  final String url =
+      '$serverIp/api/v1/apcreditmemoitemsdetail/$docentry/$linenum';
   try {
     var response = await http.post(
       Uri.parse(url),
@@ -164,17 +165,22 @@ Future<void> postApCreditMemoItemsDetailData(Map<String, dynamic> data,
 
     if (response.statusCode == 200) {
       print('Data successfully sent to server');
-      CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success',
+      CustomDialog.showDialog(
+        context,
+        'Cập nhật thành công!',
+        'success',
         onOkPressed: () {
           int count = 0;
           Navigator.of(context).popUntil((_) => count++ >= 2);
         },
       );
-
     } else {
       print('Failed to send data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
-      CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error',
+      CustomDialog.showDialog(
+        context,
+        'Cập nhật thất bại!',
+        'error',
         onOkPressed: () {
           int count = 0;
           Navigator.of(context).popUntil((_) => count++ >= 2);
@@ -188,8 +194,10 @@ Future<void> postApCreditMemoItemsDetailData(Map<String, dynamic> data,
 
 Future<Map<String, dynamic>?> fetchApCreditMemoItemsDetailData(
     String docentry, String linenum) async {
-  final url = '$serverIp/api/v1/apcreditmemoitemsdetail/Detail/$docentry/$linenum';
+  final url =
+      '$serverIp/api/v1/apcreditmemoitemsdetail/Detail/$docentry/$linenum';
   final uri = Uri.parse(url);
+  print("Test uri: $uri");
   try {
     final response = await http.get(uri);
     var decodedResponse = utf8.decode(response.bodyBytes);
@@ -207,6 +215,7 @@ Future<Map<String, dynamic>?> fetchApCreditMemoItemsDetailData(
     return null;
   }
 }
+
 // QR quet ma batch tu grpo sang Apcreditmemo
 Future<Map<String, dynamic>?> fetchQRApCreditMemoItemsDetailData(
     String docentry, String linenum, String id) async {
@@ -230,7 +239,8 @@ Future<Map<String, dynamic>?> fetchQRApCreditMemoItemsDetailData(
   }
 }
 
-Future<void> deleteApCreditMemoItemsDetailData(String id, BuildContext context) async {
+Future<void> deleteApCreditMemoItemsDetailData(
+    String id, BuildContext context) async {
   final String url = '$serverIp/api/v1/apcreditmemoitemsdetail/$id';
   try {
     var response = await http.delete(
@@ -248,7 +258,6 @@ Future<void> deleteApCreditMemoItemsDetailData(String id, BuildContext context) 
       //     Navigator.of(context).popUntil((_) => count++ >= 0);
       //   },
       // );
-
     } else {
       print('Failed to delete data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -265,5 +274,57 @@ Future<void> deleteApCreditMemoItemsDetailData(String id, BuildContext context) 
   }
 }
 
+// ===================================================================================
+//                              Post data in GoodReturnRequest to ApCreditMemo
+// ===================================================================================
+Future<void> postGoodReturnRequestToApCreditMemo(
+    Map<String, dynamic> data, BuildContext context) async {
+  const String url = '$serverIpSap/SAP_ApCreditMemo';
+  try {
+    var response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(data),
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      CustomDialog.showDialog(context, 'Cập nhật thành công', 'success');
+    } else {
+      print('Failed to send data. Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      CustomDialog.showDialog(
+          context, 'Cập nhật thất bại! ${response.body}', 'error');
+    }
+  } catch (e) {
+    print('Error during POST request: $e');
+  }
+}
 
-
+// ===================================================================================
+//                              Fetch data of ApInvoice
+// ===================================================================================
+Future<Map<String, dynamic>?> fetchApInvoiceData(
+    String baseEntryOfGrr, BuildContext context) async {
+  final url = '$serverIpSap/SAP_ApInvoice/$baseEntryOfGrr';
+  try {
+    final response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      print("Fetch ApInvoice data successful");
+      return json;
+    } else {
+      print("Failed to load data with status code: ${response.statusCode}");
+      print('Response body: ${response.body}');
+      return null;
+    }
+  } catch (e) {
+    print("Error fetching ApInvoice data: $e");
+    return null;
+  }
+}
