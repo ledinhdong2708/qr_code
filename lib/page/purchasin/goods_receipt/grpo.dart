@@ -46,24 +46,7 @@ class _GrpoState extends State<Grpo> {
     docNoController = TextEditingController();
     docEntryController = TextEditingController();
     baseEntryController = TextEditingController();
-    _fetchGrpoData();
     _fetchPoData();
-  }
-
-  Future<void> _fetchGrpoData() async {
-    fetchGrpoData(widget.qrData).then((data) {
-      if (data != null && data['data'] is List) {
-        setState(() {
-          grpo = data['data'];
-          if (grpo.isNotEmpty) {
-            vendorCodeController.text = grpo[0]['vendorcode'];
-            vendorNameController.text = grpo[0]['vendorname'];
-            postDayController.text = grpo[0]['postday'];
-            docEntryController.text = grpo[0]['BaseEntry'];
-          }
-        });
-      }
-    });
   }
 
   @override
@@ -85,7 +68,7 @@ class _GrpoState extends State<Grpo> {
         final grpoData = {
           'CardCode': po?['cardCode'],
           'CardName': po?['cardName'],
-          'DocDate': _dateController.text,
+          'DocDate': DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy').parse(_dateController.text)),
           'Comments': _commentController.text,
           'Lines': []
         };
@@ -140,7 +123,7 @@ class _GrpoState extends State<Grpo> {
         lines = po?["lines"] ?? [];
         if (po?['docDate'] != null) {
           _dateController.text =
-              DateFormat('yyyy-MM-dd').format(DateTime.parse(po?['docDate']));
+              DateFormat('dd/MM/yyyy').format(DateTime.parse(po?['docDate']));
         }
       });
     } else {
@@ -156,7 +139,7 @@ class _GrpoState extends State<Grpo> {
           'DocNo': po?['docNum'].toString(),
           'VendorCode': po?['cardCode'],
           'VendorName': po?['cardName'],
-          'PostDay': _dateController.text,
+          'PostDay': DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy').parse(_dateController.text)),
           'Remake': _commentController.text,
           'Lines': []
         };
@@ -218,7 +201,7 @@ class _GrpoState extends State<Grpo> {
               child: ListView(
                 children: [
                   buildTextFieldRow(
-                    labelText: 'Doc No.',
+                    labelText: 'Doc No:',
                     hintText: 'Doc No.',
                     valueQR: docNum,
                   ),
@@ -226,19 +209,19 @@ class _GrpoState extends State<Grpo> {
                     controller: _dateController,
                   ),
                   buildTextFieldRow(
-                    labelText: 'Vendor Code',
+                    labelText: 'Vendor:',
                     hintText: 'Vendor Code',
                     valueQR: cardCode,
                   ),
                   buildTextFieldRow(
-                    labelText: 'Vendor Name',
+                    labelText: 'Name:',
                     hintText: 'Vendor Name',
                     valueQR: cardName,
                   ),
                   buildTextFieldRow(
-                    labelText: 'Remake',
+                    labelText: 'Remarks:',
                     isEnable: true,
-                    hintText: 'Remake here',
+                    hintText: 'Remarks here',
                     icon: Icons.edit,
                     controller: _commentController,
                   ),

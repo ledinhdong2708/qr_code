@@ -5,12 +5,14 @@ import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
 
+import 'creadit_memo/ap_creditmemo.dart';
+
 class Purchasing extends StatelessWidget {
   const Purchasing({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderApp(title: "Purchasing A/P"),
+      appBar: const HeaderApp(title: "Purchasing - A/P"),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
         color: bgColor,
@@ -22,11 +24,14 @@ class Purchasing extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
+                  // MaterialPageRoute(
+                  //     builder: (context) => const Grpo(qrData: "48")),
                   MaterialPageRoute(
-                      builder: (context) => const Grpo(qrData: "42")),
-                  // builder: (context) => const QRViewExample(
-                  //       pageIdentifier: 'GRPO',
-                  //     )),
+                      builder: (context) => const Grpo(qrData: "37")),
+                  // MaterialPageRoute(
+                  //     builder: (context) => const QRViewExample(
+                  //           pageIdentifier: 'GRPO',
+                  //         )),
                 );
               },
               child: card("assets/receipt.png", "Goods Receipt PO"),

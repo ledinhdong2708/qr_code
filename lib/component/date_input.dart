@@ -39,7 +39,7 @@ class _DateInputState extends State<DateInput> {
     );
     if (picked != null) {
       setState(() {
-        _internalController.text = DateFormat('yyyy-MM-dd').format(picked);
+        _internalController.text = DateFormat('dd/MM/yyyy').format(picked);
       });
     }
   }
@@ -62,7 +62,7 @@ class _DateInputState extends State<DateInput> {
                   enabled: true,
                   decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "yyyy-MM-dd",
+                      hintText: "dd/MM/yyyy",
                       fillColor: fieldInput,
                       filled: true,
                       suffixIcon: IconButton(

@@ -156,7 +156,7 @@ class _ArCreditmemoDetailState extends State<ArCreditmemoDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const HeaderApp(title: "AR Credit Memo - Detail"),
+        appBar: const HeaderApp(title: "AR Credit Memo - Details"),
         body: Container(
           color: bgColor,
           width: double.infinity,
@@ -188,6 +188,11 @@ class _ArCreditmemoDetailState extends State<ArCreditmemoDetail> {
                 if (arcreditmemoItemsDetail.isNotEmpty)
                   ListItems(
                     listItems: arcreditmemoItemsDetail,
+                    enableDismiss: true,
+                    onDeleteItem: (index) async {
+                      String id = arcreditmemoItemsDetail[index]['ID'].toString();
+                      await deleteArCreditMemoItemsDetailData(id, context);
+                    },
                     onTapItem: (index) {
                       Navigator.push(
                         context,

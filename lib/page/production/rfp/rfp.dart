@@ -75,7 +75,7 @@ class _RfpState extends State<Rfp> {
                         builder: (context) => const QRViewExample(
                           pageIdentifier: 'RfpDetail',
                         )),
-                  );
+                  ).then((_) => _fetchData());
                 },
               ),
               //valueQR: docNum,

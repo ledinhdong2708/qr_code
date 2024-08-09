@@ -101,3 +101,38 @@ Future<Map<String, dynamic>?> fetchInventoryTransferItemsData() async {
     return null;
   }
 }
+
+Future<void> deleteInventoryTransferItemsData(String id, BuildContext context) async {
+  final String url = '$serverIp/api/v1/inventorytransferitems/$id';
+  try {
+    var response = await http.delete(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print('Data successfully deleted');
+      // CustomDialog.showDialog(context, 'Xóa thành công!', 'success',
+      //   onOkPressed: () {
+      //     int count = 0;
+      //     Navigator.of(context).popUntil((_) => count++ >= 0);
+      //   },
+      // );
+
+    } else {
+      print('Failed to delete data. Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      // CustomDialog.showDialog(context, 'Xóa thất bại!', 'error',
+      //   onOkPressed: () {
+      //     int count = 0;
+      //     Navigator.of(context).popUntil((_) => count++ >= 2);
+      //   },
+      // );
+    }
+  } catch (e) {
+    print('Error during DELETE request: $e');
+    CustomDialog.showDialog(context, 'Có lỗi xảy ra!', 'error');
+  }
+}

@@ -186,6 +186,11 @@ class _SalesReturnDetailState extends State<SalesReturnDetail> {
                 if (srrItemsDetail.isNotEmpty)
                   ListItems(
                     listItems: srrItemsDetail,
+                    enableDismiss: true,
+                    onDeleteItem: (index) async {
+                      String id = srrItemsDetail[index]['ID'].toString();
+                      await deleteSrrItemsDetailData(id, context);
+                    },
                     onTapItem: (index) {
                       Navigator.push(
                         context,

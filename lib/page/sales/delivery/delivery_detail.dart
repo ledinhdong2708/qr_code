@@ -149,7 +149,7 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const HeaderApp(title: "Delivery - Detail"),
+        appBar: const HeaderApp(title: "Delivery - Details"),
         body: Container(
           color: bgColor,
           width: double.infinity,
@@ -182,12 +182,18 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
                       //_navigateAndDisplaySelection(context);
                       Navigator.push(
                         context,
+                        // MaterialPageRoute(
+                        //     builder: (context) => QRViewExample(
+                        //       pageIdentifier: 'DeliveryDetailItems',
+                        //       docEntry: widget.docEntry,
+                        //       lineNum: widget.lineNum,
+                        //     )
+                        // ),
                         MaterialPageRoute(
-                            builder: (context) => QRViewExample(
-                              pageIdentifier: 'DeliveryDetailItems',
-                              docEntry: widget.docEntry,
-                              lineNum: widget.lineNum,
-                            )),
+                            builder: (context) => const DeliveryDetailItems(
+                              qrData: "ID: 10, DocEntry: 1, LineNum: 0",
+                            )
+                        ),
                       ).then((_) => _fetchData());
                     },
                   ),

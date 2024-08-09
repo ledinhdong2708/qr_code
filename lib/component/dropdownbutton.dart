@@ -75,6 +75,8 @@ class _DropdownbuttonState extends State<Dropdownbutton> {
               isExpanded: true,
               value: valueChoose,
               style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
                 color: fieldInputText,
               ),
               onChanged: (newValue) {

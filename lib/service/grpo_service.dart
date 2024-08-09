@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_code/component/dialog.dart';
+import 'package:qr_code/constants/popCount.dart';
 
 import '../constants/urlAPI.dart';
 
@@ -51,7 +52,7 @@ Future<void> postGrpoItemsDetailData(Map<String, dynamic> data,
         'success',
         onOkPressed: () {
           int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 1);
+          Navigator.of(context).popUntil((_) => count++ >= testPopItemDetails);
         },
       );
     } else {
@@ -63,7 +64,7 @@ Future<void> postGrpoItemsDetailData(Map<String, dynamic> data,
         'error',
         onOkPressed: () {
           int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 2);
+          Navigator.of(context).popUntil((_) => count++ >= popCountItemDetails);
         },
       );
     }
@@ -93,115 +94,38 @@ Future<Map<String, dynamic>?> fetchGrpoItemsDetailData(
   }
 }
 
-Future<Map<String, dynamic>?> fetchGrpoData(String docentry) async {
-  final url = '$serverIp/api/v1/grpo/docentry/$docentry';
-  final uri = Uri.parse(url);
+Future<void> deleteGrpoItemsDetailData(String id, BuildContext context) async {
+  final String url = '$serverIp/api/v1/grpoitemsdetail/$id';
   try {
-    final response = await http.get(uri);
-    var decodedResponse = utf8.decode(response.bodyBytes);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(decodedResponse);
-      print("Fetch grpo data successful");
-      print(json);
-      return json;
-    } else {
-      print("Failed to load data with status code: ${response.statusCode}");
-      return null;
-    }
-  } catch (e) {
-    print("Error fetching grpo data: $e");
-    return null;
-  }
-}
-
-Future<void> postOpdnData(
-    Map<String, dynamic> data, BuildContext context) async {
-  const String url = '$serverIp/api/v1/opdn';
-  try {
-    var response = await http.post(
+    var response = await http.delete(
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(data),
     );
 
     if (response.statusCode == 200) {
-      print('Data successfully sent to server');
+      print('Data successfully deleted');
+      // CustomDialog.showDialog(context, 'Xóa thành công!', 'success',
+      //   onOkPressed: () {
+      //     int count = 0;
+      //     Navigator.of(context).popUntil((_) => count++ >= 0);
+      //   },
+      // );
+
     } else {
-      print('Failed to send data. Status code: ${response.statusCode}');
+      print('Failed to delete data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
-      // CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
+      // CustomDialog.showDialog(context, 'Xóa thất bại!', 'error',
+      //   onOkPressed: () {
+      //     int count = 0;
+      //     Navigator.of(context).popUntil((_) => count++ >= 2);
+      //   },
+      // );
     }
   } catch (e) {
-    print('Error during POST request: $e');
-  }
-}
-
-Future<Map<String, dynamic>?> fetchOpdnData(String resultCode) async {
-  final url = '$serverIp/api/v1/opdn/$resultCode';
-  final uri = Uri.parse(url);
-  try {
-    final response = await http.get(uri);
-    var decodedResponse = utf8.decode(response.bodyBytes);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(decodedResponse);
-      return json;
-    } else {
-      print("Failed to load data with status code: ${response.statusCode}");
-      return null;
-    }
-  } catch (e) {
-    print("Error fetching Opdn data: $e");
-    return null;
-  }
-}
-
-Future<void> postPdn1Data(
-    Map<String, dynamic> data, BuildContext context) async {
-  const String url = '$serverIp/api/v1/pdn1';
-  try {
-    var response = await http.post(
-      Uri.parse(url),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(data),
-    );
-
-    if (response.statusCode == 200) {
-      print('Data successfully sent to server');
-    } else {
-      print('Failed to send data. Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      // CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
-    }
-  } catch (e) {
-    print('Error during POST request: $e');
-  }
-}
-
-Future<void> updatePor1Data(
-    Map<String, dynamic> data, BuildContext context, String docentry) async {
-  final String url = '$serverIp/api/v1/por1/$docentry';
-  try {
-    var response = await http.put(
-      Uri.parse(url),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(data),
-    );
-
-    if (response.statusCode == 200) {
-      print('Data successfully sent to server');
-    } else {
-      print('Failed to send data. Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      // CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error');
-    }
-  } catch (e) {
-    print('Error during PUT request: $e');
+    print('Error during DELETE request: $e');
+    CustomDialog.showDialog(context, 'Có lỗi xảy ra!', 'error');
   }
 }
 

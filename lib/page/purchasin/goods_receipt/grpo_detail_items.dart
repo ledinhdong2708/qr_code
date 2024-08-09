@@ -70,7 +70,7 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderApp(title: "GRPO - Detail -Item"),
+      appBar: const HeaderApp(title: "GRPO - Detail"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -120,7 +120,7 @@ class _GrpoDetailItemsState extends State<GrpoDetailItems> {
                   QrImageView(
                     data: widget.batch,
                     version: QrVersions.auto,
-                    size: 200.0,
+                    size: 150.0,
                   ),
                   const SizedBox(height: 20),
                 ],

@@ -181,6 +181,13 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
                     //_navigateAndDisplaySelection(context);
                     Navigator.push(
                         context,
+                        // MaterialPageRoute(
+                        //     builder: (context) => QRViewExample(
+                        //       pageIdentifier: 'ApCreditMemoDetailItems',
+                        //       docEntry: widget.docEntry,
+                        //       lineNum: widget.lineNum,
+                        //     )
+                        // ),
                         MaterialPageRoute(
                             // builder: (context) => QRViewExample(
                             //       pageIdentifier: 'ApCreditMemoDetailItems',

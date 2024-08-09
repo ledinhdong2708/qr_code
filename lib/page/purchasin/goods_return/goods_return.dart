@@ -46,7 +46,7 @@ class _GoodsReturnState extends State<GoodsReturn> {
         print(grr);
         if (grr?['docDate'] != null) {
           _dateController.text =
-              DateFormat('yyyy-MM-dd').format(DateTime.parse(grr?['docDate']));
+              DateFormat('dd/MM/yyyy').format(DateTime.parse(grr?['docDate']));
         }
       });
     } else {
@@ -62,7 +62,7 @@ class _GoodsReturnState extends State<GoodsReturn> {
           'DocNo': grr?['docNum'].toString(),
           'VendorCode': grr?['cardCode'],
           'VendorName': grr?['cardName'],
-          'PostDay': _dateController.text,
+          'PostDay': DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy').parse(_dateController.text)),
           'Remake': _commentController.text,
           'Lines': []
         };
@@ -113,7 +113,7 @@ class _GoodsReturnState extends State<GoodsReturn> {
         final goodReturnData = {
           'CardCode': grr?['cardCode'],
           'CardName': grr?['cardName'],
-          'DocDate': _dateController.text,
+          'DocDate': DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy').parse(_dateController.text)),
           'Comments': _commentController.text,
           'Lines': []
         };
