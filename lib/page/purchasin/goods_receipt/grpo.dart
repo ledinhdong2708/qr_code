@@ -68,7 +68,7 @@ class _GrpoState extends State<Grpo> {
         final grpoData = {
           'CardCode': po?['cardCode'],
           'CardName': po?['cardName'],
-          'DocDate': _dateController.text,
+          'DocDate': DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy').parse(_dateController.text)),
           'Comments': _commentController.text,
           'Lines': []
         };
@@ -139,7 +139,7 @@ class _GrpoState extends State<Grpo> {
           'DocNo': po?['docNum'].toString(),
           'VendorCode': po?['cardCode'],
           'VendorName': po?['cardName'],
-          'PostDay': _dateController.text,
+          'PostDay': DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy').parse(_dateController.text)),
           'Remake': _commentController.text,
           'Lines': []
         };

@@ -189,7 +189,7 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                       // ),
                       MaterialPageRoute(
                           builder: (context) => const GoodReturnDetailItems(
-                                qrData: "26/0/05082024_1",
+                                qrData: "28/0/09082024_2",
                               )),
                     ).then((_) => _fetchData());
                   },
