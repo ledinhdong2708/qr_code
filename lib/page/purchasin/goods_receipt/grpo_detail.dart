@@ -43,7 +43,7 @@ class GrpoDetail extends StatefulWidget {
   _GrpoDetailState createState() => _GrpoDetailState();
 }
 
-class _GrpoDetailState extends State<GrpoDetail> {
+class _GrpoDetailState extends State<GrpoDetail> with RouteAware{
   List<dynamic> grpoItemsDetail = [];
   late TextEditingController itemCodeController;
   late TextEditingController descriptionController;
@@ -69,10 +69,12 @@ class _GrpoDetailState extends State<GrpoDetail> {
   }
 
   Future<void> _fetchData() async {
+    print('fetch data');
     fetchGrpoItemsDetailData(widget.docEntry, widget.lineNum).then((data) {
       if (data != null && data['data'] is List) {
         setState(() {
           grpoItemsDetail = data['data'];
+          print('Fetched data: $grpoItemsDetail'); // In ra dữ liệu để kiểm tra
           double totalSlThucTe = 0.0;
 
           if (grpoItemsDetail.isNotEmpty) {
@@ -94,7 +96,11 @@ class _GrpoDetailState extends State<GrpoDetail> {
             remakeController.text = grpoItemsDetail[0]['Remake'].toString();
           }
         });
+      } else {
+        print('Data is null or not a list');
       }
+    }).catchError((error) {
+      print('Error fetching data: $error');
     });
   }
 
@@ -156,6 +162,24 @@ class _GrpoDetailState extends State<GrpoDetail> {
     return '${dateStr}_${maxIndex}';
   }
 
+  void _navigateToAddNewItem() {
+    final batchCode = _generateBatchCode();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GrpoAddNewDetailItems(
+          docEntry: widget.docEntry,
+          lineNum: widget.lineNum,
+          itemCode: widget.itemCode,
+          itemName: widget.description,
+          whse: widget.whse,
+          uoMCode: widget.uoMCode,
+          batch: batchCode,
+        ),
+      ),
+    ).then((_) => _fetchData()); // Fetch data after returning
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,6 +215,11 @@ class _GrpoDetailState extends State<GrpoDetail> {
               if (grpoItemsDetail.isNotEmpty)
                 ListItems(
                   listItems: grpoItemsDetail,
+                  enableDismiss: true,
+                  onDeleteItem: (index) async {
+                    String id = grpoItemsDetail[index]['ID'].toString();
+                    await deleteGrpoItemsDetailData(id, context);
+                  },
                   onTapItem: (index) {
                     Navigator.push(
                       context,
@@ -202,8 +231,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
                           itemCode: grpoItemsDetail[index]['ItemCode'],
                           itemName: grpoItemsDetail[index]['ItemName'],
                           whse: grpoItemsDetail[index]['Whse'],
-                          slThucTe:
-                              grpoItemsDetail[index]['SlThucTe'].toString(),
+                          slThucTe: grpoItemsDetail[index]['SlThucTe'].toString(),
                           batch: grpoItemsDetail[index]['Batch'].toString(),
                           uoMCode: grpoItemsDetail[index]['UoMCode'].toString(),
                           remake: grpoItemsDetail[index]['Remake'].toString(),
@@ -229,23 +257,7 @@ class _GrpoDetailState extends State<GrpoDetail> {
                   children: [
                     CustomButton(
                       text: 'New',
-                      onPressed: () {
-                        final batchCode = _generateBatchCode();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => GrpoAddNewDetailItems(
-                              docEntry: widget.docEntry,
-                              lineNum: widget.lineNum,
-                              itemCode: widget.itemCode,
-                              itemName: widget.description,
-                              whse: widget.whse,
-                              uoMCode: widget.uoMCode,
-                              batch: batchCode,
-                            ),
-                          ),
-                        ).then((_) => _fetchData());
-                      },
+                      onPressed: _navigateToAddNewItem,
                     ),
                     const SizedBox(
                       width: 20,

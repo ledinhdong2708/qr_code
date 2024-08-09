@@ -187,10 +187,11 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
                         //       pageIdentifier: 'DeliveryDetailItems',
                         //       docEntry: widget.docEntry,
                         //       lineNum: widget.lineNum,
-                        //     )),
+                        //     )
+                        // ),
                         MaterialPageRoute(
                             builder: (context) => const DeliveryDetailItems(
-                              qrData: "ID: 12, DocEntry: 30, LineNum: 0",
+                              qrData: "ID: 10, DocEntry: 1, LineNum: 0",
                             )
                         ),
                       ).then((_) => _fetchData());

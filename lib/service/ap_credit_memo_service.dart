@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:qr_code/constants/popCount.dart';
 import 'package:qr_code/constants/urlApi.dart';
 
 import '../component/dialog.dart';
@@ -167,7 +168,7 @@ Future<void> postApCreditMemoItemsDetailData(Map<String, dynamic> data,
       CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success',
         onOkPressed: () {
           int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 2);
+          Navigator.of(context).popUntil((_) => count++ >= testPopItemDetails);
         },
       );
 
@@ -177,7 +178,7 @@ Future<void> postApCreditMemoItemsDetailData(Map<String, dynamic> data,
       CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error',
         onOkPressed: () {
           int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 2);
+          Navigator.of(context).popUntil((_) => count++ >= popCountItemDetails);
         },
       );
     }

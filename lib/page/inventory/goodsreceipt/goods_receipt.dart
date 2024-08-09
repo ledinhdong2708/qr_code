@@ -92,6 +92,11 @@ class _GoodsReceiptInvenState extends State<GoodsReceiptInven> {
                 if (goodsReceiptInvenItemsDetail.isNotEmpty)
                   ListItems(
                     listItems: goodsReceiptInvenItemsDetail,
+                    enableDismiss: true,
+                    onDeleteItem: (index) async {
+                      String id = goodsReceiptInvenItemsDetail[index]['ID'].toString();
+                      await deleteGoodsReceiptInvenItemsDetailData(id, context);
+                    },
                     onTapItem: (index) {
                       Navigator.push(
                         context,
@@ -140,7 +145,7 @@ class _GoodsReceiptInvenState extends State<GoodsReceiptInven> {
                             MaterialPageRoute(
                               builder: (context) => GoodsReceiptInvenAddNew(batch: batchCode),
                             ),
-                          );
+                          ).then((_) => _fetchData());
                         },
                       ),
                     ],

@@ -142,7 +142,7 @@ class _SalesReturnState extends State<SalesReturn> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CustomButton(
-                        text: 'DELETE',
+                        text: 'POST TO SAP',
                         onPressed: () {},
                       ),
                       CustomButton(

@@ -74,7 +74,7 @@ class _IfpState extends State<Ifp> {
                         builder: (context) => const QRViewExample(
                           pageIdentifier: 'IfpDetail',
                         )),
-                  );
+                  ).then((_) => _fetchData());
                 },
               ),
               //valueQR: docNum,

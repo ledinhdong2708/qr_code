@@ -92,7 +92,7 @@ class _InventoryTransferState extends State<InventoryTransfer> {
                             builder: (context) => const QRViewExample(
                               pageIdentifier: 'InventoryTransferDetail',
                             )),
-                      );
+                      ).then((_) => _fetchData());
                     },
                   ),
                 ),
@@ -119,11 +119,11 @@ class _InventoryTransferState extends State<InventoryTransfer> {
                 if (inventoryTransferItems.isNotEmpty)
                   ListItems(
                     listItems: inventoryTransferItems,
-                    // enableDismiss: true,
-                    // onDeleteItem: (index) async {
-                    //   String id = inventoryTransferItems[index]['ID'].toString();
-                    //   await deleteGrrItemsDetailData(id, context);
-                    // },
+                    enableDismiss: true,
+                    onDeleteItem: (index) async {
+                      String id = inventoryTransferItems[index]['ID'].toString();
+                      await deleteInventoryTransferItemsData(id, context);
+                    },
                     onTapItem: (index) {
                       Navigator.push(
                         context,
@@ -164,7 +164,7 @@ class _InventoryTransferState extends State<InventoryTransfer> {
                         onPressed: () {},
                       ),
                       CustomButton(
-                        text: 'DELETE',
+                        text: 'POST TO SAP',
                         onPressed: () {},
                       ),
                     ],

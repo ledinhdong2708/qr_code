@@ -79,7 +79,7 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
       id = extractedValues['id'] ?? '';
       docEntry = extractedValues['docEntry'] ?? '';
       lineNum = extractedValues['lineNum'] ?? '';
-      fetchQRGoodsIssueItemsDetailData(docEntry, lineNum, id).then((data) {
+      fetchQRGoodsIssueItemsDetailData(docEntry, lineNum, '26').then((data) {
         if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
           final itemData = data['data'][0];
           setState(() {
@@ -121,15 +121,15 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
 
   @override
   void dispose() {
-    itemCodeController.dispose();
-    itemNameController.dispose();
-    batchController.dispose();
-    quantityController.dispose();
-    whseController.dispose();
-    quantityController.dispose();
-    uoMCodeController.dispose();
-    accountCodeController.dispose();
-    sokienController.dispose();
+    // itemCodeController.dispose();
+    // itemNameController.dispose();
+    // batchController.dispose();
+    // quantityController.dispose();
+    // whseController.dispose();
+    // quantityController.dispose();
+    // uoMCodeController.dispose();
+    // accountCodeController.dispose();
+    // sokienController.dispose();
     super.dispose();
   }
 
@@ -169,7 +169,7 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const HeaderApp(title: "Goods Issue - Detail"),
+        appBar: const HeaderApp(title: "Good Issue - Detail"),
         body: Container(
           color: bgColor,
           width: double.infinity,

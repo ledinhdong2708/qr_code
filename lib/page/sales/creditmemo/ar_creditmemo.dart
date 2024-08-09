@@ -141,7 +141,7 @@ class _ARCreditMemoState extends State<ARCreditMemo> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CustomButton(
-                        text: 'DELETE',
+                        text: 'POST TO SAP',
                         onPressed: () {},
                       ),
                       CustomButton(

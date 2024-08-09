@@ -5,6 +5,7 @@ import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/print_page.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class GoodsReceiptInvenPrint extends StatefulWidget {
   final String id;
@@ -76,7 +77,7 @@ class _GoodsReceiptInvenPrintState extends State<GoodsReceiptInvenPrint> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderApp(title: "Goods Receipt Detail"),
+      appBar: const HeaderApp(title: "Goods Receipt - Detail"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -124,9 +125,15 @@ class _GoodsReceiptInvenPrintState extends State<GoodsReceiptInvenPrint> {
               labelText: 'Số kiện',
               hintText: 'Số kiện',
             ),
-            Flexible(
-              child: Container(),
+            const SizedBox(height: 20),
+            Center(
+              child: QrImageView(
+                data: widget.batch,
+                version: QrVersions.auto,
+                size: 150.0,
+              ),
             ),
+            const SizedBox(height: 20),
             Align(
               alignment: Alignment.bottomCenter,
               child: Row(

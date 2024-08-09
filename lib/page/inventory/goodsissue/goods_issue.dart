@@ -115,7 +115,7 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
     var formatter = DateFormat('dd/MM/yyyy');
     String docDate = formatter.format(now);
     return Scaffold(
-        appBar: const HeaderApp(title: "Goods Issue"),
+        appBar: const HeaderApp(title: "Good Issue"),
         body: Container(
           color: bgColor,
           width: double.infinity,
@@ -139,7 +139,8 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                       MaterialPageRoute(
                           builder: (context) => const QRViewExample(
                             pageIdentifier: 'GoodsIssueDetailItem',
-                          )),
+                          )
+                      ),
                     ).then((_) => _fetchData());
                   },
                 ),

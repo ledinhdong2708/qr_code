@@ -46,24 +46,7 @@ class _GrpoState extends State<Grpo> {
     docNoController = TextEditingController();
     docEntryController = TextEditingController();
     baseEntryController = TextEditingController();
-    _fetchGrpoData();
     _fetchPoData();
-  }
-
-  Future<void> _fetchGrpoData() async {
-    fetchGrpoData(widget.qrData).then((data) {
-      if (data != null && data['data'] is List) {
-        setState(() {
-          grpo = data['data'];
-          if (grpo.isNotEmpty) {
-            vendorCodeController.text = grpo[0]['vendorcode'];
-            vendorNameController.text = grpo[0]['vendorname'];
-            postDayController.text = grpo[0]['postday'];
-            docEntryController.text = grpo[0]['BaseEntry'];
-          }
-        });
-      }
-    });
   }
 
   @override

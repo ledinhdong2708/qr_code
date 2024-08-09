@@ -5,6 +5,7 @@ import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/print_page.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class RfpDetailItems extends StatefulWidget {
   final String docEntry;
@@ -77,7 +78,7 @@ class _RfpDetailItemsState extends State<RfpDetailItems> {
         height: double.infinity,
         color: bgColor,
         padding: AppStyles.paddingContainer,
-        child: ListView(
+        child: Column(
           children: [
             buildTextFieldRow(
               controller: itemCodeController,
@@ -114,9 +115,13 @@ class _RfpDetailItemsState extends State<RfpDetailItems> {
               labelText: 'Số kiện:',
               hintText: 'Số kiện',
             ),
-            Flexible(
-              child: Container(),
+            const SizedBox(height: 10),
+            QrImageView(
+              data: widget.batch,
+              version: QrVersions.auto,
+              size: 150.0,
             ),
+            const SizedBox(height: 10),
             Align(
               alignment: Alignment.bottomCenter,
               child: Row(

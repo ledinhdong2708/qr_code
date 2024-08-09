@@ -88,7 +88,7 @@ class _InventoryTransferItemState extends State<InventoryTransferItem> {
       id = extractedValues['id'] ?? '';
       docEntry = extractedValues['docEntry'] ?? '';
       lineNum = extractedValues['lineNum'] ?? '';
-        fetchQRInventoryTransferData(docEntry, lineNum, id).then((data) {
+        fetchQRInventoryTransferData(docEntry, lineNum, '10').then((data) {
           if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
             final itemData = data['data'][0];
             setState(() {

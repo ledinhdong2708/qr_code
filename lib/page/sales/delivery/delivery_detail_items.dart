@@ -77,8 +77,9 @@ class _DeliveryDetailItemsState extends State<DeliveryDetailItems> {
       String id = extractedValues['id'] ?? '';
       String docEntry = extractedValues['docEntry'] ?? '';
       String lineNum = extractedValues['lineNum'] ?? '';
-      if (docEntry == '30' && lineNum == '0') {
-        fetchQRDeliveryItemsDetailData(docEntry, lineNum, id).then((data) {
+      if (docEntry == '1' && lineNum == '0') {
+        // fetchQRDeliveryItemsDetailData(docEntry, lineNum, id).then((data) {
+        fetchQRDeliveryItemsDetailData('1', '0', '10').then((data) {
           if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
             final itemData = data['data'][0];
             setState(() {
