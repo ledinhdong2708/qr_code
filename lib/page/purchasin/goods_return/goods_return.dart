@@ -72,12 +72,11 @@ class _GoodsReturnState extends State<GoodsReturn> {
             final lineData = {
               'ItemCode': item['itemCode'],
               'ItemName': item['itemDescription'],
-              // 'LineNum': item['lineNum'].toString(),
               'Quantity': item['quantity'].toString(),
               'BaseEntry': grr?['docEntry'].toString() ?? 0,
-              'BaseLine': item['lineNum'].toString() ?? 0,
+              'BaseLine': item['lineNum'].toString(),
               'WarehouseCode': item['warehouseCode'] ?? '',
-              // 'BaseType': 22.toString(),
+              'BaseType': 234000032.toString(),
               'Batches': []
             };
 

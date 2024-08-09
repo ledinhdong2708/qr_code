@@ -10,7 +10,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 30), // Thay đổi giá trị top để thêm khoảng cách
+      margin: const EdgeInsets.only(top: 30),
       child: AppBar(
         backgroundColor: bgColor,
         flexibleSpace: Center(
@@ -23,7 +23,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         toolbarHeight: 100,
       ),
     );
-
-
   }
 }

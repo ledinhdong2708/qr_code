@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/constants/colors.dart';
+import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
-import 'package:qr_code/page/qr_view_example.dart';
 
 import 'creadit_memo/ap_creditmemo.dart';
 
@@ -40,37 +40,24 @@ class Purchasing extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  // MaterialPageRoute(
-                  //     builder: (context) => const QRViewExample(
-                  //           pageIdentifier: 'GoodsReturn',
-                  //         )),
                   MaterialPageRoute(
-                      builder: (context) => const GoodsReturn(qrData: "11")),
+                      // builder: (context) => const QRViewExample(
+                      //       pageIdentifier: 'GoodsReturn',
+                      //     )),
+                      builder: (context) => const GoodsReturn(qrData: "17")),
                 );
-                //Test api
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const GoodsReturn(qrData: "1")),
-                // );
               },
               child: card("assets/return.png", "Goods Return"),
             ),
             InkWell(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const QRViewExample(
-                //             pageIdentifier: 'APCreditMemo',
-                //           )
-                //   ),
-                // );
-                //Test api
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ApCreditMemo(qrData: "9")),
+                      //     builder: (context) => const QRViewExample(
+                      //           pageIdentifier: 'APCreditMemo',
+                      //         )),
+                      builder: (context) => const ApCreditMemo(qrData: "21")),
                 );
               },
               child: card("assets/credit-memo.png", "A/P Credit Memo"),

@@ -66,50 +66,6 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
     descriptionController = TextEditingController();
     whseController = TextEditingController();
     uoMCodeController = TextEditingController();
-    //print("data ${widget.qrData}");
-    // if (widget.qrData.isNotEmpty) {
-    //   // If QR data is provided, fetch data
-    //   final extractedValues  = extractValuesFromQRData(widget.qrData);
-    //   String id = extractedValues['id'] ?? '';
-    //   String docEntry = extractedValues['docEntry'] ?? '';
-    //   String lineNum = extractedValues['lineNum'] ?? '';
-    //   if (docEntry == widget.docEntry && lineNum == widget.lineNum) {
-    //     fetchQRGrrItemsDetailData(docEntry, lineNum, id).then((data) {
-    //       if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
-    //         final itemData = data['data'][0];
-    //         setState(() {
-    //           GRPO_QR = itemData;
-    //           itemCodeController.text = itemData['ItemCode']?.toString() ?? '';
-    //           descriptionController.text = itemData['ItemName']?.toString() ?? '';
-    //           batchController.text = itemData['Batch']?.toString() ?? '';
-    //           whseController.text = itemData['Whse']?.toString() ?? '';
-    //           slThucTeController.text = itemData['SlThucTe']?.toString() ?? '';
-    //           uoMCodeController.text = itemData['UoMCode']?.toString() ?? '';
-    //           remakeController.text = itemData['Remake']?.toString() ?? '';
-    //           isLoading = false;
-    //           isConfirmEnabled = true;
-    //         });
-    //       } else {
-    //         setState(() {
-    //           isLoading = false;
-    //         });
-    //       }
-    //     });
-    //   }
-    // } else {
-    //   setState(() {
-    //     isLoading = false;
-    //     idController = TextEditingController(text: widget.id);
-    //     itemCodeController = TextEditingController(text: widget.itemCode);
-    //     descriptionController = TextEditingController(text: widget.itemName);
-    //     batchController = TextEditingController(text: widget.batch);
-    //     whseController = TextEditingController(text: widget.whse);
-    //     slThucTeController = TextEditingController(text: widget.slThucTe);
-    //     uoMCodeController = TextEditingController(text: widget.uoMCode);
-    //     remakeController = TextEditingController(text: widget.remake);
-    //     isConfirmEnabled = false;
-    //   });
-    // }
     _fetchGrpoBatchesLineData();
   }
 
