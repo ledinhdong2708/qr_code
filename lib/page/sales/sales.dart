@@ -33,7 +33,8 @@ class Sales extends StatelessWidget {
                 // To testing api
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Delivery(qrData: "26")),
+                  MaterialPageRoute(
+                      builder: (context) => const Delivery(qrData: "25")),
                 );
               },
               child: card("assets/delivery.png", "Delivery"),
@@ -50,7 +51,8 @@ class Sales extends StatelessWidget {
                 // To testing api
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SalesReturn(qrData: "8")),
+                  MaterialPageRoute(
+                      builder: (context) => const SalesReturn(qrData: "8")),
                 );
               },
               child: card("assets/return.png", "Return"),
@@ -67,7 +69,8 @@ class Sales extends StatelessWidget {
                 // To testing api
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ARCreditMemo(qrData: "8")),
+                  MaterialPageRoute(
+                      builder: (context) => const ARCreditMemo(qrData: "8")),
                 );
               },
               child: card("assets/credit-memo.png", "A/R Credit Memo"),

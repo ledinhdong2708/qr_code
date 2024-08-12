@@ -185,10 +185,8 @@ class _ApCreditmemoDetailState extends State<ApCreditmemoDetail> {
                         MaterialPageRoute(
                             builder: (context) => QRViewExample(
                                   pageIdentifier: 'ApCreditMemoDetailItems',
-                              docEntry: widget.baseEntry,
-                                )
-                        )
-                    );
+                                  baseEntry: widget.baseEntry,
+                                )));
                   },
                 ),
               ),

@@ -5,8 +5,6 @@ import 'package:qr_code/page/purchasin/creadit_memo/ap_creditmemo.dart';
 import 'package:qr_code/page/purchasin/goods_receipt/grpo.dart';
 import 'package:qr_code/page/purchasin/goods_return/goods_return.dart';
 
-import 'creadit_memo/ap_creditmemo.dart';
-
 class Purchasing extends StatelessWidget {
   const Purchasing({super.key});
   @override

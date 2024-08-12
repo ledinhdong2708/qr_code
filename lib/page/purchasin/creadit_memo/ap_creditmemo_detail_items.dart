@@ -8,7 +8,6 @@ import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/service/goodreturn_service.dart';
 
 import '../../../service/ap_credit_memo_service.dart';
-import '../../../service/qr_service.dart';
 
 class ApCreditmemoDetailItems extends StatefulWidget {
   final String qrData;

@@ -1,23 +1,16 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_code/component/button.dart';
 import 'package:qr_code/component/date_input.dart';
 import 'package:qr_code/component/header_app.dart';
+import 'package:qr_code/component/loading.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/sales/delivery/delivery_detail.dart';
-import 'package:qr_code/routes/routes.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:http/http.dart' as http;
-import '../../../component/dialog.dart';
 import '../../../component/list_items.dart';
-import '../../../constants/urlAPI.dart';
 import '../../../service/delivery_service.dart';
-
-
 
 class Delivery extends StatefulWidget {
   final String qrData;
@@ -32,138 +25,127 @@ class _DeliveryState extends State<Delivery> {
   final TextEditingController _dateController = TextEditingController();
   Barcode? result;
   List<dynamic> delivery = [];
-  Map<String, dynamic>? ordr;
-  List<dynamic> rdr1 = [];
+  Map<String, dynamic>? saleOrder;
+  List<dynamic> lines = [];
+  bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
-    fetchOrdrData(widget.qrData).then((data) {
-      if (data != null) {
-        if (data['data'] != null && data['data']['DocDate'] != null) {
-          DateTime parsedDate = DateTime.parse(data['data']['DocDate']);
-          String formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
-          data['data']['DocDate'] = formattedDate;
+    _fetchSaleOrderData();
+  }
+
+  Future<void> _fetchSaleOrderData() async {
+    final data = await fetchSaleOrderData(widget.qrData, context);
+    if (data != null) {
+      setState(() {
+        _isLoading = false;
+        saleOrder = data;
+        lines = saleOrder?["lines"] ?? [];
+        if (saleOrder?['docDate'] != null) {
+          _dateController.text = DateFormat('dd/MM/yyyy')
+              .format(DateTime.parse(saleOrder?['docDate']));
         }
-        setState(() {
-          ordr = data;
-          _remakeController.text = ordr?['data']['remake'] ?? '';
-          _dateController.text = ordr?['data']['DocDate'] ?? '';
-        });
-      }
-    });
-    fetchRdr1Data(widget.qrData).then((data) {
-      if (data != null && data['data'] is List) {
-        setState(() {
-          rdr1 = data['data'];
-        });
-      }
-    });
+      });
+    } else {
+      print("Sai");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var data = ordr?['data'];
-    var docNum = data != null ? data['DocNum'].toString() : '';
-    DateTime now = DateTime.now();
-    var docDate = data != null ? data['DocDate'].toString() : DateFormat('dd/MM/yyyy').format(now);
-    var cardCode = data != null ? data['CardCode'] : '';
-    var cardName = data != null ? data['CardName'] : '';
-    var remark = data != null ? data['remake'] : '';
-
     return Scaffold(
         appBar: const HeaderApp(title: "Delivery"),
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: bgColor,
-          padding: AppStyles.paddingContainer,
-            child: Column(
-              children: [
-                buildTextFieldRow(
-                  labelText: 'Doc No:',
-                  hintText: 'Doc No',
-                  valueQR: docNum,
-                ),
-                DateInput(
-                  postDay: docDate,
-                  controller: _dateController,
-                ),
-                buildTextFieldRow(
-                  labelText: 'Vendor:',
-                  hintText: 'Vendor Code',
-                  valueQR: cardCode,
-                ),
-                buildTextFieldRow(
-                  labelText: 'Name:',
-                  hintText: 'Vendor Name',
-                  valueQR: cardName,
-                ),
-                buildTextFieldRow(
-                    labelText: 'Remarks:',
-                    isEnable: true,
-                    hintText: 'Remarks here',
-                    icon: Icons.edit,
-                    valueQR: remark,
-                    controller: _remakeController
-                ),
-                if (rdr1.isNotEmpty)
-                  ListItems(
-                      listItems: rdr1,
-                      onTapItem: (index) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DeliveryDetail(
-                              docEntry: rdr1[index]['DocEntry'],
-                              lineNum: rdr1[index]['LineNum'],
-                              itemCode: rdr1[index]['ItemCode'],
-                              description: rdr1[index]['Dscription'],
-                              whse: rdr1[index]['WhsCode'],
-                              slYeuCau: rdr1[index]['OpenQty'].toString(),
-                              slThucTe: rdr1[index]['SlThucTe'].toString(),
-                              batch: rdr1[index]['Batch'].toString(),
-                              uoMCode: rdr1[index]['UomCode'].toString(),
-                              remake: rdr1[index]['remake'].toString(),
+        body: _isLoading
+            ? const CustomLoading()
+            : Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: bgColor,
+                padding: AppStyles.paddingContainer,
+                child: Column(
+                  children: [
+                    buildTextFieldRow(
+                      labelText: 'Doc No:',
+                      hintText: 'Doc No',
+                      valueQR: saleOrder?["docNum"].toString(),
+                    ),
+                    DateInput(
+                      // postDay: docDate,
+                      controller: _dateController,
+                    ),
+                    buildTextFieldRow(
+                      labelText: 'Vendor:',
+                      hintText: 'Vendor Code',
+                      valueQR: saleOrder?["cardCode"],
+                    ),
+                    buildTextFieldRow(
+                      labelText: 'Name:',
+                      hintText: 'Vendor Name',
+                      valueQR: saleOrder?["cardName"],
+                    ),
+                    buildTextFieldRow(
+                        labelText: 'Remarks:',
+                        isEnable: true,
+                        hintText: 'Remarks here',
+                        icon: Icons.edit,
+                        controller: _remakeController),
+                    if (lines.isNotEmpty)
+                      ListItems(
+                        listItems: lines,
+                        onTapItem: (index) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DeliveryDetail(
+                                docEntry: lines[index]['docEntry'].toString(),
+                                lineNum: lines[index]['lineNum'].toString(),
+                                itemCode: lines[index]['itemCode'],
+                                description: lines[index]['itemDescription'],
+                                whse: lines[index]['warehouseCode'],
+                                slYeuCau: lines[index]['quantity'].toString(),
+                                slThucTe: lines[index]['SlThucTe'].toString(),
+                                uoMCode: lines[index]['uomCode'].toString(),
+                                remake: lines[index]['remake'].toString(),
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    labelsAndChildren: const [
-                      {'label': 'ItemCode', 'child': 'ItemCode'},
-                      {'label': 'Name', 'child': 'Dscription'},
-                      {'label': 'Whse', 'child': 'WhsCode'},
-                      {'label': 'Quantity', 'child': 'OpenQty'},
-                      {'label': 'UoM Code', 'child': 'UomCode'},
-                      // Add more as needed
-                    ],
-                  ),
-                Container(
-                  width: double.infinity,
-                  margin: AppStyles.marginButton,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CustomButton(
-                        text: 'POST TO SAP',
-                        onPressed: () {},
-                      ),
-                      CustomButton(
-                        text: 'POST',
-                        onPressed: () async {
-                          await updateDeliveryDatabase(
-                              widget.qrData,
-                              _remakeController.text,
-                              _dateController.text,
-                              context);
+                          );
                         },
+                        labelsAndChildren: const [
+                          {'label': 'ItemCode', 'child': 'itemCode'},
+                          {'label': 'Name', 'child': 'itemDescription'},
+                          {'label': 'Whse', 'child': 'warehouseCode'},
+                          {'label': 'Quantity', 'child': 'quantity'},
+                          {'label': 'UoM Code', 'child': 'uoMCode'},
+                          // Add more as needed
+                        ],
                       ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-        )
-    );
+                    Container(
+                      width: double.infinity,
+                      margin: AppStyles.marginButton,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CustomButton(
+                            text: 'POST TO SAP',
+                            onPressed: () {},
+                          ),
+                          CustomButton(
+                            text: 'POST',
+                            onPressed: () async {
+                              await updateDeliveryDatabase(
+                                  widget.qrData,
+                                  _remakeController.text,
+                                  _dateController.text,
+                                  context);
+                            },
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ));
   }
 }

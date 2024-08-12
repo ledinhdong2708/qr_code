@@ -9,7 +9,6 @@ import 'package:qr_code/constants/styles.dart';
 import 'package:qr_code/page/inventory/goodsissue/goods_issue_detail_item.dart';
 
 import '../../../component/dialog.dart';
-import '../../../component/dropdownbutton.dart';
 import '../../../component/list_items.dart';
 import '../../../service/goods_issue_inven_service.dart';
 import '../../qr_view_example.dart';
@@ -45,7 +44,7 @@ class GoodsIssueInven extends StatefulWidget {
   _GoodsIssueInvenState createState() => _GoodsIssueInvenState();
 }
 
-class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
+class _GoodsIssueInvenState extends State<GoodsIssueInven> {
   List<dynamic> goodsIssueInvenItemsDetail = [];
 
   final TextEditingController _dateController = TextEditingController();
@@ -138,9 +137,8 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => const QRViewExample(
-                            pageIdentifier: 'GoodsIssueDetailItem',
-                          )
-                      ),
+                                pageIdentifier: 'GoodsIssueDetailItem',
+                              )),
                     ).then((_) => _fetchData());
                   },
                 ),
@@ -169,7 +167,8 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                   listItems: goodsIssueInvenItemsDetail,
                   enableDismiss: true,
                   onDeleteItem: (index) async {
-                    String id = goodsIssueInvenItemsDetail[index]['ID'].toString();
+                    String id =
+                        goodsIssueInvenItemsDetail[index]['ID'].toString();
                     await deleteGoodsIssueInvenItemsDetailData(id, context);
                   },
                   onTapItem: (index) {
@@ -178,15 +177,25 @@ class _GoodsIssueInvenState  extends State<GoodsIssueInven> {
                       MaterialPageRoute(
                         builder: (context) => GoodsIssueDetailItem(
                           isEditable: false,
-                          id: goodsIssueInvenItemsDetail[index]['ID'].toString(),
-                          itemCode: goodsIssueInvenItemsDetail[index]['ItemCode'],
-                          itemName: goodsIssueInvenItemsDetail[index]['ItemName'],
+                          id: goodsIssueInvenItemsDetail[index]['ID']
+                              .toString(),
+                          itemCode: goodsIssueInvenItemsDetail[index]
+                              ['ItemCode'],
+                          itemName: goodsIssueInvenItemsDetail[index]
+                              ['ItemName'],
                           whse: goodsIssueInvenItemsDetail[index]['Whse'],
-                          quantity: goodsIssueInvenItemsDetail[index]['Quantity'].toString(),
-                          batch: goodsIssueInvenItemsDetail[index]['Batch'].toString(),
-                          uoMCode: goodsIssueInvenItemsDetail[index]['UoMCode'].toString(),
-                          accountCode: goodsIssueInvenItemsDetail[index]['AccountCode'].toString(),
-                          sokien: goodsIssueInvenItemsDetail[index]['Sokien'].toString(),
+                          quantity: goodsIssueInvenItemsDetail[index]
+                                  ['Quantity']
+                              .toString(),
+                          batch: goodsIssueInvenItemsDetail[index]['Batch']
+                              .toString(),
+                          uoMCode: goodsIssueInvenItemsDetail[index]['UoMCode']
+                              .toString(),
+                          accountCode: goodsIssueInvenItemsDetail[index]
+                                  ['AccountCode']
+                              .toString(),
+                          sokien: goodsIssueInvenItemsDetail[index]['Sokien']
+                              .toString(),
                         ),
                       ),
                     );

@@ -54,7 +54,6 @@ class _PrintPageState extends State<PrintPage> {
     final savedAddress = prefs.getString('saved_device_address');
 
     if (savedAddress != null) {
-      // Tìm thiết bị có địa chỉ này
       for (BluetoothDevice device in _devices) {
         if (device.address == savedAddress) {
           _connect(device);
@@ -167,9 +166,8 @@ class _PrintPageState extends State<PrintPage> {
 
       list.add(LineText(
         type: LineText.TYPE_QRCODE,
-        content:
-        '${widget.data['lineNum']}/${widget.data['batch']}',
-            // 'ID: ${widget.data['id']}, DocEntry: ${widget.data['docEntry']}, LineNum: ${widget.data['lineNum']}',
+        content: '${widget.data['batch']}',
+        // 'ID: ${widget.data['id']}, DocEntry: ${widget.data['docEntry']}, LineNum: ${widget.data['lineNum']}',
         align: LineText.ALIGN_CENTER,
         linefeed: 1,
         size: 1,

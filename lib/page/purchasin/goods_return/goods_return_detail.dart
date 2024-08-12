@@ -185,9 +185,9 @@ class _GoodReturnDetailState extends State<GoodsReturnDetail> {
                       MaterialPageRoute(
                           builder: (context) => QRViewExample(
                                 pageIdentifier: 'GoodReturnDetailItems',
-                                docEntry: widget.baseEntry,
-                              )
-                      ),
+                                baseEntry: widget.baseEntry,
+                                baseLine: widget.baseLine,
+                              )),
                       // MaterialPageRoute(
                       //     builder: (context) => const GoodReturnDetailItems(
                       //           qrData: "29/0/09082024_2",

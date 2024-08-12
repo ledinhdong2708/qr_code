@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 import 'list_items.dart';
 import '../service/goods_receipt_inven_service.dart';
@@ -61,23 +59,23 @@ class _ListItemcodeState extends State<ListItemcode> {
       body: _isLoading && _items.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : ListItems(
-        listItems: _items,
-        enableSearch: true,
-        enableExpansion: true,
-        onTapItem: (index) {
-          // Handle item tap
-          var item = _items[index];
-          widget.onItemSelected(item['ItemCode'], item['ItemName']);
-          Navigator.pop(context);
-        },
-        // isLoading: _isLoading,
-        // onLoadMore: _loadMoreItems,
-        labelsAndChildren: const [
-          {'label': 'Item Code', 'child': 'ItemCode'},
-          {'label': 'Item Name', 'child': 'ItemName'},
-          // Add more as needed
-        ],
-      ),
+              listItems: _items,
+              enableSearch: true,
+              enableExpansion: true,
+              onTapItem: (index) {
+                // Handle item tap
+                var item = _items[index];
+                widget.onItemSelected(item['ItemCode'], item['ItemName']);
+                Navigator.pop(context);
+              },
+              // isLoading: _isLoading,
+              // onLoadMore: _loadMoreItems,
+              labelsAndChildren: const [
+                {'label': 'Item Code', 'child': 'ItemCode'},
+                {'label': 'Item Name', 'child': 'ItemName'},
+                // Add more as needed
+              ],
+            ),
     );
   }
 }

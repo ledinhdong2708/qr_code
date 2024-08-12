@@ -21,11 +21,15 @@ import 'inventory/inventorytransfer/inventory_transfer_item.dart';
 class QRViewExample extends StatefulWidget {
   final String pageIdentifier;
   final String docEntry;
+  final String baseEntry;
   final String lineNum;
+  final String baseLine;
   const QRViewExample(
       {super.key,
       required this.pageIdentifier,
       this.docEntry = "",
+      this.baseEntry = "",
+      this.baseLine = "",
       this.lineNum = ""});
 
   @override
@@ -84,9 +88,9 @@ class _QRViewExampleState extends State<QRViewExample> {
         context,
         MaterialPageRoute(
             builder: (context) => GoodReturnDetailItems(
-                qrData: '${widget.docEntry}/$qrData',
-                //docEntry: widget.docEntry,
-            )),
+                  qrData: '${widget.baseEntry}/${widget.baseLine}/$qrData',
+                  //docEntry: widget.docEntry,
+                )),
       );
     } else if (pageIdentifier == 'APCreditMemo') {
       Navigator.push(
@@ -97,8 +101,8 @@ class _QRViewExampleState extends State<QRViewExample> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => ApCreditmemoDetailItems(
-                qrData: '${widget.docEntry}/$qrData')),
+            builder: (context) =>
+                ApCreditmemoDetailItems(qrData: '${widget.docEntry}/$qrData')),
       );
     } else if (pageIdentifier == 'Delivery') {
       Navigator.push(

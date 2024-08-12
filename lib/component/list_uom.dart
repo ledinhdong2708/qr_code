@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:qr_code/service/inventory_transfer_service.dart';
-import 'dart:convert';
 
 import 'list_items.dart';
 import '../service/goods_receipt_inven_service.dart';
@@ -62,23 +59,23 @@ class _ListUomState extends State<ListUom> {
       body: _isLoading && _uom.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : ListItems(
-        listItems: _uom,
-        enableSearch: true,
-        enableExpansion: true,
-        onTapItem: (index) {
-          // Handle item tap
-          var item = _uom[index];
-          widget.onItemSelected(item['UomCode']);
-          Navigator.pop(context);
-        },
-        // isLoading: _isLoading,
-        // onLoadMore: _loadMoreItems,
-        labelsAndChildren: const [
-          {'label': 'UomCode', 'child': 'UomCode'},
-          {'label': 'UomName', 'child': 'UomName'},
-          // Add more as needed
-        ],
-      ),
+              listItems: _uom,
+              enableSearch: true,
+              enableExpansion: true,
+              onTapItem: (index) {
+                // Handle item tap
+                var item = _uom[index];
+                widget.onItemSelected(item['UomCode']);
+                Navigator.pop(context);
+              },
+              // isLoading: _isLoading,
+              // onLoadMore: _loadMoreItems,
+              labelsAndChildren: const [
+                {'label': 'UomCode', 'child': 'UomCode'},
+                {'label': 'UomName', 'child': 'UomName'},
+                // Add more as needed
+              ],
+            ),
     );
   }
 }
