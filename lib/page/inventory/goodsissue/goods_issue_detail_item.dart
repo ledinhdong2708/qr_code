@@ -4,7 +4,6 @@ import 'package:qr_code/component/header_app.dart';
 import 'package:qr_code/component/textfield_method.dart';
 import 'package:qr_code/constants/colors.dart';
 import 'package:qr_code/constants/styles.dart';
-import 'package:qr_code/page/inventory/goodsissue/goods_issue.dart';
 import 'package:qr_code/service/goods_issue_inven_service.dart';
 import '../../../service/qr_service.dart';
 
@@ -75,12 +74,15 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
 
     if (widget.qrData.isNotEmpty) {
       // If QR data is provided, fetch data
-      final extractedValues  = extractValuesFromQRData(widget.qrData);
+      final extractedValues = extractValuesFromQRData(widget.qrData);
       id = extractedValues['id'] ?? '';
       docEntry = extractedValues['docEntry'] ?? '';
       lineNum = extractedValues['lineNum'] ?? '';
       fetchQRGoodsIssueItemsDetailData(docEntry, lineNum, '26').then((data) {
-        if (data != null && data.containsKey('data') && data['data'] is List && data['data'].isNotEmpty) {
+        if (data != null &&
+            data.containsKey('data') &&
+            data['data'] is List &&
+            data['data'].isNotEmpty) {
           final itemData = data['data'][0];
           setState(() {
             GRPO_QR = itemData;
@@ -90,7 +92,8 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
             whseController.text = itemData['Whse']?.toString() ?? '';
             quantityController.text = itemData['SlThucTe']?.toString() ?? '';
             uoMCodeController.text = itemData['UoMCode']?.toString() ?? '';
-            accountCodeController.text = itemData['AccountCode']?.toString() ?? '';
+            accountCodeController.text =
+                itemData['AccountCode']?.toString() ?? '';
             sokienController.text = itemData['Sokien']?.toString() ?? '';
             isLoading = false;
             isConfirmEnabled = true;
@@ -101,8 +104,7 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
           });
         }
       });
-    }
-    else {
+    } else {
       setState(() {
         isLoading = false;
         idController = TextEditingController(text: widget.id);
@@ -132,7 +134,6 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
     // sokienController.dispose();
     super.dispose();
   }
-
 
   Future<void> _submitData() async {
     final data = {
@@ -165,7 +166,6 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,41 +178,35 @@ class _GoodsIssueDetailItemState extends State<GoodsIssueDetailItem> {
           child: ListView(
             children: [
               buildTextFieldRow(
-                controller: itemCodeController,
-                labelText: 'Item Code:',
-                hintText: 'Item Code',
-                isEnable: widget.isEditable
-              ),
+                  controller: itemCodeController,
+                  labelText: 'Item Code:',
+                  hintText: 'Item Code',
+                  isEnable: widget.isEditable),
               buildTextFieldRow(
-                controller: itemNameController,
-                labelText: 'Item Name:',
-                hintText: 'Item Name',
-                isEnable: widget.isEditable
-              ),
+                  controller: itemNameController,
+                  labelText: 'Item Name:',
+                  hintText: 'Item Name',
+                  isEnable: widget.isEditable),
               buildTextFieldRow(
                   controller: quantityController,
                   labelText: 'Quantity:',
                   hintText: 'Quantity',
-                  isEnable: widget.isEditable
-              ),
+                  isEnable: widget.isEditable),
               buildTextFieldRow(
-                controller: whseController,
-                labelText: 'Whse:',
-                hintText: 'Whse',
-                isEnable: widget.isEditable
-              ),
+                  controller: whseController,
+                  labelText: 'Whse:',
+                  hintText: 'Whse',
+                  isEnable: widget.isEditable),
               buildTextFieldRow(
-                controller: uoMCodeController,
-                labelText: 'UoM Code:',
-                hintText: 'UoMCode',
-                isEnable: widget.isEditable
-              ),
+                  controller: uoMCodeController,
+                  labelText: 'UoM Code:',
+                  hintText: 'UoMCode',
+                  isEnable: widget.isEditable),
               buildTextFieldRow(
-                controller: batchController,
-                labelText: 'Số Batch:',
-                hintText: 'Số Batch',
-                isEnable: widget.isEditable
-              ),
+                  controller: batchController,
+                  labelText: 'Số Batch:',
+                  hintText: 'Số Batch',
+                  isEnable: widget.isEditable),
               buildTextFieldRow(
                 controller: accountCodeController,
                 labelText: 'Account Code:',

@@ -66,8 +66,8 @@ Future<void> fetchAndUpdateDeliveryDatabase(
   }
 }
 
-Future<void> updateDeliveryDatabase(
-    String resultCode, String remake, String docDate, BuildContext context) async {
+Future<void> updateDeliveryDatabase(String resultCode, String remake,
+    String docDate, BuildContext context) async {
   final data = await fetchOrdrData(resultCode);
   if (data == null || data.isEmpty) {
     print('No data to update');
@@ -165,17 +165,22 @@ Future<void> postDeliveryItemsDetailData(Map<String, dynamic> data,
 
     if (response.statusCode == 200) {
       print('Data successfully sent to server');
-      CustomDialog.showDialog(context, 'Cập nhật thành công!', 'success',
+      CustomDialog.showDialog(
+        context,
+        'Cập nhật thành công!',
+        'success',
         onOkPressed: () {
           int count = 0;
           Navigator.of(context).popUntil((_) => count++ >= testPopItemDetails);
         },
       );
-
     } else {
       print('Failed to send data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
-      CustomDialog.showDialog(context, 'Cập nhật thất bại!', 'error',
+      CustomDialog.showDialog(
+        context,
+        'Cập nhật thất bại!',
+        'error',
         onOkPressed: () {
           int count = 0;
           Navigator.of(context).popUntil((_) => count++ >= popCountItemDetails);
@@ -231,7 +236,8 @@ Future<Map<String, dynamic>?> fetchQRDeliveryItemsDetailData(
   }
 }
 
-Future<void> deleteDeliveryItemsDetailData(String id, BuildContext context) async {
+Future<void> deleteDeliveryItemsDetailData(
+    String id, BuildContext context) async {
   final String url = '$serverIp/api/v1/deliveryitemsdetail/$id';
   try {
     var response = await http.delete(
@@ -249,7 +255,6 @@ Future<void> deleteDeliveryItemsDetailData(String id, BuildContext context) asyn
       //     Navigator.of(context).popUntil((_) => count++ >= 0);
       //   },
       // );
-
     } else {
       print('Failed to delete data. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -266,5 +271,31 @@ Future<void> deleteDeliveryItemsDetailData(String id, BuildContext context) asyn
   }
 }
 
+// ===================================================================================
+//                              Fetch data of sale order
+// ===================================================================================
 
-
+Future<Map<String, dynamic>?> fetchSaleOrderData(
+    String resultCode, BuildContext context) async {
+  final url = '$serverIpSap/SAP_SaleOrder/$resultCode';
+  try {
+    final response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      print("Fetch SaleOrder data successful");
+      return json;
+    } else {
+      print("Failed to load data with status code: ${response.statusCode}");
+      print('Response body: ${response.body}');
+      return null;
+    }
+  } catch (e) {
+    print("Error fetching SaleOrder data: $e");
+    return null;
+  }
+}

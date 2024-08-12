@@ -34,11 +34,9 @@ class _QRCodeInputState extends State<QRCodeForInput> {
     controller.scannedDataStream.take(1).listen((scanData) {
       if (scanData != null) {
         controller.pauseCamera();
-
         setState(() {
           result = scanData;
         });
-        // Điều này sẽ gửi kết quả của mã QR đến nơi cần xử lý, chẳng hạn như lớp cha.
         Navigator.pop(context, scanData.code);
       }
     });
