@@ -44,7 +44,7 @@ class Purchasing extends StatelessWidget {
                       // builder: (context) => const QRViewExample(
                       //       pageIdentifier: 'GoodsReturn',
                       //     )),
-                      builder: (context) => const GoodsReturn(qrData: "13")),
+                      builder: (context) => const GoodsReturn(qrData: "12")),
                 );
               },
               child: card("assets/return.png", "Goods Return"),

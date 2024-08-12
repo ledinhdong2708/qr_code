@@ -66,7 +66,24 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
     descriptionController = TextEditingController();
     whseController = TextEditingController();
     uoMCodeController = TextEditingController();
-    _fetchGrpoBatchesLineData();
+
+    if(widget.qrData != '') {
+      _fetchGrpoBatchesLineData();
+    }
+    else {
+      setState(() {
+        idController = TextEditingController(text: widget.id);
+        itemCodeController = TextEditingController(text: widget.itemCode);
+        descriptionController = TextEditingController(text: widget.itemName);
+        batchController = TextEditingController(text: widget.batch);
+        whseController = TextEditingController(text: widget.whse);
+        slThucTeController = TextEditingController(text: widget.slThucTe);
+        uoMCodeController = TextEditingController(text: widget.uoMCode);
+        remakeController = TextEditingController(text: widget.remake);
+        _isLoading = false;
+        isConfirmEnabled = false;
+      });
+    }
   }
 
   @override
@@ -131,39 +148,39 @@ class _GoodReturnDetailItemsState extends State<GoodReturnDetailItems> {
               child: ListView(
                 children: [
                   buildTextFieldRow(
-                      // controller: itemCodeController,
+                      controller: itemCodeController,
                       labelText: 'Item Code:',
                       hintText: 'Item Code',
                       valueQR: grpoBatchesLine?["itemCode"].toString()),
                   buildTextFieldRow(
-                      // controller: descriptionController,
+                      controller: descriptionController,
                       labelText: 'Item Name:',
                       hintText: 'Item Name',
                       valueQR: grpoBatchesLine?["itemDescription"].toString()),
                   buildTextFieldRow(
-                    // controller: slThucTeController,
+                    controller: slThucTeController,
                     labelText: 'Quantity:',
                     hintText: 'Quantity',
                     valueQR: grpoBatchesLine?["quantity"].toString(),
                   ),
                   buildTextFieldRow(
-                    // controller: whseController,
+                    controller: whseController,
                     labelText: 'Whse:',
                     hintText: 'Whse',
                     valueQR: grpoBatchesLine?["warehouseCode"].toString(),
                   ),
                   buildTextFieldRow(
-                      // controller: uoMCodeController,
+                      controller: uoMCodeController,
                       labelText: 'UoM Code:',
                       hintText: 'UoMCode',
                       valueQR: grpoBatchesLine?["uoMCode"].toString()),
                   buildTextFieldRow(
-                      // controller: batchController,
+                      controller: batchController,
                       labelText: 'Số Batch:',
                       hintText: 'Batch',
                       valueQR: grpoBatchesLine?["batchNumber"].toString()),
                   buildTextFieldRow(
-                    // controller: remakeController,
+                    controller: remakeController,
                     labelText: 'Số kiện:',
                     hintText: 'Số kiện',
                   ),
