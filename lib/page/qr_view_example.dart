@@ -102,7 +102,7 @@ class _QRViewExampleState extends State<QRViewExample> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                ApCreditmemoDetailItems(qrData: '${widget.docEntry}/$qrData')),
+                ApCreditmemoDetailItems(qrData: '${widget.baseEntry}/${widget.baseLine}/$qrData')),
       );
     } else if (pageIdentifier == 'Delivery') {
       Navigator.push(
